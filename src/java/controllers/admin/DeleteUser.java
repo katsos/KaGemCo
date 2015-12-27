@@ -22,7 +22,13 @@ public class DeleteUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //if ( Database.deleteUser( request.getParameter("username") );
+        String username = request.getParameter("username");
+        
+        if ( Database.deleteUser( username ) )
+            response.getWriter().write(username);
+        else 
+            response.getWriter().write("error");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

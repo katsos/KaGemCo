@@ -101,8 +101,43 @@ public class Database {
         return users;
     }
 
-    public static void deleteUser(String parameter) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static boolean deleteUser(String username) {
+
+        Database.connect();
+        if ( connection == null )
+            return false;
+        
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+
+        try {
+            
+            prepStatement = connection.prepareStatement("DELETE FROM Users WHERE Username=?");
+            prepStatement.setString(1, username);
+            prepStatement.execute();
+
+            return true;
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+
+            if ( prepStatement != null ) {
+                try {
+                    prepStatement.close();
+                } catch ( SQLException e ) {
+                    System.err.println( e.toString() );
+                }
+            }
+            if ( results != null ) {
+                try {
+                    results.close();
+                } catch ( SQLException e ) {
+                    System.err.println( e.toString() );
+                }
+            }
+        }
+        return false;
     }
     
 }
