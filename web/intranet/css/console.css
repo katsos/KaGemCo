@@ -1,0 +1,162 @@
+/* Normalize */
+* { box-sizing: border-box; }
+
+span, p, a, h1, h2, h3, h4, h5 {
+	margin: 0;
+	padding: 0;
+}
+ul{ padding: 0; }
+
+/* General */
+body {
+	color: white;
+	font-family: sans-serif;
+	
+	background-color: rgba( 0, 126, 128, 1);
+
+	margin-top: 0;
+}
+header { 
+	width: 100%;
+	margin-top: 2px;
+	margin-bottom: 3px;
+    
+    overflow: hidden;
+}
+header .options *{
+	display: inline-block;
+}
+
+.stats {
+    margin: 2px;
+}
+.stats li {
+    margin-right: 3px;
+}
+
+main {
+	width: 90%;
+	margin: 0 auto;
+
+	border-top: 2px  solid white;
+	padding-top: 12px;
+}
+li{ 
+	list-style: none; 
+	display: inline-block;
+}
+
+li.notif-li { 
+    position: absolute;
+    right: 140px;
+}
+li.log-out-li { float: right; }
+a{
+	color: white;
+	text-decoration: none;
+	text-align: center;
+}
+a:hover {
+	text-decoration: underline; 
+}
+
+/* Buttons */
+.button {
+	font-size: 14pt;
+	
+	width: 100%;
+	padding: 5px;
+	margin-right: 5px;
+	
+	background-color: rgb( 0, 90, 90 );
+	
+	border: 2px solid white;
+	border-radius: 5px;
+}
+.button:hover {
+	background-color: rgb( 0, 110, 110 );
+}
+
+.button.notif-button {
+    background-color: rgb(0, 105, 12);
+}
+
+.button.log-out {
+	background-color: darkred;
+}
+.button.log-out:hover {
+	background-color: rgb( 30, 0, 0 );
+}
+
+/* Forms */
+form {
+    width: 50%;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+.form-buttons {
+    margin-top: 20px;
+
+    text-align: center;
+}
+
+/* Tables */
+.table-parent {
+    background-color: rgb(162, 162, 162);
+    margin: 10px;
+    padding: 10px;
+    border: 0 solid white;
+    border-radius: 10px;
+}
+table { 
+    border: 1px solid white;
+}
+table th { vertical-align: middle; }
+td, th {
+    border: 1px solid white;
+    min-width: 80px;
+    max-width: 200px !important;
+    text-align: center;
+}
+table .corner {
+    max-width: 45px;
+}
+table .check {
+    background-color: green;
+    border: 0px solid white;
+    border-radius: 10px;
+}
+table .reject {
+    background-color: darkred;
+        border: 0px solid white;
+    border-radius: 10px;
+}
+table .edit {
+    font-size: 18pt;
+    font-weight: 900;
+    border: 0;
+}
+table .button {
+    width: 60px;
+    border: 2px solid white;
+}
+
+table td a img.td-img {
+    width: 20px;
+}
+
+.add-new {
+    display: block;
+    width: 200px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+/* Admin */
+
+#admin-console main {
+    width: 100%;
+    padding-top: 16px;
+}
+#admin-console table {
+    width: 100%;
+}
