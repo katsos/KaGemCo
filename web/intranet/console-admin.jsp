@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,10 +23,10 @@
 
         <header>
             <ul class="stats" style="display:none;">
-                <li>Πελάτες: ${costumersCount} </li>
-                <li>Αριθμοί: ${phoneNumbersCount}</li>
-                <li>Πωλητές: ${salesmenCount}</li>
-                <li>Χρήστες: ${signedUsersCount}</li>
+                <li>Πελάτες:   </li>
+                <li>Αριθμοί:  </li>
+                <li>Πωλητές:  </li>
+                <li>Χρήστες:  </li>
             </ul>
 
             <ul class="options">
@@ -36,7 +35,7 @@
                 <li><a class="button" href="#" onClick="onManagers(); return false;"> Διευθυντές </a></li>        
                 <li><a class="button" href="#" onClick="onUsers(); return false;"> Κατάλογος Χρηστών  </a></li>
 
-                <li class="notif-li">
+                <li class="notif-li" style="display:none">
                     <a class="notif-button button" href=""> Eιδοποιήσεις </a></li>
                 <li class="log-out-li">
                     <a class="log-out button" href="#" onClick="onLogout();return false;">  Αποσύνδεση  </a></li>
@@ -55,7 +54,7 @@
                         <th> X </th>
                     </tr>
                 </table>
-                <a class="add-new" id="add-new-user" href="#" > Προσθήκη νέας εγγραφής... </a>
+                <a class="add-new" href="#" onClick="onAddNewUser(); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="customers-table" style="display: none;">
                 <table id="customers">
@@ -70,7 +69,6 @@
                         <th> X </th>
                     </tr>
                 </table>
-                <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="salesmen-table" style="display:none;">
                 <table id="salesmen">
@@ -82,7 +80,6 @@
                         <th> X </th>
                     </tr>
                 </table>
-                <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="managers-table" style="display: none;">
                 <table id="managers">
@@ -94,7 +91,43 @@
                         <th> X </th>
                     </tr>
                 </table>
-                <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>
+            </div>
+
+            <div id="new-user-form" style="display: none;">
+                <form onsubmit="addNewUser(); return false;">
+                    <table>
+                        <tr>
+                            <td>Role:</td>
+                            <td>
+                                <input type="radio" name="role" value="manager">  <span>Manager</span>
+                                <input type="radio" name="role" value="salesman"> <span>Salesman</span>                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> Username: </td>
+                            <td>
+                                <span id="username-prefix"> </span>
+                                <input type="text" name="username">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> Password: </td>
+                            <td>
+                                <input type="password" name="password">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="submit" value="Προσθήκη">
+                            </td>
+                        </tr>
+                        <tr>
+                            <p id="new-user-info"></p>
+                        </tr>   
+                    </table>
+                </form>
+               
             </div>
 
         </main>
