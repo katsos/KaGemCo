@@ -1,4 +1,6 @@
-window.onload = function getUsers() {
+/* * Ajax Requests * */
+
+function getUsers() {
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -18,9 +20,85 @@ window.onload = function getUsers() {
     xmlhttp.open("POST", uri, true);
     xmlhttp.send();
     
+}
+//window.onload = function getCustomers() {
+//
+//    var xmlhttp = new XMLHttpRequest();
+//
+//    xmlhttp.onreadystatechange = function () {
+//
+//        response = xmlhttp.responseText;
+//
+//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//
+//            document.getElementById("customers").innerHTML += response += "</table>";
+//
+//        }
+//    };
+//
+//    var uri = "http://localhost:8080/KaGemCo/GetCustomersList";
+//
+//    xmlhttp.open("POST", uri, true);
+//    xmlhttp.send();
+//    
+//};
+//window.onload = function getSalesmen() {
+//
+//    var xmlhttp = new XMLHttpRequest();
+//
+//    xmlhttp.onreadystatechange = function () {
+//
+//        response = xmlhttp.responseText;
+//
+//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//
+//            document.getElementById("salesmen").innerHTML += response += "</table>";
+//
+//        }
+//    };
+//
+//    var uri = "http://localhost:8080/KaGemCo/GetSalesmenList";
+//
+//    xmlhttp.open("POST", uri, true);
+//    xmlhttp.send();
+//    
+//};
+//window.onload = function getManagers() {
+//
+//    var xmlhttp = new XMLHttpRequest();
+//
+//    xmlhttp.onreadystatechange = function () {
+//
+//        response = xmlhttp.responseText;
+//
+//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//
+//            document.getElementById("managers").innerHTML += response += "</table>";
+//
+//        }
+//    };
+//
+//    var uri = "http://localhost:8080/KaGemCo/GetManagersList";
+//
+//    xmlhttp.open("POST", uri, true);
+//    xmlhttp.send();
+//    
+//};
+
+window.onload = function onLoad() {
+    
+    getUsers();
+//    getCustomers();
+//    getSalesmen();
+//    getManagers();
 };
 
+/* /Ajax Requests */
+
 /* * * Listeners * * */
+/* Every function with on as prefix correspond to onClick listerners of gui. */
+
+
 function onDeleteUser( username ) {
     
     if ( username == "admin" ) {
@@ -68,4 +146,34 @@ function deleteUser( username ) {
 
 function onEditUser( username ) {
     
+}
+
+function onCustomers() {
+    resetVisbleTable();
+}
+function onSalesmen() {
+    resetVisbleTable();    
+}
+function onManagers() {
+    resetVisbleTable();    
+}      
+function onUsers() {
+    resetVisbleTable();    
+}
+
+function resetVisbleTable() {
+    
+    /* Gather the name of all tables */
+    var div_tables = [];
+    div_tables.push("users-table");
+    div_tables.push("customers-table");
+    div_tables.push("manager-table");
+    div_tables.push("salesmen-table");
+    
+    /* For each table in the list, turn */
+    for ( var i=0; i<div_tables.length; i++ ) {
+        
+        document.getElementById( div_tables[i] ).style.display = "none";
+
+    } 
 }

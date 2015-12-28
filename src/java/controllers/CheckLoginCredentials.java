@@ -38,7 +38,7 @@ public class CheckLoginCredentials extends HttpServlet {
             response.addCookie(cookie);
             response.getWriter().write(username);
         } else
-            response.getWriter().write(" ");
+            response.getWriter().write("error");
     }
     
     private boolean usernameFormatIsValid() {

@@ -96,6 +96,6 @@
 
         <footer> *Μήν δίνεται τον κωδικό σας σε email. Οι διαχειριστές του συστήματος ποτέ δεν θα σας τον ζητούσαν.*</footer>
 
-        <script src="./js/console.js"></script>
+        <script src="./js/login.js"></script>
     </body>
 </html>

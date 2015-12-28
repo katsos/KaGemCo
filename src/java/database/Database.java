@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Customer;
 import models.User;
 
 public class Database {
@@ -31,8 +32,6 @@ public class Database {
             
             Class.forName(driver).newInstance();
             Database.connection = DriverManager.getConnection( url+name, username, password );
-            
-            return connection;
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,6 +137,10 @@ public class Database {
             }
         }
         return false;
+    }
+
+    public static ArrayList<Customer> getCustomers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -32,10 +32,10 @@
             </ul>
 
             <ul class="options">
-                <li><a class="button" href="#"> Πελάτες </a></li>
-                <li><a class="button" href="#"> Πωλητές </a></li>
-                <li><a class="button" href="#"> Διευθυντές </a></li>        
-                <li><a class="button" href="#"> Κατάλογος Χρηστών  </a></li>
+                <li><a class="button" href="#" onClick="onCustomers(); return false;"> Πελάτες </a></li>
+                <li><a class="button" href="#" onClick="onSalesmen(); return false;"> Πωλητές </a></li>
+                <li><a class="button" href="#" onClick="onManagers(); return false;"> Διευθυντές </a></li>        
+                <li><a class="button" href="#" onClick="onUsers(); return false;"> Κατάλογος Χρηστών  </a></li>
 
                 <li class="notif-li">
                     <a class="notif-button button" href=""> Eιδοποιήσεις </a></li>
@@ -46,14 +46,18 @@
 
         <main>
 
-            <table id="users">
-                <tr>
-                    <th> Username </th>
-                    <th> Role </th>
-                    <th> - </th>
-                    <th> X </th>
-                </tr>
-            </table>
+            <div id="users-table">
+                <table id="users">
+                    <tr>
+                        <th> Username </th>
+                        <th> Role </th>
+                        <th> - </th>
+                        <th> X </th>
+                    </tr>
+                </table>
+
+                <a class="add-new" id="add-new-user" href="#" > Προσθήκη νέας εγγραφής... </a>
+            </div>
 
             <div id="customers-table" style="display: none;">
                 <table id="customers">

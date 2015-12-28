@@ -8,9 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.User;
+import models.Customer;
 
-public class GetUsersList extends HttpServlet {
+public class GetCustomersList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -21,40 +21,41 @@ public class GetUsersList extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+
     protected PrintWriter out = null;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        ArrayList<User> users;
-        users = Database.getUsers();
+        ArrayList<Customer> customers;
+        customers = Database.getCustomers();
         
         response.setContentType("text/html;charset=UTF-8");
         out = response.getWriter();
         
         try {
-            for ( User user : users ) 
-                addUserRow(user);
+            for( Customer customer : customers )  
+                addCustomerRow( customer );
         } finally {
             out.close();
         }
+
     }
     
-    private void addUserRow( User user ) {
+    private void addCustomerRow( Customer customer ) {
         
-        String username = user.getUsername();
-        String role = user.getRole();
+        //String name
         
-        out.write("<tr>");
-            out.write("<td>" + username + "</td>\n");
-            out.write("<td>" + role + "</td>\n");
-            out.write("<td>" + 
-                        "<a href='#' onClick=\"onEditUser(\""+ username +"\"); return false;\"" + '>' +
-                                "Επεξεργασία </a> </td>");
-            out.write("<td>" + "<a href='#' onClick='onDeleteUser(\""+ username +"\"); return false;' > Διαγραφή </a> </td>");
-        out.write("</tr>");
+//        out.write("<tr>");
+//            out.write("<td>" + username + "</td>\n");
+//            out.write("<td>" + role + "</td>\n");
+//            out.write("<td>" + 
+//                        "<a href='#' onClick=\"onEditUser(\""+ username +"\"); return false;\"" + '>' +
+//                                "Επεξεργασία </a> </td>");
+//            out.write("<td>" + "<a href='#' onClick='onDeleteUser(\""+ username +"\"); return false;' > Διαγραφή </a> </td>");
+//        out.write("</tr>");
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
