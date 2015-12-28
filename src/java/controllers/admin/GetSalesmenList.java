@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Salesman;
-import models.User;
 
 public class GetSalesmenList extends HttpServlet {
 
@@ -30,9 +29,6 @@ public class GetSalesmenList extends HttpServlet {
 
         ArrayList<Salesman> salesmen;
         salesmen = Database.getSalesmen();
-        
-        for ( Salesman salesman : salesmen ) 
-            System.err.println("ERR:: " + salesmen.size() + salesman.getUsername());
         
         response.setContentType("text/html;charset=UTF-8");
         out = response.getWriter();

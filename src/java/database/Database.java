@@ -202,14 +202,14 @@ public class Database {
 
         try {
 
-            prepStatement = connection.prepareStatement("SELECT * FROM Users WHERE role=salesman");
+            prepStatement = connection.prepareStatement("SELECT * FROM Users WHERE role='salesman'");
             results = prepStatement.executeQuery();
 
             while (results.next()) {
                 String username = results.getString("Username");
                 String role = results.getString("Role");
                 String regDate = results.getDate("RegDate").toString();
-                System.err.println("DEB::" + username);
+
                 salesmen.add(new Salesman(username, "****", role, regDate));
             }
 
