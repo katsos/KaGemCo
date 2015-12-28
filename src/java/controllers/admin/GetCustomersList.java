@@ -36,7 +36,9 @@ public class GetCustomersList extends HttpServlet {
         try {
             for( Customer customer : customers )  
                 addCustomerRow( customer );
-        } finally {
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }finally {
             out.close();
         }
 

@@ -41,6 +41,11 @@ public class User {
         return role;
     }
 
+    public String getDate() {
+        return date;
+    }
+    
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -51,6 +56,10 @@ public class User {
     
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
     
     @Override

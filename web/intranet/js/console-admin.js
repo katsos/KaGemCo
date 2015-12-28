@@ -42,27 +42,27 @@ function getCustomers() {
     xmlhttp.send();
     
 }
-//window.onload = function getSalesmen() {
-//
-//    var xmlhttp = new XMLHttpRequest();
-//
-//    xmlhttp.onreadystatechange = function () {
-//
-//        response = xmlhttp.responseText;
-//
-//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//
-//            document.getElementById("salesmen").innerHTML += response += "</table>";
-//
-//        }
-//    };
-//
-//    var uri = "http://localhost:8080/KaGemCo/GetSalesmenList";
-//
-//    xmlhttp.open("POST", uri, true);
-//    xmlhttp.send();
-//    
-//};
+function getSalesmen() {
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+
+        response = xmlhttp.responseText;
+
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+            document.getElementById("salesmen").innerHTML += response += "</table>";
+
+        }
+    };
+
+    var uri = "http://localhost:8080/KaGemCo/GetSalesmenList";
+
+    xmlhttp.open("POST", uri, true);
+    xmlhttp.send();
+    
+};
 //window.onload = function getManagers() {
 //
 //    var xmlhttp = new XMLHttpRequest();
@@ -89,7 +89,7 @@ window.onload = function onLoad() {
     
     getUsers();
     getCustomers();
-//    getSalesmen();
+    getSalesmen();
 //    getManagers();
 };
 

@@ -50,6 +50,7 @@
                     <tr>
                         <th> Ψευδώνυμο </th>
                         <th> Ρόλος </th>
+                        <th> Ημερ. Εγγραφής </th>
                         <th> - </th>
                         <th> X </th>
                     </tr>
@@ -74,8 +75,11 @@
             <div id="salesmen-table" style="display:none;">
                 <table id="salesmen">
                     <tr>
-                        <th> Username </th>
-                        <th> Role </th>
+                        <th> Ψευφώνυμο </th>
+                        <th> Ρόλος </th>
+                        <th> Ημερ. Εγγραφής </th>
+                        <th> - </th>
+                        <th> X </th>
                     </tr>
                 </table>
                 <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>
@@ -83,10 +87,11 @@
             <div id="managers-table" style="display: none;">
                 <table id="managers">
                     <tr>
-                        <th> Όνομα </th>
-                        <th> Επώνυμο </th>
-                        <th> Έτος Γέννησης </th>
-                        <th> Κατάστημα </th>
+                        <th> Ψευφώνυμο </th>
+                        <th> Ρόλος </th>
+                        <th> Ημερ. Εγγραφής </th>
+                        <th> - </th>
+                        <th> X </th>
                     </tr>
                 </table>
                 <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>

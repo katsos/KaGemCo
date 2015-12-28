@@ -7,10 +7,10 @@ import java.util.logging.Logger;
 import models.*;
 
 public class Database {
-    
+
     private static final String ip = "62.217.125.30";
     private static final String port = "3306";
-    private static final String url = "jdbc:mysql://" + ip + ":" + port + "/" ;
+    private static final String url = "jdbc:mysql://" + ip + ":" + port + "/";
 
     private static final String name = "it21251";
     private static final String driver = "com.mysql.jdbc.Driver";
@@ -68,8 +68,9 @@ public class Database {
             while (results.next()) {
                 String username = results.getString("Username");
                 String role = results.getString("Role");
+                String regDate = results.getDate("RegDate").toString();
 
-                users.add(new User(username, "****", role));
+                users.add(new User(username, "****", role, regDate));
             }
 
         } catch (SQLException e) {
@@ -124,7 +125,7 @@ public class Database {
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -152,7 +153,7 @@ public class Database {
 
                 customer.setFirstname(results.getString("Firstname"));
                 customer.setLastname(results.getString("Lastname"));
-                customer.setBirthDate( results.getDate("BirthDate").toString() );
+                customer.setBirthDate(results.getDate("BirthDate").toString());
                 customer.setGender(results.getString("Gender").charAt(0));
                 customer.setFamilyStatus(results.getString("FamilyStatus"));
                 customer.setHomeAddress(results.getString("FamilyStatus"));
@@ -166,7 +167,7 @@ public class Database {
         } catch (SQLException e) {
             System.err.println(e);
         } finally {
-            
+
             if (prepStatement != null) {
                 try {
                     prepStatement.close();
@@ -174,7 +175,7 @@ public class Database {
                     System.err.println(e.toString());
                 }
             }
-            
+
             if (results != null) {
                 try {
                     results.close();
@@ -187,4 +188,107 @@ public class Database {
         return customers;
     }
 
+    public static ArrayList<Salesman> getSalesmen() {
+
+        Database.connect();
+        if (connection == null) {
+            return null;
+        }
+
+        ArrayList<Salesman> salesmen = new ArrayList<Salesman>();
+
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+
+        try {
+
+            prepStatement = connection.prepareStatement("SELECT * FROM Users WHERE role=salesman");
+            results = prepStatement.executeQuery();
+
+            while (results.next()) {
+                String username = results.getString("Username");
+                String role = results.getString("Role");
+                String regDate = results.getDate("RegDate").toString();
+                System.err.println("DEB::" + username);
+                salesmen.add(new Salesman(username, "****", role, regDate));
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+
+            if (results != null) {
+                try {
+                    results.close();
+                } catch (SQLException e) {
+                    System.err.println(e.toString());
+                }
+            }
+
+            if (prepStatement != null) {
+                try {
+                    prepStatement.close();
+                } catch (SQLException e) {
+                    System.err.println(e.toString());
+                }
+            }
+
+        }
+
+        return salesmen;
+    }
+
+    public static ArrayList<User> getManagers() {
+
+        Database.connect();
+        if (connection == null) {
+            return null;
+        }
+
+        ArrayList<User> salesmen = new ArrayList<User>();
+
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+
+        try {
+
+            prepStatement
+                    = connection.prepareStatement("SELECT * FROM Users"
+                            + "WHERE role=manager");
+
+            results = prepStatement.executeQuery();
+
+            while (results.next()) {
+                String username = results.getString("Username");
+                //String password = results.getString("Password");
+                String role = results.getString("Role");
+                String regDate = results.getString("RegDate");
+
+                salesmen.add(new User(username, "****", role, regDate));
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+
+            if (results != null) {
+                try {
+                    results.close();
+                } catch (SQLException e) {
+                    System.err.println(e.toString());
+                }
+            }
+
+            if (prepStatement != null) {
+                try {
+                    prepStatement.close();
+                } catch (SQLException e) {
+                    System.err.println(e.toString());
+                }
+            }
+
+        }
+
+        return salesmen;
+    }
 }
