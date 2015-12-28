@@ -28,6 +28,10 @@
         <servlet-name>GetSalesmenList</servlet-name>
         <servlet-class>controllers.admin.GetSalesmenList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetManagersList</servlet-name>
+        <servlet-class>controllers.admin.GetManagersList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AddUser</servlet-name>
         <url-pattern>/admin/AddUser</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>GetSalesmenList</servlet-name>
         <url-pattern>/GetSalesmenList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetManagersList</servlet-name>
+        <url-pattern>/GetManagersList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

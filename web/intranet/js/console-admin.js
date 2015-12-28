@@ -63,34 +63,34 @@ function getSalesmen() {
     xmlhttp.send();
     
 };
-//window.onload = function getManagers() {
-//
-//    var xmlhttp = new XMLHttpRequest();
-//
-//    xmlhttp.onreadystatechange = function () {
-//
-//        response = xmlhttp.responseText;
-//
-//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//
-//            document.getElementById("managers").innerHTML += response += "</table>";
-//
-//        }
-//    };
-//
-//    var uri = "http://localhost:8080/KaGemCo/GetManagersList";
-//
-//    xmlhttp.open("POST", uri, true);
-//    xmlhttp.send();
-//    
-//};
+function getManagers() {
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+
+        response = xmlhttp.responseText;
+
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+            document.getElementById("managers").innerHTML += response += "</table>";
+
+        }
+    };
+
+    var uri = "http://localhost:8080/KaGemCo/GetManagersList";
+
+    xmlhttp.open("POST", uri, true);
+    xmlhttp.send();
+    
+};
 
 window.onload = function onLoad() {
     
     getUsers();
     getCustomers();
     getSalesmen();
-//    getManagers();
+    getManagers();
 };
 
 /* /Ajax Requests */

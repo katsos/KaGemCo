@@ -238,33 +238,29 @@ public class Database {
         return salesmen;
     }
 
-    public static ArrayList<User> getManagers() {
+    public static ArrayList<Manager> getManagers() {
 
         Database.connect();
         if (connection == null) {
             return null;
         }
 
-        ArrayList<User> salesmen = new ArrayList<User>();
+        ArrayList<Manager> managers = new ArrayList<Manager>();
 
         PreparedStatement prepStatement = null;
         ResultSet results = null;
 
         try {
 
-            prepStatement
-                    = connection.prepareStatement("SELECT * FROM Users"
-                            + "WHERE role=manager");
-
+            prepStatement = connection.prepareStatement("SELECT * FROM Users WHERE role='manager'");
             results = prepStatement.executeQuery();
 
             while (results.next()) {
                 String username = results.getString("Username");
-                //String password = results.getString("Password");
                 String role = results.getString("Role");
-                String regDate = results.getString("RegDate");
+                String regDate = results.getDate("RegDate").toString();
 
-                salesmen.add(new User(username, "****", role, regDate));
+                managers.add(new Manager(username, "****", role, regDate));
             }
 
         } catch (SQLException e) {
@@ -289,6 +285,6 @@ public class Database {
 
         }
 
-        return salesmen;
+        return managers;
     }
 }
