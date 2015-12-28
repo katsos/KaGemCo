@@ -10,7 +10,7 @@ function getUsers() {
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-            document.getElementById("users").innerHTML += response;
+            document.getElementById("users").innerHTML += response ;
 
         }
     };
@@ -21,27 +21,27 @@ function getUsers() {
     xmlhttp.send();
     
 }
-//window.onload = function getCustomers() {
-//
-//    var xmlhttp = new XMLHttpRequest();
-//
-//    xmlhttp.onreadystatechange = function () {
-//
-//        response = xmlhttp.responseText;
-//
-//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//
-//            document.getElementById("customers").innerHTML += response += "</table>";
-//
-//        }
-//    };
-//
-//    var uri = "http://localhost:8080/KaGemCo/GetCustomersList";
-//
-//    xmlhttp.open("POST", uri, true);
-//    xmlhttp.send();
-//    
-//};
+function getCustomers() {
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+
+        response = xmlhttp.responseText;
+
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+            document.getElementById("customers").innerHTML += response ;
+
+        }
+    };
+
+    var uri = "http://localhost:8080/KaGemCo/GetCustomersList";
+
+    xmlhttp.open("POST", uri, true);
+    xmlhttp.send();
+    
+}
 //window.onload = function getSalesmen() {
 //
 //    var xmlhttp = new XMLHttpRequest();
@@ -88,7 +88,7 @@ function getUsers() {
 window.onload = function onLoad() {
     
     getUsers();
-//    getCustomers();
+    getCustomers();
 //    getSalesmen();
 //    getManagers();
 };
@@ -150,15 +150,19 @@ function onEditUser( username ) {
 
 function onCustomers() {
     resetVisbleTable();
+    document.getElementById("customers-table").style.display = "inline";
 }
 function onSalesmen() {
-    resetVisbleTable();    
+    resetVisbleTable();
+    document.getElementById("salesmen-table").style.display = "inline";
 }
 function onManagers() {
-    resetVisbleTable();    
+    resetVisbleTable();
+    document.getElementById("managers-table").style.display = "inline";
 }      
 function onUsers() {
-    resetVisbleTable();    
+    resetVisbleTable();
+    document.getElementById("users-table").style.display = "inline";
 }
 
 function resetVisbleTable() {
@@ -167,12 +171,12 @@ function resetVisbleTable() {
     var div_tables = [];
     div_tables.push("users-table");
     div_tables.push("customers-table");
-    div_tables.push("manager-table");
+    div_tables.push("managers-table");
     div_tables.push("salesmen-table");
     
     /* For each table in the list, turn */
     for ( var i=0; i<div_tables.length; i++ ) {
-        
+
         document.getElementById( div_tables[i] ).style.display = "none";
 
     } 

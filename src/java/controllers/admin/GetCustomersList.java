@@ -43,17 +43,19 @@ public class GetCustomersList extends HttpServlet {
     }
     
     private void addCustomerRow( Customer customer ) {
-        
-        //String name
-        
-//        out.write("<tr>");
-//            out.write("<td>" + username + "</td>\n");
-//            out.write("<td>" + role + "</td>\n");
-//            out.write("<td>" + 
-//                        "<a href='#' onClick=\"onEditUser(\""+ username +"\"); return false;\"" + '>' +
-//                                "Επεξεργασία </a> </td>");
-//            out.write("<td>" + "<a href='#' onClick='onDeleteUser(\""+ username +"\"); return false;' > Διαγραφή </a> </td>");
-//        out.write("</tr>");
+
+        out.write("<tr>");
+            out.write("<td>" + customer.getFirstname() + "</td>\n");
+            out.write("<td>" + customer.getLastname() + "</td>\n");
+            out.write("<td>" + customer.getBirthDate() + "</td>\n");
+            out.write("<td>" + customer.getGender() + "</td>\n");
+            out.write("<td>" + customer.getTaxID() + "</td>\n");
+            out.write("<td>" + customer.getBankAccountNo()+ "</td>\n");
+            out.write("<td>" + 
+                        "<a href='#' onClick=\"onEditUser(\""+ customer.getTaxID() +"\"); return false;\"" + '>' +
+                                "Επεξεργασία </a> </td>");
+            out.write("<td>" + "<a href='#' onClick='onDeleteUser(\""+ customer.getTaxID() +"\"); return false;' > Διαγραφή </a> </td>");
+        out.write("</tr>");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

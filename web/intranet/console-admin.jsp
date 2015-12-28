@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="models.User" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -49,38 +48,25 @@
             <div id="users-table">
                 <table id="users">
                     <tr>
-                        <th> Username </th>
-                        <th> Role </th>
+                        <th> Ψευδώνυμο </th>
+                        <th> Ρόλος </th>
                         <th> - </th>
                         <th> X </th>
                     </tr>
                 </table>
-
                 <a class="add-new" id="add-new-user" href="#" > Προσθήκη νέας εγγραφής... </a>
             </div>
-
             <div id="customers-table" style="display: none;">
                 <table id="customers">
                     <tr>
-                        <th class="corner"></th>
                         <th> Όνομα </th>
                         <th> Επώνυμο </th>
                         <th> Έτος Γέννησης </th>
                         <th> Φύλο </th>
                         <th> ΑΦΜ </th>
                         <th> Αρ. Τραπ. Λογαρ. </th>
-                        <th> Συγγενικό πρόσωπο </th>
-                    </tr>
-                    <tr>
-                        <td> ${index} </td>
-                        <td> ${name} </td>
-                        <td> ${surname} </td>
-                        <td> ${yearOfBirth} </td>
-                        <td> ${sex} </td>
-                        <td> ${taxesId}</td>
-                        <td> ${bankAccount} </td>
-                        <td> ${relativesName} ${relativesSurname} </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>
+                        <th> - </th>
+                        <th> X </th>
                     </tr>
                 </table>
                 <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>
@@ -88,30 +74,8 @@
             <div id="salesmen-table" style="display:none;">
                 <table id="salesmen">
                     <tr>
-                        <th class="corner"></th>
                         <th> Username </th>
                         <th> Role </th>
-                    </tr>
-                    <tr>
-                        <td> $index </td>
-                        <td> $username </td>
-                        <td> $role </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>
-                    <tr>
-                        <td> $index </td>
-                        <td> $username </td>
-                        <td> $role </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>
-                    <tr>
-                        <td> $index </td>
-                        <td> $username </td>
-                        <td> $role </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>
-                    <tr>
-                        <td> $index </td>
-                        <td> $username </td>
-                        <td> $role </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>            
                     </tr>
                 </table>
                 <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>
@@ -119,40 +83,10 @@
             <div id="managers-table" style="display: none;">
                 <table id="managers">
                     <tr>
-                        <th class="corner"></th>
                         <th> Όνομα </th>
                         <th> Επώνυμο </th>
                         <th> Έτος Γέννησης </th>
                         <th> Κατάστημα </th>
-                    </tr>
-                    <tr>
-                        <td> $index </td>
-                        <td> $name </td>
-                        <td> $surname </td>
-                        <td> $yearOfBirth </td>
-                        <td> $store </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>
-                    <tr>
-                        <td> $index </td>
-                        <td> $name </td>
-                        <td> $surname </td>
-                        <td> $yearOfBirth </td>
-                        <td> $store </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>
-                    <tr>
-                        <td> $index </td>
-                        <td> $name </td>
-                        <td> $surname </td>
-                        <td> $yearOfBirth </td>
-                        <td> $store </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>
-                    <tr>
-                        <td> $index </td>
-                        <td> $name </td>
-                        <td> $surname </td>
-                        <td> $yearOfBirth </td>
-                        <td> $store </td>
-                        <td class="edit button"> <a href="#"> &alefsym; </a></td>            
                     </tr>
                 </table>
                 <a class="add-new" href="#" > Προσθήκη νέας εγγραφής... </a>
