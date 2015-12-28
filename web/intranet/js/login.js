@@ -2,11 +2,9 @@ String.prototype.isEmpty = function () {
     return (this.length === 0 || !this.trim());
 };
 
-/** OnLogin **/
-
 function onLogin() {
 
-    if (formIsValid()) sendAjax();
+    if (formIsValid()) checkCredentials();
 
 }
 
@@ -24,7 +22,7 @@ function formIsValid() {
 
 }
 
-function sendAjax() {
+function checkCredentials() {
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -34,18 +32,18 @@ function sendAjax() {
 
             response = xmlhttp.responseText;
             
-            var username = getCookieValue("username");
-            var role = getCookieValue("role");
+            var username = getCookieValueByKey("username");
+            var role = getCookieValueByKey("role");
             
             switch(role) {
                 case "admin":
                     window.location = "./console-admin.jsp";
                     break;
                 case "salesman":
-                    window.location = "./console-salesman.jsp?username=" + username;
+                    window.location = "./console-salesman.jsp?username";
                     break;
                 case "manager":
-                    window.location = "./console-manager.jsp?username=" + username;
+                    window.location = "./console-manager.jsp?username";
                     break;
                 default:
                     document.getElementById("warning").innerHTML = "Λάθος στοιχεία σύνδεσης";
@@ -60,7 +58,7 @@ function sendAjax() {
     xmlhttp.send();
 }
 
-function getCookieValue( key ) {
+function getCookieValueByKey( key ) {
 
     var pairs = document.cookie.split("; ");
     
