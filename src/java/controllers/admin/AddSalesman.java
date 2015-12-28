@@ -1,18 +1,23 @@
-package controllers;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controllers.admin;
 
-import database.Authentication;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class CheckLoginCredentials extends HttpServlet {
+/**
+ *
+ * @author Asdf
+ */
+public class AddSalesman extends HttpServlet {
 
-    private String username;
-    private String password;
-    private String role;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -25,30 +30,7 @@ public class CheckLoginCredentials extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        username = request.getParameter("username");
-        password = request.getParameter("password");   
         
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-        
-        role = Authentication.getRole(username, password);
-        
-        if ( role.equals("error") )
-            response.getWriter().write("error");
-        else
-            setCookies( response );
-    }
-
-    private void setCookies( HttpServletResponse response ) {
-        
-        Cookie usernameCookie = new Cookie("username",username);
-        usernameCookie.setMaxAge(-1);
-        response.addCookie(usernameCookie);
-        
-        Cookie roleCookie = new Cookie("role",role);
-        roleCookie.setMaxAge(-1);
-        response.addCookie(roleCookie);    
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

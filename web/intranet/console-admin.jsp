@@ -54,7 +54,6 @@
                         <th> X </th>
                     </tr>
                 </table>
-                <a class="add-new" href="#" onClick="onAddNewUser(); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="customers-table" style="display: none;">
                 <table id="customers">
@@ -69,6 +68,7 @@
                         <th> X </th>
                     </tr>
                 </table>
+                 <a class="add-new"  href="#" onClick="onAddNewCustomer(); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="salesmen-table" style="display:none;">
                 <table id="salesmen">
@@ -80,6 +80,7 @@
                         <th> X </th>
                     </tr>
                 </table>
+                <a class="add-new"  href="#" onClick="onAddNewSalesman(); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="managers-table" style="display: none;">
                 <table id="managers">
@@ -91,43 +92,7 @@
                         <th> X </th>
                     </tr>
                 </table>
-            </div>
-
-            <div id="new-user-form" style="display: none;">
-                <form onsubmit="addNewUser(); return false;">
-                    <table>
-                        <tr>
-                            <td>Role:</td>
-                            <td>
-                                <input type="radio" name="role" value="manager">  <span>Manager</span>
-                                <input type="radio" name="role" value="salesman"> <span>Salesman</span>                                
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> Username: </td>
-                            <td>
-                                <span id="username-prefix"> </span>
-                                <input type="text" name="username">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> Password: </td>
-                            <td>
-                                <input type="password" name="password">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input type="submit" value="Προσθήκη">
-                            </td>
-                        </tr>
-                        <tr>
-                            <p id="new-user-info"></p>
-                        </tr>   
-                    </table>
-                </form>
-               
+                <a class="add-new"  href="#" onClick="onAddNewManager(); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
 
         </main>

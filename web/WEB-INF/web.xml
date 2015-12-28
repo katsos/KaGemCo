@@ -32,6 +32,18 @@
         <servlet-name>GetManagersList</servlet-name>
         <servlet-class>controllers.admin.GetManagersList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetManagerRequests</servlet-name>
+        <servlet-class>controllers.GetManagerRequests</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddCustomer</servlet-name>
+        <servlet-class>controllers.admin.AddCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSalesman</servlet-name>
+        <servlet-class>controllers.admin.AddSalesman</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AddUser</servlet-name>
         <url-pattern>/admin/AddUser</url-pattern>
@@ -63,6 +75,18 @@
     <servlet-mapping>
         <servlet-name>GetManagersList</servlet-name>
         <url-pattern>/GetManagersList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetManagerRequests</servlet-name>
+        <url-pattern>/GetManagerRequests</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCustomer</servlet-name>
+        <url-pattern>/AddCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSalesman</servlet-name>
+        <url-pattern>/AddSalesman</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

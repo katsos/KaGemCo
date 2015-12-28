@@ -91,13 +91,12 @@ window.onload = function onLoad() {
     getCustomers();
     getSalesmen();
     getManagers();
+    //getStats();
+    //getNotifications();
 };
-
-/* /Ajax Requests */
 
 /* * * Listeners * * */
 /* Every function with on as prefix correspond to onClick listerners of gui. */
-
 
 function onDeleteUser( username ) {
     
@@ -149,35 +148,59 @@ function onEditUser( username ) {
 }
 
 function onCustomers() {
-    resetVisbleTable();
+    resetVisibleDivs();
     document.getElementById("customers-table").style.display = "inline";
 }
+
 function onSalesmen() {
-    resetVisbleTable();
+    resetVisibleDivs();
     document.getElementById("salesmen-table").style.display = "inline";
 }
+
 function onManagers() {
-    resetVisbleTable();
+    resetVisibleDivs();
     document.getElementById("managers-table").style.display = "inline";
 }      
+
 function onUsers() {
-    resetVisbleTable();
+    resetVisibleDivs();
     document.getElementById("users-table").style.display = "inline";
 }
 
-function resetVisbleTable() {
+function resetVisibleDivs() {
     
     /* Gather the name of all tables */
-    var div_tables = [];
-    div_tables.push("users-table");
-    div_tables.push("customers-table");
-    div_tables.push("managers-table");
-    div_tables.push("salesmen-table");
+    var divs = [];
+    divs.push("users-table");
+    divs.push("customers-table");
+    divs.push("managers-table");
+    divs.push("salesmen-table");
     
     /* For each table in the list, turn */
-    for ( var i=0; i<div_tables.length; i++ ) {
+    for ( var i=0; i<divs.length; i++ ) {
 
-        document.getElementById( div_tables[i] ).style.display = "none";
+        document.getElementById( divs[i] ).style.display = "none";
 
     } 
 }
+
+//function onAddNewSalesman() {
+//
+//    var xmlhttp = new XMLHttpRequest();
+//
+//    xmlhttp.onreadystatechange = function () {
+//
+//        response = xmlhttp.responseText;
+//
+//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//
+//        // handle response //
+//
+//        }
+//    };
+//
+//    var uri = "http://localhost:8080/KaGemCo/AddSalesman";
+//
+//    xmlhttp.open("POST", uri, true);
+//    xmlhttp.send(); 
+//}

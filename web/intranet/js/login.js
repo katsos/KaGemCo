@@ -30,18 +30,25 @@ function sendAjax() {
 
     xmlhttp.onreadystatechange = function () {
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 
             response = xmlhttp.responseText;
-
-            if (response == "admin") {
-                window.location = "./console-admin.jsp";
-            } else if (response.startsWith("sm")) {
-                window.location = "./console-salesman.jsp";
-            } else if (response.startsWith("man")) {
-                window.location = "./console-manager.jsp";
-            } else {
-                document.getElementById("warning").innerHTML = "Λάθος στοιχεία σύνδεσης";
+            
+            var username = getCookieValue("username");
+            var role = getCookieValue("role");
+            
+            switch(role) {
+                case "admin":
+                    window.location = "./console-admin.jsp";
+                    break;
+                case "salesman":
+                    window.location = "./console-salesman.jsp?username=" + username;
+                    break;
+                case "manager":
+                    window.location = "./console-manager.jsp?username=" + username;
+                    break;
+                default:
+                    document.getElementById("warning").innerHTML = "Λάθος στοιχεία σύνδεσης";
             }
         }
 
@@ -51,4 +58,19 @@ function sendAjax() {
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send();
+}
+
+function getCookieValue( key ) {
+
+    var pairs = document.cookie.split("; ");
+    
+    for ( var i=0; i<pairs.length; i++ ) {
+        
+        var splits = pairs[i].split('=');
+
+        if ( splits[0] === key ) // if first part(key) is the requested
+            return splits[1]; // return second part which is its value
+    }
+    
+    return "not found";
 }

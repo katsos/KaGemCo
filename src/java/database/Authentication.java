@@ -7,25 +7,27 @@ import java.sql.SQLException;
 
 public class Authentication {
     
-    public static boolean isValid( String username, String password) {
-        
-        PreparedStatement prepStatement = null;
-        ResultSet results = null;
-        boolean status = false;
+    public static String getRole( String username, String password) {
 
         Connection connection = Database.connect();
         if ( connection == null)
-            return false;
+            return "error";
+        
+        String role = "error";
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
         
         try {
             
-            prepStatement = connection.prepareStatement("SELECT * FROM Users where username=? and password=?");
+            prepStatement = connection.prepareStatement("SELECT role FROM Users where username=? and password=?");
                     
             prepStatement.setString(1, username);
             prepStatement.setString(2, password);
             
             results = prepStatement.executeQuery();
-            status = results.next();
+            while( results.next() ) {
+                role = results.getString("role");
+            }
 
         } catch (SQLException e) {
             System.err.println(e);
@@ -47,6 +49,6 @@ public class Authentication {
             }
         }
         
-        return status;
+        return role;
     }
 }
