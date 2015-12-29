@@ -54,6 +54,7 @@
                         <th> X </th>
                     </tr>
                 </table>
+                <a class="add-new"  href="#" onClick="onAddNewUser(); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="customers-table" style="display: none;">
                 <table id="customers">
@@ -68,7 +69,7 @@
                         <th> X </th>
                     </tr>
                 </table>
-                 <a class="add-new"  href="#" onClick="onAddNewCustomer(); return false;"> Προσθήκη νέας εγγραφής... </a>
+                <a class="add-new"  href="#" onClick="onAddNewCustomer(); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="salesmen-table" style="display:none;">
                 <table id="salesmen">
@@ -80,7 +81,7 @@
                         <th> X </th>
                     </tr>
                 </table>
-                <a class="add-new"  href="#" onClick="onAddNewSalesman(); return false;"> Προσθήκη νέας εγγραφής... </a>
+                <a class="add-new"  href="#" onClick="onAddNewUser('salesman'); return false;"> Προσθήκη νέας εγγραφής... </a>
             </div>
             <div id="managers-table" style="display: none;">
                 <table id="managers">
@@ -92,7 +93,44 @@
                         <th> X </th>
                     </tr>
                 </table>
-                <a class="add-new"  href="#" onClick="onAddNewManager(); return false;"> Προσθήκη νέας εγγραφής... </a>
+                <a class="add-new"  href="#" onClick="onAddNewUser('manager'); return false;"> Προσθήκη νέας εγγραφής... </a>
+            </div>
+
+            <div id="new-user-form" style="display: none;">
+                <form onsubmit="addNewUser(); return false;">
+                    <table>
+                        <tr>
+                            <td>Ρόλος:</td>
+                            <td>
+                                <input type="radio" id="radio-manager" name="role" value="manager">  <span>Διευθυντής</span>
+                                <input type="radio" id="radio-salesman" name="role" value="salesman"> <span>Πωλητής</span>                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> Ψευδώνυμο: </td>
+                            <td>
+                                <span id="username-prefix"> </span>
+                                <input type="text" name="username">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> Κωδικός: </td>
+                            <td>
+                                <input type="password" name="password">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="submit" value="Προσθήκη">
+                            </td>
+                        </tr>
+                        <tr>
+                        <p id="new-user-info"></p>
+                        </tr>   
+                    </table>
+                </form>
+
             </div>
 
         </main>

@@ -1,5 +1,3 @@
-/* * Ajax Requests * */
-
 function getUsers() {
 
     var xmlhttp = new XMLHttpRequest();
@@ -91,8 +89,7 @@ window.onload = function onLoad() {
     getCustomers();
     getSalesmen();
     getManagers();
-    //getStats();
-    //getNotifications();
+
 };
 
 /* * * Listeners * * */
@@ -175,6 +172,7 @@ function resetVisibleDivs() {
     divs.push("customers-table");
     divs.push("managers-table");
     divs.push("salesmen-table");
+    divs.push("new-user-form");
     
     /* For each table in the list, turn */
     for ( var i=0; i<divs.length; i++ ) {
@@ -184,23 +182,30 @@ function resetVisibleDivs() {
     } 
 }
 
-//function onAddNewSalesman() {
-//
-//    var xmlhttp = new XMLHttpRequest();
-//
-//    xmlhttp.onreadystatechange = function () {
-//
-//        response = xmlhttp.responseText;
-//
-//        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//
-//        // handle response //
-//
-//        }
-//    };
-//
-//    var uri = "http://localhost:8080/KaGemCo/AddSalesman";
-//
-//    xmlhttp.open("POST", uri, true);
-//    xmlhttp.send(); 
-//}
+function onAddNewUser( role ) {
+    resetVisibleDivs(); 
+    if ( typeof role !== "undefined" )
+        document.getElementById( "radio-"+role ).checked = true;
+    document.getElementById( "new-user-form" ).style.display = "inline";
+}
+
+function AddNewUser() {
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+
+        response = xmlhttp.responseText;
+
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+        // handle response //
+
+        }
+    };
+
+    var uri = "http://localhost:8080/KaGemCo/AddUser";
+
+    xmlhttp.open("POST", uri, true);
+    xmlhttp.send(); 
+}
