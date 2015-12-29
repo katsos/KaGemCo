@@ -307,11 +307,14 @@ public class Database {
         
         try {
 
-            prepStatement = connection.prepareStatement("INSERT INTO users ( username, password, role, regDate) VALUES (?, ?, ?, NOW())");
-            prepStatement.setString(1, user.getUsername());
-            prepStatement.setString(2, user.getPassword());
-            prepStatement.setString(3, user.getRole());
-
+            prepStatement = connection.prepareStatement("INSERT INTO users ( firstname, lastname, username, password, role, regDate) "
+                                                                    +"VALUES (       ?,        ?,        ?,        ?,    ?,  NOW() )");
+            prepStatement.setString(1, user.getFirstname());
+            prepStatement.setString(2, user.getLastname());
+            prepStatement.setString(3, user.getUsername());
+            prepStatement.setString(4, user.getPassword());
+            prepStatement.setString(5, user.getRole());
+            System.out.println( prepStatement.toString() );
             prepStatement.executeUpdate();
             
             added = true;

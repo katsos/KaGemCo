@@ -219,8 +219,11 @@ function newUserIsValid() {
 function ajaxAddUser() {
 
     var firstname = document.getElementById("new-user-firstname").value;
+    console.log(firstname);
     var lastname = document.getElementById("new-user-lastname").value;
+    console.log(lastname);
     var username = document.getElementById("new-user-username").value;
+    console.log(username);
     var password = document.getElementById("new-user-password").value;
     var role;
     if ( document.getElementById("radio-manager").checked )
@@ -248,8 +251,7 @@ function ajaxAddUser() {
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/AddUserA?" +"firstname="+firstname +"lastname="+lastname
-                    +"username="+username+"&password="+password+"&role="+role;
+    var uri = "http://localhost:8080/KaGemCo/AddUserA?" +"firstname="+firstname +"&lastname="+lastname +"&username="+username+"&password="+password+"&role="+role;
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send(); 
@@ -268,7 +270,7 @@ function onDeleteCustomer( firstname, lastname, taxID ) {
     
 }
 
-function deleteCustomer( firstname, lastname, taxID) {
+function deleteCustomer( firstname, lastname, taxID ) {
 
     var xmlhttp = new XMLHttpRequest();
 
