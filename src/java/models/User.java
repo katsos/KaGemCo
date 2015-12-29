@@ -2,33 +2,40 @@ package models;
 
 public class User {
 
+    private String firstname;
+    private String lastname;
     private String username;
     private String password;
     private String role;
     private String date;
 
-    public User(String username) {
-        this.username = username;
+    public User() {
+        
     }
-    
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-    
-    public User(String username, String password, String role) {
+    public User( String firstname, String lastname, String username, String password, String role ) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = role;   
     }
-    
-    public User(String username, String password, String role, String date) {
+    public User( String firstname, String lastname, String username, String password, String role, String date ) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.username = username;
         this.password = password;
         this.role = role;
         this.date = date;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -44,7 +51,6 @@ public class User {
     public String getDate() {
         return date;
     }
-    
 
     public void setUsername(String username) {
         this.username = username;

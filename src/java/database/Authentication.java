@@ -19,7 +19,7 @@ public class Authentication {
         
         try {
             
-            prepStatement = connection.prepareStatement("SELECT role FROM Users where username=? and password=?");
+            prepStatement = connection.prepareStatement("SELECT role FROM users where username=? and password=?");
                     
             prepStatement.setString(1, username);
             prepStatement.setString(2, password);

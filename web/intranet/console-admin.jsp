@@ -100,6 +100,17 @@
                 <form onsubmit="onSubmitNewUser(); return false;">
                     <table>
                         <tr>
+                            <td> Όνομα: </td>
+                            <td>
+                                <input type="text" id="new-user-firstname" name="firstname">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> Επώνυμο </td>
+                            <td>
+                                <input type="text" id="new-user-lastname" name="lastname">
+                            </td>
+                        </tr>                        <tr>
                             <td>Ρόλος:</td>
                             <td>
                                 <input type="radio" id="radio-manager" name="role" value="manager">  <span>Διευθυντής</span>
@@ -109,14 +120,13 @@
                         <tr>
                             <td> Ψευδώνυμο: </td>
                             <td>
-                                <span id="username-prefix"> </span>
                                 <input type="text" id="new-user-username" name="username">
                             </td>
                         </tr>
                         <tr>
                             <td> Κωδικός: </td>
                             <td>
-                                <input type="password" id="new-user-password"" name="password">
+                                <input type="password" id="new-user-password" name="password">
                             </td>
                         </tr>
                         <tr>

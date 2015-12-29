@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Customer;
+import static utils.Util.marked;
 
 public class GetCustomersList extends HttpServlet {
 
@@ -36,9 +37,10 @@ public class GetCustomersList extends HttpServlet {
         try {
             for( Customer customer : customers )  
                 addCustomerRow( customer );
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }finally {
+        }
+        catch ( NullPointerException ex) {
+          System.err.println( ex );  
+        } finally {
             out.close();
         }
 
@@ -54,9 +56,9 @@ public class GetCustomersList extends HttpServlet {
             out.write("<td>" + customer.getTaxID() + "</td>\n");
             out.write("<td>" + customer.getBankAccountNo()+ "</td>\n");
             out.write("<td>" + 
-                        "<a href='#' onClick=\"onEditUser(\""+ customer.getTaxID() +"\"); return false;\"" + '>' +
+                        "<a href='#' onClick=\"onEditCustomer("+ marked(customer.getFirstname()) + ',' + marked(customer.getLastname()) + ',' +  marked(customer.getTaxID()) +"); return false;\"" + '>' +
                                 "Επεξεργασία </a> </td>");
-            out.write("<td>" + "<a href='#' onClick='onDeleteUser(\""+ customer.getTaxID() +"\"); return false;' > Διαγραφή </a> </td>");
+            out.write("<td>" + "<a href='#' onClick='onDeleteCustomer("+ marked(customer.getFirstname()) + ',' + marked(customer.getLastname()) + ',' +  marked(customer.getTaxID()) +"); return false;' > Διαγραφή </a> </td>");
         out.write("</tr>");
     }
 

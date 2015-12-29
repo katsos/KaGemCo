@@ -2,16 +2,15 @@ package models;
 
 public class Manager extends User {
 
-    public Manager(String username) {
-        super(username);
+    public Manager() {
     }
 
-    public Manager(String username, String password) {
-        super(username, password);
+    public Manager(String firstname, String lastname, String username, String password, String role) {
+        super(firstname, lastname, username, password, role);
     }
 
-    public Manager(String username, String password, String role, String date) {
-        super(username, password, role, date);
+    public Manager(String firstname, String lastname, String username, String password, String role, String date) {
+        super(firstname, lastname, username, password, role, date);
     }
 
 }

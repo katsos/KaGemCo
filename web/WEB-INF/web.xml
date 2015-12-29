@@ -44,6 +44,10 @@
         <servlet-name>AddUserA</servlet-name>
         <servlet-class>controllers.admin.AddUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteCustomer</servlet-name>
+        <servlet-class>controllers.DeleteCustomer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CheckLoginCredentials</servlet-name>
         <url-pattern>/CheckLoginCredentials</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>AddUserA</servlet-name>
         <url-pattern>/AddUserA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCustomer</servlet-name>
+        <url-pattern>/DeleteCustomer</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

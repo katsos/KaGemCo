@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.*;
-import static utils.Util.getCurrentSQLDate;
 
 public class Database {
 
@@ -28,7 +27,7 @@ public class Database {
         try {
 
             Class.forName(driver).newInstance();
-            Database.connection = DriverManager.getConnection(url + name, username, password);
+            Database.connection = DriverManager.getConnection(url + name , username, password);
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,16 +61,18 @@ public class Database {
 
         try {
 
-            prepStatement = connection.prepareStatement("SELECT * FROM Users");
+            prepStatement = connection.prepareStatement("SELECT * FROM users");
 
             results = prepStatement.executeQuery();
 
             while (results.next()) {
+                String firstname = results.getString("firstname");
+                String lastname = results.getString("lastname");
                 String username = results.getString("Username");
                 String role = results.getString("Role");
                 String regDate = results.getDate("RegDate").toString();
 
-                users.add(new User(username, "****", role, regDate));
+                users.add( new User( firstname, lastname, username, "****", role, regDate) );
             }
 
         } catch (SQLException e) {
@@ -108,7 +109,7 @@ public class Database {
 
         try {
 
-            prepStatement = connection.prepareStatement("DELETE FROM Users WHERE Username=?");
+            prepStatement = connection.prepareStatement("DELETE FROM users WHERE Username=?");
             prepStatement.setString(1, username);
             prepStatement.execute();
 
@@ -144,7 +145,7 @@ public class Database {
 
         try {
 
-            prepStatement = connection.prepareStatement("SELECT * FROM Customers");
+            prepStatement = connection.prepareStatement("SELECT * FROM customers");
 
             results = prepStatement.executeQuery();
 
@@ -203,15 +204,17 @@ public class Database {
 
         try {
 
-            prepStatement = connection.prepareStatement("SELECT * FROM Users WHERE role='salesman'");
+            prepStatement = connection.prepareStatement("SELECT * FROM users WHERE role='salesman'");
             results = prepStatement.executeQuery();
 
             while (results.next()) {
+                String firstname = results.getString("firstname");
+                String lastname = results.getString("lastname");
                 String username = results.getString("Username");
                 String role = results.getString("Role");
                 String regDate = results.getDate("RegDate").toString();
 
-                salesmen.add(new Salesman(username, "****", role, regDate));
+                salesmen.add(new Salesman( firstname, lastname,username, "****", role, regDate));
             }
 
         } catch (SQLException e) {
@@ -253,15 +256,17 @@ public class Database {
 
         try {
 
-            prepStatement = connection.prepareStatement("SELECT * FROM Users WHERE role='manager'");
+            prepStatement = connection.prepareStatement("SELECT * FROM users WHERE role='manager'");
             results = prepStatement.executeQuery();
 
             while (results.next()) {
+                String firstname = results.getString("firstname");
+                String lastname = results.getString("lastname");
                 String username = results.getString("Username");
                 String role = results.getString("Role");
                 String regDate = results.getDate("RegDate").toString();
 
-                managers.add(new Manager(username, "****", role, regDate));
+                managers.add(new Manager( firstname, lastname, username, "****", role, regDate));
             }
 
         } catch (SQLException e) {
@@ -302,7 +307,7 @@ public class Database {
         
         try {
 
-            prepStatement = connection.prepareStatement("INSERT INTO Users ( username, password, role, regDate) VALUES (?, ?, ?, NOW())");
+            prepStatement = connection.prepareStatement("INSERT INTO users ( username, password, role, regDate) VALUES (?, ?, ?, NOW())");
             prepStatement.setString(1, user.getUsername());
             prepStatement.setString(2, user.getPassword());
             prepStatement.setString(3, user.getRole());
@@ -332,5 +337,38 @@ public class Database {
         }
 
         return added;
+    }
+
+    public static boolean deleteCustomer(long taxID) {
+
+        Database.connect();
+        if (connection == null) {
+            return false;
+        }
+
+        PreparedStatement prepStatement = null;
+
+        try {
+
+            prepStatement = connection.prepareStatement("DELETE FROM customers WHERE taxID=?");
+            prepStatement.setLong(1, taxID);
+            prepStatement.executeUpdate();
+
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+
+            if (prepStatement != null) {
+                try {
+                    prepStatement.close();
+                } catch (SQLException e) {
+                    System.err.println(e.toString());
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -32,11 +32,13 @@ public class AddUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
-        User user = new User( username, password, role );
+        User user = new User( firstname, lastname, username, password, role );
         
         if ( Database.addUser( user ) )
             response.getWriter().print("added");

@@ -123,8 +123,6 @@ function deleteUser( username ) {
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-            console.log("DEB: " + response);
-
             if ( response == username ) {
                 alert("Η διαγραφή του χρήστη " + username + " πραγματοποιήθηκε με επιτυχία.");
                 window.location = "./console-admin.jsp";
@@ -220,6 +218,8 @@ function newUserIsValid() {
 
 function ajaxAddUser() {
 
+    var firstname = document.getElementById("new-user-firstname").value;
+    var lastname = document.getElementById("new-user-lastname").value;
     var username = document.getElementById("new-user-username").value;
     var password = document.getElementById("new-user-password").value;
     var role;
@@ -248,10 +248,49 @@ function ajaxAddUser() {
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/AddUserA?"
+    var uri = "http://localhost:8080/KaGemCo/AddUserA?" +"firstname="+firstname +"lastname="+lastname
                     +"username="+username+"&password="+password+"&role="+role;
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send(); 
     
+}
+
+function onDeleteCustomer( firstname, lastname, taxID ) {
+   
+    var answer = "Είστε σίγουρος πως θέλετε να διαγράψετε τον πελάτη " + firstname + ' ' + lastname + ' ['+taxID+']' +";\n" 
+               + "Μετά την διαγραφή του δεν θα είναι δυνατή η ανάκτηση των δεδομένων του. ";
+    
+    if (confirm(answer)) {
+        deleteCustomer( firstname, lastname, taxID );
+    }
+    else window.location = "./console-admin.jsp";
+    
+}
+
+function deleteCustomer( firstname, lastname, taxID) {
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+
+        var response = xmlhttp.responseText;
+
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+            if ( response == "deleted" ) {
+                alert("Η διαγραφή του χρήστη " + firstname + ' ' + lastname + ' ['+taxID+']' + " πραγματοποιήθηκε με επιτυχία.");
+                window.location = "./console-admin.jsp";
+            } else {
+                alert("Υπήρξε πρόβλημα με την διαγραφή του χρήστη " + firstname + ' ' + lastname + ' ['+taxID+']' + ".\n" +
+                      "Παρακαλώ επικοινωνήστε με τον διαχειριστή της βάσης δεδομένων.");
+                window.location = "./console-admin.jsp";
+            }
+        }
+    };
+
+    var uri = "http://localhost:8080/KaGemCo/DeleteCustomer?taxID="+taxID;
+
+    xmlhttp.open("POST", uri, true);
+    xmlhttp.send(); 
 }

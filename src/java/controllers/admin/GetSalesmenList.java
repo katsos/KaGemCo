@@ -36,6 +36,9 @@ public class GetSalesmenList extends HttpServlet {
         try {
             for ( Salesman salesman : salesmen ) 
                 addSalesmanRow(salesman);
+        } 
+        catch ( NullPointerException ex) {
+          System.err.println( ex );  
         } finally {
             out.close();
         }
