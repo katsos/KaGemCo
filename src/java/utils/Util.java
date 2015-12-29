@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Calendar;
+
 public class Util {
     
     public static java.util.Date sqlToJDate( java.sql.Date sqlDate ) {
@@ -13,6 +15,11 @@ public class Util {
             date = null;
             
         return date;
+    }
+    
+    public static java.sql.Date getCurrentSQLDate() {
+
+        return new java.sql.Date(Calendar.getInstance().getTime().getTime()); 
     }
     
 }

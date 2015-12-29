@@ -97,7 +97,7 @@
             </div>
 
             <div id="new-user-form" style="display: none;">
-                <form onsubmit="addNewUser(); return false;">
+                <form onsubmit="onSubmitNewUser(); return false;">
                     <table>
                         <tr>
                             <td>Ρόλος:</td>
@@ -110,13 +110,13 @@
                             <td> Ψευδώνυμο: </td>
                             <td>
                                 <span id="username-prefix"> </span>
-                                <input type="text" name="username">
+                                <input type="text" id="new-user-username" name="username">
                             </td>
                         </tr>
                         <tr>
                             <td> Κωδικός: </td>
                             <td>
-                                <input type="password" name="password">
+                                <input type="password" id="new-user-password"" name="password">
                             </td>
                         </tr>
                         <tr>

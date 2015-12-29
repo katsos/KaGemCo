@@ -1,10 +1,14 @@
+String.prototype.isEmpty = function () {
+    return (this.length === 0 || !this.trim());
+};
+
 function getUsers() {
 
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function () {
 
-        response = xmlhttp.responseText;
+        var response = xmlhttp.responseText;
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
@@ -25,7 +29,7 @@ function getCustomers() {
 
     xmlhttp.onreadystatechange = function () {
 
-        response = xmlhttp.responseText;
+        var response = xmlhttp.responseText;
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
@@ -46,7 +50,7 @@ function getSalesmen() {
 
     xmlhttp.onreadystatechange = function () {
 
-        response = xmlhttp.responseText;
+        var response = xmlhttp.responseText;
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
@@ -67,7 +71,7 @@ function getManagers() {
 
     xmlhttp.onreadystatechange = function () {
 
-        response = xmlhttp.responseText;
+        var response = xmlhttp.responseText;
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
@@ -83,13 +87,11 @@ function getManagers() {
     
 };
 
-window.onload = function onLoad() {
-    
+window.onload = function onLoad() {  
     getUsers();
     getCustomers();
     getSalesmen();
     getManagers();
-
 };
 
 /* * * Listeners * * */
@@ -117,7 +119,7 @@ function deleteUser( username ) {
 
     xmlhttp.onreadystatechange = function () {
 
-        response = xmlhttp.responseText;
+        var response = xmlhttp.responseText;
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
@@ -189,23 +191,67 @@ function onAddNewUser( role ) {
     document.getElementById( "new-user-form" ).style.display = "inline";
 }
 
-function AddNewUser() {
+function onSubmitNewUser() {
+
+    var report = newUserIsValid();
+
+    if ( report == "Η αίτηση εγκρίθηκε." ) 
+        ajaxAddUser();
+
+    document.getElementById("new-user-info").innerHTML = report;
+}
+
+function newUserIsValid() {
+    
+    // if no role is selected
+    if ( !document.getElementById("radio-manager").checked && !document.getElementById("radio-salesman").checked )
+        return "Δεν έχετε επιλέξει ρόλο.";
+    
+    // if there is no username value
+    if ( document.getElementById("new-user-username").value.isEmpty())
+        return "Δεν έχετε συμπληρώσει το ψευδώνυμο.";
+    
+    // if there is no password value
+    if ( document.getElementById("new-user-password").value.isEmpty())
+        return "Δεν έχετε συμπληρώσει τον κωδικό.";
+    
+    return "Η αίτηση εγκρίθηκε.";
+}
+
+function ajaxAddUser() {
+
+    var username = document.getElementById("new-user-username").value;
+    var password = document.getElementById("new-user-password").value;
+    var role;
+    if ( document.getElementById("radio-manager").checked )
+        role = "manager";
+    else
+        role = "salesman";
 
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function () {
 
-        response = xmlhttp.responseText;
+        var response = xmlhttp.responseText;
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-        // handle response //
-
+            if ( response == "added" ) 
+                window.location = "http://localhost:8080/KaGemCo/intranet/console-admin.jsp";
+            else if ( response == "error" ) 
+                document.getElementById("new-user-info").innerHTML 
+                    = "Το ψευδώνυμο αυτό υπάρχει ήδη, παρακαλώ δοκιμάστε κάποιο διαφορετικό.";
+            else 
+                document.getElementById("new-user-info").innerHTML 
+                    = "Υπήρξε κάποιο πρόβλημα κατά την καταχώρηση του χρήστη. Παρακαλω επικοινωνήστε με τον διαχειριστή του συστήματος.";
+            
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/AddUser";
+    var uri = "http://localhost:8080/KaGemCo/AddUserA?"
+                    +"username="+username+"&password="+password+"&role="+role;
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send(); 
+    
 }

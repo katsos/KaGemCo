@@ -5,18 +5,20 @@
  */
 package controllers.admin;
 
+import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.User;
 
 /**
  *
  * @author Asdf
  */
-public class AddSalesman extends HttpServlet {
+public class AddUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,7 +32,17 @@ public class AddSalesman extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
+
+        User user = new User( username, password, role );
         
+        if ( Database.addUser( user ) )
+            response.getWriter().print("added");
+        else
+            response.getWriter().print("error");
+ 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

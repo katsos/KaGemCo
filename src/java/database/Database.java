@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.*;
+import static utils.Util.getCurrentSQLDate;
 
 public class Database {
 
@@ -286,5 +287,50 @@ public class Database {
         }
 
         return managers;
+    }
+
+    public static boolean addUser(User user) {
+
+        Database.connect();
+        if (connection == null) {
+            return false;
+        }
+
+        boolean added = false;
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+        
+        try {
+
+            prepStatement = connection.prepareStatement("INSERT INTO Users ( username, password, role, regDate) VALUES (?, ?, ?, NOW())");
+            prepStatement.setString(1, user.getUsername());
+            prepStatement.setString(2, user.getPassword());
+            prepStatement.setString(3, user.getRole());
+
+            prepStatement.executeUpdate();
+            
+            added = true;
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+
+            if (prepStatement != null) {
+                try {
+                    prepStatement.close();
+                } catch (SQLException e) {
+                    System.err.println(e.toString());
+                }
+            }
+            if (results != null) {
+                try {
+                    results.close();
+                } catch (SQLException e) {
+                    System.err.println(e.toString());
+                }
+            }
+        }
+
+        return added;
     }
 }
