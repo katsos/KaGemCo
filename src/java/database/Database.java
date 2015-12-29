@@ -307,8 +307,7 @@ public class Database {
         
         try {
 
-            prepStatement = connection.prepareStatement("INSERT INTO users ( firstname, lastname, username, password, role, regDate) "
-                                                                    +"VALUES (       ?,        ?,        ?,        ?,    ?,  NOW() )");
+            prepStatement = connection.prepareStatement("INSERT INTO users ( firstname, lastname, username, password, role, regDate) VALUES ( ?, ?, ?, ?, ?, NOW() )");
             prepStatement.setString(1, user.getFirstname());
             prepStatement.setString(2, user.getLastname());
             prepStatement.setString(3, user.getUsername());

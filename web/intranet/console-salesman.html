@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="author" content="Nikos Katsos, Panos Kostas Gemos">
+
+        <title>Welcome Salesman</title>
+        <link href="./css/console.css" rel="stylesheet">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body id="salesman-console">
+
+        <header>
+
+            <ul class="options">
+                <li><a class="button" href="#" onclick="onNewCustomer(); return false;">Νέος Πελάτης</a></li>
+                <li><a class="button" href="#" onclick="onFindCustomer(); return false;">Εύρεση Πελάτη</a></li>
+                <li><a class="button" href="#" onclick="onUpdateCustomer(); return false;">Ενημέρωση Πελάτη</a></li>
+                <li><a class="button" href="#" onclick="onRecharge(); return false;">Ανανέωση Χρόνου</a></li>
+                <li class="log-out-li">
+                    <a class="log-out button" onclick="onLogout(); return false;">Αποσύνδεση</a>
+                </li>
+            </ul>
+
+        </header>
+
+        <main>
+            <form id="register" style="display: none;">
+                <table id="register-form">
+                    <tr>
+                        <td>Όνομα: </td>
+                        <td> <input type="text" name="userName"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Επίθετο:</td>
+                        <td> <input type="text" name="userSurname"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Έτος γέννησης:</td>
+                        <td> <input type="text" name="yearBirth"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Φύλο:</td>
+                        <td> <input type="text" name="sex"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Διεύθυνση κατοικίας:</td>
+                        <td> <input type="text" name="homeAddress"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Διεύθυνση εργασίας:</td>
+                        <td> <input type="text" name="workAddress"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Οικογενειακή κατάσταση:</td>
+                        <td> <input type="text" name="familyStatus"> </td>		
+                    </tr>
+                    <tr>
+                        <td>ΑΦΜ:</td>
+                        <td> <input type="text" name="idTaxes"> </td>		
+                    </tr>   
+                    <tr>
+                        <td>Αρ. Τραπ. Λογαριασμού:</td>
+                        <td> <input type="text" name="bankNumber"> </td>		
+                    </tr>           
+                    <tr>
+                        <td>Συγγενικό πρόσωπο</td>
+                        <td> <input type="text" name="relativeName"> </td>		
+                        <td> <input type="text" name="relativeSurname"> </td>		            
+                    </tr>   
+                </table>
+                <input type="submit" name="addUser" value="Προσθήκη">
+                <input type="button" name="cancel"  value="Ακύρωση">
+            </form>
+            <form id="find" style="display: none;">
+                <table id="find-form">
+                    <tr>
+                        <td>Όνομα: </td>
+                        <td> <input type="text" name="firstname"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Επίθετο:</td>
+                        <td> <input type="text" name="lastname"> </td>		
+                    </tr>
+                </table>
+                <input type="submit" name="find" value="Εύρεση">
+                <input type="button" name="cancel"  value="Ακύρωση">
+            </form>
+            <form id="update" style="display: none;">
+                <table id="update-form">
+                    <tr>
+                        <td>Όνομα: </td>
+                        <td> <input type="text" name="userName"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Επίθετο:</td>
+                        <td> <input type="text" name="userSurname"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Έτος γέννησης:</td>
+                        <td> <input type="text" name="yearBirth"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Φύλο:</td>
+                        <td> <input type="text" name="sex"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Διεύθυνση κατοικίας:</td>
+                        <td> <input type="text" name="homeAddress"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Διεύθυνση εργασίας:</td>
+                        <td> <input type="text" name="workAddress"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Οικογενειακή κατάσταση:</td>
+                        <td> <input type="text" name="familyStatus"> </td>		
+                    </tr>
+                    <tr>
+                        <td>ΑΦΜ:</td>
+                        <td> <input type="text" name="idTaxes"> </td>		
+                    </tr>   
+                    <tr>
+                        <td>Αρ. Τραπ. Λογαριασμού:</td>
+                        <td> <input type="text" name="bankNumber"> </td>		
+                    </tr>           
+                    <tr>
+                        <td>Συγγενικό πρόσωπο</td>
+                        <td> <input type="text" name="relativeTaxID"> </td>		
+                    </tr>   
+                </table>
+                <input type="submit" name="update" value="Ενημέρωση">
+                <input type="button" name="cancel"  value="Ακύρωση">
+            </form>
+            <form id="recharge" style="display: none;">
+                <table id="update-form">
+                    <tr>
+                        <td>Αριθμός: </td>
+                        <td> <input type="text" name="userName"> </td>		
+                    </tr>
+                    <tr>
+                        <td>Κωδικός:</td>
+                        <td> <input type="text" name="userSurname"> </td>		
+                    </tr>
+                </table>
+                <input type="submit" name="addUser" value="Ανανέωση">
+                <input type="button" name="cancel"  value="Ακύρωση">
+            </form>
+        </main>
+
+        <footer></footer>
+
+        <script src="./js/console.js"></script>
+        <script src="./js/console-salesman.js"></script>
+    </body>
+</html>

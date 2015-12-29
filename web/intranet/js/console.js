@@ -1,8 +1,7 @@
 function onLogout() {
     
     deleteCookie("username");
-    //window.location( "http://localhost:8080/KaGemCo/intranet/login.jsp" );
-    window.location = "./login.jsp";
+    window.location = "./login.html";
     
 }
 

@@ -219,11 +219,8 @@ function newUserIsValid() {
 function ajaxAddUser() {
 
     var firstname = document.getElementById("new-user-firstname").value;
-    console.log(firstname);
     var lastname = document.getElementById("new-user-lastname").value;
-    console.log(lastname);
     var username = document.getElementById("new-user-username").value;
-    console.log(username);
     var password = document.getElementById("new-user-password").value;
     var role;
     if ( document.getElementById("radio-manager").checked )

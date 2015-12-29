@@ -39,19 +39,11 @@ function checkCredentials() {
             var username = getCookieValueByKey("username");
             var role = getCookieValueByKey("role");
             
-            switch(role) {
-                case "admin":
-                    window.location = "./console-admin.jsp";
-                    break;
-                case "salesman":
-                    window.location = "./console-salesman.jsp?username";
-                    break;
-                case "manager":
-                    window.location = "./console-manager.jsp?username";
-                    break;
-                default:
-                    document.getElementById("warning").innerHTML = "Λάθος στοιχεία σύνδεσης";
-            }
+            if (role == "admin" || role == "salesman" || role == "manager")
+                window.location = "./console-" + role + ".html";
+            else
+                document.getElementById("warning").innerHTML = "Λάθος στοιχεία σύνδεσης";
+
         }
 
     };
