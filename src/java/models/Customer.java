@@ -11,6 +11,7 @@ public class Customer {
     private long TaxID;
     private long BankAccountNo;
     private String PersonalCode;
+	private long relateTaxID;
 
     public Customer() {
         this.Firstname = null;
@@ -24,8 +25,11 @@ public class Customer {
         this.PersonalCode = null;
     }
 
-    public Customer(String Name, String Surname, String BirthDate, char Gender, String FamilyStatus, String HomeAddress, long TaxID, long BankAccountNo, String PersonalCode) {
-        this.Firstname = Name;
+    public Customer(String Name, String Surname, String BirthDate, char Gender, 
+		String FamilyStatus, String HomeAddress, long TaxID, long BankAccountNo,
+		String PersonalCode, long relateTaxID)
+	{    
+		this.Firstname = Name;
         this.Lastname = Surname;
         this.BirthDate = BirthDate;
         this.Gender = Gender;
@@ -34,6 +38,7 @@ public class Customer {
         this.TaxID = TaxID;
         this.BankAccountNo = BankAccountNo;
         this.PersonalCode = PersonalCode;
+		this.relateTaxID = relateTaxID;
     }
 
     public String getFirstname() {
@@ -108,4 +113,19 @@ public class Customer {
         this.PersonalCode = PersonalCode;
     }
 
+	public long getRelateTaxID() {
+		return relateTaxID;
+	}
+
+	public void setRelateTaxID(long relateTaxID) {
+		this.relateTaxID = relateTaxID;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer{" + "Firstname=" + Firstname + ", Lastname=" + Lastname + ", BirthDate=" + BirthDate + ", Gender=" + Gender + ", FamilyStatus=" + FamilyStatus + ", HomeAddress=" + HomeAddress + ", TaxID=" + TaxID + ", BankAccountNo=" + BankAccountNo + ", PersonalCode=" + PersonalCode + ", relateTaxID=" + relateTaxID + '}';
+	}
+	
+	
+	
 }

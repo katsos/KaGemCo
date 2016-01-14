@@ -70,7 +70,7 @@ public class User {
     
     @Override
     public String toString() {
-        return username + '-' + role + '[' + date + ']' ;
+        return username + '-' + role + '[' + date + ']' + '(' + firstname + lastname + ')' ;
     }
     
 }
