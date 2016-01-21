@@ -5,18 +5,26 @@
  */
 package controllers;
 
+import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.ManagerRequest;
 
 public class GetManagerRequests extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Return a JSON file containing an array of manager requests. Example:
+	 * 
      *
      * @param request servlet request
      * @param response servlet response
@@ -25,7 +33,39 @@ public class GetManagerRequests extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+		ArrayList<ManagerRequest> managerRequests;
+        managerRequests = Database.getManagerRequests();
+        
+        response.setContentType("application/json;charset=UTF-8");
+        
+		PrintWriter out = response.getWriter();
+			
+		JsonArrayBuilder rootArray = Json.createArrayBuilder();
 
+		for (ManagerRequest managerRequest : managerRequests) {
+
+			// Object that holds one manager request's information
+			JsonObjectBuilder mrequestObj = Json.createObjectBuilder();
+
+			// Fill object with manager request data
+			mrequestObj
+				.add("requestID", managerRequest.getRequestID())
+				.add("salesmanUsername", managerRequest.getSalesmanUsername())
+				.add("managerUsername", managerRequest.getManagerUsername())
+				.add("status", managerRequest.getStatus())
+				.add("description", managerRequest.getDescription());
+
+			// Add manager request json object to root array
+			rootArray.add(mrequestObj);
+		}
+
+		JsonArray jsonArray = rootArray.build();
+
+		// Attach jsonWriter to out PrintWriter
+		JsonWriter jsonWriter = Json.createWriter(out);
+		
+		// Write json contents to web page
+		jsonWriter.writeArray(jsonArray);
         
     }
 

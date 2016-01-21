@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,8 +65,8 @@ public class Database {
     public static ArrayList<User> getUsers() {
         
         if (!checkConnection()) {
-			return null;
-		}
+            return null;
+	}
         
         ArrayList<User> users = new ArrayList<User>();
         
@@ -183,7 +182,10 @@ public class Database {
 	
 	// Checks if there is a user with the given username
 	public static boolean userExists(String username) {
-		
+	
+        if (!checkConnection()) {
+            return false;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -225,7 +227,11 @@ public class Database {
 	// Searches and returns a user with the given taxID or null if does not exist
 	public static User searchUser(String username) {
 		
-			
+	
+        if (!checkConnection()) {
+            return null;
+	}    
+         
         PreparedStatement prepStatement = null;
         ResultSet results = null;
 
@@ -261,9 +267,9 @@ public class Database {
 	
 	public static ArrayList<Customer> getCustomers() {
         
-        Database.connect();
-        if ( connection == null )
+        if (!checkConnection()) {
             return null;
+	}
         
         ArrayList<Customer> customers = new ArrayList<Customer>();
         
@@ -278,18 +284,18 @@ public class Database {
 
             while (results.next()) {
                 
-				Customer customer = new Customer();
-				
-				customer.setFirstname(results.getString("firstname"));
-				customer.setLastname(results.getString("lastname"));
-				customer.setBirthDate(results.getDate("birthDate").toString());
-				customer.setGender(results.getString("gender").charAt(0));
-				customer.setFamilyStatus(results.getString("familyStatus"));
-				customer.setHomeAddress(results.getString("familyStatus"));
-				customer.setTaxID(results.getLong("taxID"));
-				customer.setBankAccountNo(results.getLong("bankAccountNo"));
-				customer.setPersonalCode(results.getString("personalCode"));
-				customer.setRelateTaxID(results.getLong("relateTaxID"));
+                Customer customer = new Customer();
+
+                customer.setFirstname(results.getString("firstname"));
+                customer.setLastname(results.getString("lastname"));
+                customer.setBirthDate(results.getDate("birthDate").toString());
+                customer.setGender(results.getString("gender").charAt(0));
+                customer.setFamilyStatus(results.getString("familyStatus"));
+                customer.setHomeAddress(results.getString("familyStatus"));
+                customer.setTaxID(results.getLong("taxID"));
+                customer.setBankAccountNo(results.getLong("bankAccountNo"));
+                customer.setPersonalCode(results.getString("personalCode"));
+                customer.setRelateTaxID(results.getLong("relateTaxID"));
 				
                 customers.add(customer);
             }
@@ -308,8 +314,8 @@ public class Database {
 	public static boolean addCustomer(Customer customer) {
 
         if (!checkConnection()) {
-			return false;
-		}
+            return false;
+	}
         
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -359,7 +365,10 @@ public class Database {
 	
 	// Checks if there is a customer with the given taxID
 	public static boolean customerExists(long taxID) {
-		
+            
+        if (!checkConnection()) {
+            return false;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -400,48 +409,185 @@ public class Database {
 	
 	// Searches and returns a customer with the given taxID or null if does not exist
 	public static Customer searchCustomer(long taxID) {
-		
+	
+        if (!checkConnection()) {
+            return null;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
 
         try {
             
-			// Query that returns the number of users with the particular username
-			String query =	"SELECT * FROM customers " +
-							"WHERE taxID=?";
+            // Query that returns the number of users with the particular username
+            String query = "SELECT * FROM customers WHERE taxID=?";
 
             prepStatement = connection.prepareStatement(query);
             prepStatement.setLong(1, taxID);
 			
             results = prepStatement.executeQuery();
 			
-			int count = 0;
+            int count = 0;
 
-			if (results.next()) {
-				Customer customer = new Customer();
-				
-				customer.setFirstname(results.getString("firstname"));
-				customer.setLastname(results.getString("lastname"));
-				customer.setBirthDate(results.getDate("birthDate").toString());
-				customer.setGender(results.getString("gender").charAt(0));
-				customer.setFamilyStatus(results.getString("familyStatus"));
-				customer.setHomeAddress(results.getString("familyStatus"));
-				customer.setTaxID(results.getLong("taxID"));
-				customer.setBankAccountNo(results.getLong("bankAccountNo"));
-				customer.setPersonalCode(results.getString("personalCode"));
-				customer.setRelateTaxID(results.getLong("relateTaxID"));
-				
-				return customer;
+            if (results.next()) {
+                Customer customer = new Customer();
+
+                customer.setFirstname(results.getString("firstname"));
+                customer.setLastname(results.getString("lastname"));
+                customer.setBirthDate(results.getDate("birthDate").toString());
+                customer.setGender(results.getString("gender").charAt(0));
+                customer.setFamilyStatus(results.getString("familyStatus"));
+                customer.setHomeAddress(results.getString("familyStatus"));
+                customer.setTaxID(results.getLong("taxID"));
+                customer.setBankAccountNo(results.getLong("bankAccountNo"));
+                customer.setPersonalCode(results.getString("personalCode"));
+                customer.setRelateTaxID(results.getLong("relateTaxID"));
+
+                return customer;
             }
             
         } catch (SQLException e) {
             System.err.println(e);
         } finally {
             release(results);
-			release(prepStatement);
+            release(prepStatement);
         }
-        return null;
+            return null;
+	}
+        
+        // Searches and returns a list of customers that satisfy the given
+        // criteria. In order to ignore some criteria insert null to the 
+        // corresponding parameter. The last parameter designates whether
+        // the list of criteria will be connected with AND if true or with OR
+        // if false
+	public static ArrayList<Customer> searchCustomer(String firstname, 
+            String lastname, String birthDate, Character gender, String homeAddress,
+            String familyStatus, Long bankAccountNo, Long personalCode, 
+            Long relateTaxID, boolean strict) throws IllegalArgumentException {
+		
+	
+        if (!checkConnection()) {
+            return null;
+	}
+            
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+        
+        String operator = strict ? "AND" : "OR";
+        
+        String whereList = "";
+        ArrayList<Customer> customers = new ArrayList<>();
+        
+        
+        try {
+            
+            // Query that returns the number of users with the particular username
+
+            if (firstname != null) {
+                whereList += " firstname=? " + operator;
+            }
+            if (lastname != null) {
+                whereList += " lastname=? " + operator;
+            }
+            if (birthDate != null) {
+                whereList += " birthDate=? " + operator;
+            }
+            if (gender != null) {
+                whereList += " gender=? " + operator;
+            }
+            if (homeAddress != null) {
+                whereList += " homeAddress=? " + operator;
+            }
+            if (familyStatus != null) {
+                whereList += " familyStatus=? " + operator;
+            }
+            if (bankAccountNo != null) {
+                whereList += " bankAccountNo=? " + operator;
+            }
+            if (personalCode != null) {
+                whereList += " personalCode=? " + operator;
+            }
+            if (relateTaxID != null) {
+                whereList += " relateTaxID=? " + operator;
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No search criteria defined");
+            }
+            
+            // remove the extra OR and AND that was inserted in the end of the
+            // string concatenations above
+            if(strict) {
+                whereList = whereList.substring(0, whereList.length() -1 - 3);
+            } else {
+                whereList = whereList.substring(0, whereList.length() -1 - 2);
+            }
+            
+            int fieldCount = 0;
+            String query = "SELECT * FROM customers WHERE" + whereList;
+            
+            System.err.println(query);
+            
+            prepStatement = connection.prepareStatement(query);
+            
+            if (firstname != null) {
+                prepStatement.setString(++fieldCount, firstname);
+            }
+            if (lastname != null) {
+                prepStatement.setString(++fieldCount, lastname);
+            }
+            if (birthDate != null) {
+                prepStatement.setDate(++fieldCount, Date.valueOf(birthDate));
+            }
+            if (gender != null) {
+                prepStatement.setString(++fieldCount, gender.toString());
+            }
+            if (homeAddress != null) {
+                prepStatement.setString(++fieldCount, homeAddress);
+            }
+            if (familyStatus != null) {
+                prepStatement.setString(++fieldCount, familyStatus);
+            }
+            if (bankAccountNo != null) {
+                prepStatement.setLong(++fieldCount, bankAccountNo);
+            }
+            if (personalCode != null) {
+                prepStatement.setLong(++fieldCount, personalCode);
+            }
+            if (relateTaxID != null) {
+                prepStatement.setLong(++fieldCount, relateTaxID);
+            }
+            
+            
+            results = prepStatement.executeQuery();
+		
+
+            while (results.next()) {
+                Customer customer = new Customer();
+
+                customer.setFirstname(results.getString("firstname"));
+                customer.setLastname(results.getString("lastname"));
+                customer.setBirthDate(results.getDate("birthDate").toString());
+                customer.setGender(results.getString("gender").charAt(0));
+                customer.setFamilyStatus(results.getString("familyStatus"));
+                customer.setHomeAddress(results.getString("familyStatus"));
+                customer.setTaxID(results.getLong("taxID"));
+                customer.setBankAccountNo(results.getLong("bankAccountNo"));
+                customer.setPersonalCode(results.getString("personalCode"));
+                customer.setRelateTaxID(results.getLong("relateTaxID"));
+
+                customers.add(customer);
+            }
+            
+            return customers;
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+            release(results);
+            release(prepStatement);
+        }
+            return null;
 	}
 	
 	/**
@@ -481,9 +627,9 @@ public class Database {
 	
 	public static ArrayList<Log> getLogs() {
         
-        Database.connect();
-        if ( connection == null )
+        if (!checkConnection()) {
             return null;
+	}
         
         ArrayList<Log> logs = new ArrayList<Log>();
         
@@ -559,7 +705,10 @@ public class Database {
 	// Searches and returns a customer with the given taxID or null if does not exist
 	public static Log searchLog(long logID) {
 		
-			
+	if (!checkConnection()) {
+            return null;
+	}
+            
         PreparedStatement prepStatement = null;
         ResultSet results = null;
 
@@ -598,9 +747,9 @@ public class Database {
 	
 	public static ArrayList<Account> getAccounts() {
         
-        Database.connect();
-        if ( connection == null )
+        if (!checkConnection()) {
             return null;
+	}
         
         ArrayList<Account> accounts = new ArrayList<>();
         
@@ -638,8 +787,8 @@ public class Database {
 	public static boolean addAccount(Account account) {
 
         if (!checkConnection()) {
-			return false;
-		}
+            return false;
+	}
         
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -681,7 +830,10 @@ public class Database {
 	
 	// Checks if there is a customer with the given taxID
 	public static boolean accountExists(long phoneNumber) {
-		
+	
+        if (!checkConnection()) {
+            return false;
+	}    
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -722,7 +874,10 @@ public class Database {
 	
 	// Searches and returns a customer with the given taxID or null if does not exist
 	public static Account searchAccount(long phoneNumber) {
-		
+	
+        if (!checkConnection()) {
+            return null;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -885,7 +1040,10 @@ public class Database {
 	// Checks if there is a customer with the given taxID
 	public static boolean managerRequestExists(long requestID) {
 		
-			
+	if (!checkConnection()) {
+            return false;
+	}
+           
         PreparedStatement prepStatement = null;
         ResultSet results = null;
 
@@ -925,7 +1083,10 @@ public class Database {
 	
 	// Searches and returns a customer with the given taxID or null if does not exist
 	public static ManagerRequest searchManagerRequest(long requestID) {
-		
+	
+        if (!checkConnection()) {
+            return null;
+	}    
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -1003,9 +1164,9 @@ public class Database {
 	
 	public static ArrayList<Transaction> getTransactions() {
         
-        Database.connect();
-        if ( connection == null )
+        if (!checkConnection()) {
             return null;
+	}
         
         ArrayList<Transaction> transactions = new ArrayList<>();
         
@@ -1081,7 +1242,10 @@ public class Database {
 	
 	// Checks if there is a customer with the given taxID
 	public static boolean transactionExists(long transactionID) {
-		
+	
+        if (!checkConnection()) {
+            return false;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -1123,7 +1287,10 @@ public class Database {
 	// Searches and returns a customer with the given taxID or null if does not exist
 	public static Transaction searchTransaction(long transactionID) {
 		
-			
+	if (!checkConnection()) {
+            return null;
+	}
+        
         PreparedStatement prepStatement = null;
         ResultSet results = null;
 
@@ -1197,9 +1364,9 @@ public class Database {
 	
 	public static ArrayList<Salesman> getSalesmen() {
         
-        Database.connect();
-        if ( connection == null )
+        if (!checkConnection()) {
             return null;
+	}
         
         ArrayList<Salesman> salesmen = new ArrayList<>();
         
@@ -1237,9 +1404,9 @@ public class Database {
 	
 	public static ArrayList<Manager> getManagers() {
         
-        Database.connect();
-        if ( connection == null )
+        if (!checkConnection()) {
             return null;
+	}
         
         ArrayList<Manager> managers = new ArrayList<>();
         
@@ -1277,9 +1444,9 @@ public class Database {
 	
 	public static ArrayList<CustomerOnline> getCustomersOnline() {
         
-        Database.connect();
-        if ( connection == null )
+        if (!checkConnection()) {
             return null;
+	}
         
         ArrayList<CustomerOnline> customersOnline = new ArrayList<>();
         
@@ -1362,7 +1529,10 @@ public class Database {
 	
 	// Checks if there is a customer with the given taxID
 	public static boolean customerOnlineExists(String username) {
-		
+	
+        if (!checkConnection()) {
+            return false;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -1404,7 +1574,10 @@ public class Database {
 	
 	// Checks if there is a customer with the given taxID
 	public static boolean customerOnlineExists(long taxID) {
-		
+	
+        if (!checkConnection()) {
+            return false;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -1448,7 +1621,10 @@ public class Database {
 	// Searches and returns a customer with the given taxID or null if does not exist
 	public static CustomerOnline searchCustomerOnline(long taxID) {
 		
-			
+	if (!checkConnection()) {
+            return null;
+	}
+            
         PreparedStatement prepStatement = null;
         ResultSet results = null;
 
@@ -1488,7 +1664,10 @@ public class Database {
 	
 	// Searches and returns a customer with the given taxID or null if does not exist
 	public static CustomerOnline searchCustomerOnline(String username) {
-		
+	
+        if (!checkConnection()) {
+            return null;
+	}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
