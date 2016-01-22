@@ -1,5 +1,3 @@
-
-
 function resetVisibleDivs() {
     
     /* Gather the name of all tables */
