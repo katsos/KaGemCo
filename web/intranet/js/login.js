@@ -48,7 +48,7 @@ function checkCredentials() {
 
     };
 
-    var uri = "http://localhost:8080/KaGemCo/CheckLoginCredentials?username=" + username + "&password=" + password;
+    var uri = "../CheckLoginCredentials?username=" + username + "&password=" + password;
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send();

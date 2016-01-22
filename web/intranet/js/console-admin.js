@@ -1,5 +1,20 @@
-String.prototype.isEmpty = function () {
+/* console-admin.js // Nikos Katsos // 22-01-16
+ * 
+ * Consle-admin handles all onclick functions from console-admin.html
+ * and send requests to server using ajax methods.
+ * All functions named with the prefix "on" correspondes to onclick functions
+ * of html elements.
+ * All other functions handles ajax requests-responses.
+ *
+ */
+String.prototype.isEmpty = function() {
+    
     return (this.length === 0 || !this.trim());
+};
+
+XMLHttpRequest.prototype.isReady = function() {
+  
+    return ( xmlhttp.readyState == 4 && xmlhttp.status == 200 );
 };
 
 function getUsers() {
@@ -10,14 +25,14 @@ function getUsers() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.isReady) {
 
             document.getElementById("users").innerHTML += response ;
 
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/GetUsersList";
+    var uri = "../GetUsersList";
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send();
@@ -31,14 +46,14 @@ function getCustomers() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.isReady) {
 
             document.getElementById("customers").innerHTML += response ;
 
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/GetCustomersList";
+    var uri = "../GetCustomersList";
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send();
@@ -52,14 +67,14 @@ function getSalesmen() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.isReady) {
 
             document.getElementById("salesmen").innerHTML += response += "</table>";
 
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/GetSalesmenList";
+    var uri = "../GetSalesmenList";
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send();
@@ -73,14 +88,14 @@ function getManagers() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.isReady) {
 
             document.getElementById("managers").innerHTML += response += "</table>";
 
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/GetManagersList";
+    var uri = "../GetManagersList";
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send();
@@ -110,7 +125,7 @@ function onDeleteUser( username ) {
     if (confirm(answer)) {
         deleteUser(username);
     }
-    else window.location = "./console-admin.jsp";
+    else window.location = "./console-admin.html";
 }
 
 function deleteUser( username ) {
@@ -121,20 +136,20 @@ function deleteUser( username ) {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.isReady) {
 
             if ( response == username ) {
                 alert("Η διαγραφή του χρήστη " + username + " πραγματοποιήθηκε με επιτυχία.");
-                window.location = "./console-admin.jsp";
+                window.location = "./console-admin.html";
             } else {
                 alert("Υπήρξε πρόβλημα με την διαγραφή του χρήστη " + username + ".\n" +
                       "Παρακαλώ επικοινωνήστε με τον διαχειριστή της βάσης δεδομένων.");
-                window.location = "./console-admin.jsp";
+                window.location = "./console-admin.html";
             }
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/DeleteUser?username="+username;
+    var uri = "../DeleteUser?username="+username;
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send(); 
@@ -223,6 +238,7 @@ function ajaxAddUser() {
     var username = document.getElementById("new-user-username").value;
     var password = document.getElementById("new-user-password").value;
     var role;
+    
     if ( document.getElementById("radio-manager").checked )
         role = "manager";
     else
@@ -234,10 +250,10 @@ function ajaxAddUser() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.isReady) {
 
             if ( response == "added" ) 
-                window.location = "http://localhost:8080/KaGemCo/intranet/console-admin.jsp";
+                window.location = "./console-admin.html";
             else if ( response == "error" ) 
                 document.getElementById("new-user-info").innerHTML 
                     = "Το ψευδώνυμο αυτό υπάρχει ήδη, παρακαλώ δοκιμάστε κάποιο διαφορετικό.";
@@ -248,7 +264,7 @@ function ajaxAddUser() {
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/AddUserA?" +"firstname="+firstname +"&lastname="+lastname +"&username="+username+"&password="+password+"&role="+role;
+    var uri = "../AddUserA?" +"firstname="+firstname +"&lastname="+lastname +"&username="+username+"&password="+password+"&role="+role;
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send(); 
@@ -263,7 +279,7 @@ function onDeleteCustomer( firstname, lastname, taxID ) {
     if (confirm(answer)) {
         deleteCustomer( firstname, lastname, taxID );
     }
-    else window.location = "./console-admin.jsp";
+    else window.location = "./console-admin.html";
     
 }
 
@@ -275,20 +291,20 @@ function deleteCustomer( firstname, lastname, taxID ) {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.isReady) {
 
             if ( response == "deleted" ) {
                 alert("Η διαγραφή του χρήστη " + firstname + ' ' + lastname + ' ['+taxID+']' + " πραγματοποιήθηκε με επιτυχία.");
-                window.location = "./console-admin.jsp";
+                window.location = "./console-admin.html";
             } else {
                 alert("Υπήρξε πρόβλημα με την διαγραφή του χρήστη " + firstname + ' ' + lastname + ' ['+taxID+']' + ".\n" +
                       "Παρακαλώ επικοινωνήστε με τον διαχειριστή της βάσης δεδομένων.");
-                window.location = "./console-admin.jsp";
+                window.location = "./console-admin.html";
             }
         }
     };
 
-    var uri = "http://localhost:8080/KaGemCo/DeleteCustomer?taxID="+taxID;
+    var uri = "../DeleteCustomer?taxID="+taxID;
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send(); 
