@@ -9,15 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import models.Account;
-import models.Customer;
-import models.CustomerOnline;
-import models.Log;
-import models.Manager;
-import models.ManagerRequest;
-import models.Salesman;
-import models.Transaction;
-import models.User;
+import models.*;
 
 public class Database {
 
@@ -32,26 +24,26 @@ public class Database {
     private static final String password = "changeit";
     private static Connection connection = null;
 
-    // Methods //
+    /** Create connection between web server and database server */
     public static Connection connect() {
 
-        // Check database connection, return same object if already connected
+        // If already connected, return connection
         if (Database.isConnected()) {
             return connection;
         }
 
-        // Configure connection objectc
+        // Create db driver instance and connection
         try {
+            
             Class.forName(driver).newInstance();
             Database.connection = DriverManager.getConnection(url + name, username, password);
 
-            return connection;
-
         } catch (Exception ex) {	// Log exception
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            return connection;
         }
 
-        return connection;
     }
 
     // Returns true if connected to database, false otherwise
