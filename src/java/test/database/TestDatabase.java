@@ -24,191 +24,203 @@ import models.User;
  */
 public class TestDatabase {
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-            testAdvancedCustomerSearch();
+            testAdvancedManagerRequestsSearch();
 	}
         
-        private static void basicTest() {
-            
-            // Test getters
-		
-            System.out.println("Accounts");
-            printList(Database.getAccounts());
+	private static void basicTest() {
 
-            System.out.println("\nCustomers");
-            printList(Database.getCustomers());
+		// Test getters
 
-            System.out.println("\nLogs");
-            printList(Database.getLogs());
+		System.out.println("Accounts");
+		printList(Database.getAccounts());
 
-            System.out.println("\nManagerRequests");
-            printList(Database.getManagerRequests());
+		System.out.println("\nCustomers");
+		printList(Database.getCustomers());
 
-            System.out.println("\nManagers");
-            printList(Database.getManagers());
+		System.out.println("\nLogs");
+		printList(Database.getLogs());
 
-            System.out.println("\nSalesmen");
-            printList(Database.getSalesmen());
+		System.out.println("\nManagerRequests");
+		printList(Database.getManagerRequests());
 
-            System.out.println("\nTransactions");
-            printList(Database.getTransactions());
+		System.out.println("\nManagers");
+		printList(Database.getManagers());
 
-            System.out.println("\nUsers");
-            printList(Database.getUsers());
+		System.out.println("\nSalesmen");
+		printList(Database.getSalesmen());
 
-            // User //
+		System.out.println("\nTransactions");
+		printList(Database.getTransactions());
 
-            // Search User
+		System.out.println("\nUsers");
+		printList(Database.getUsers());
 
-            System.out.println("\n\nSearch User");
+		// User //
 
-            System.out.println("Existent user");
-            System.out.println(Database.searchUser("admin"));
+		// Search User
 
-            System.out.println("Unexistent User");
-            System.out.println(Database.searchUser("UnkownSoldier"));
+		System.out.println("\n\nSearch User");
 
-            // Add User
+		System.out.println("Existent user");
+		System.out.println(Database.searchUser("admin"));
 
-            System.out.println("\n\nAdd User");
-            Database.addUser(new User("Neo", "Psari", "newfish", "passwood", "admin"));
-            System.out.println(Database.searchUser("newfish") + " added to db.");
+		System.out.println("Unexistent User");
+		System.out.println(Database.searchUser("UnkownSoldier"));
 
-            // Delete User
+		// Add User
 
-            System.out.println("\n\nDelete User");
-            Database.deleteUser("newfish");
-            System.out.println("User 'newfish' deleted from db.");
+		System.out.println("\n\nAdd User");
+		Database.addUser(new User("Neo", "Psari", "newfish", "passwood", "admin"));
+		System.out.println(Database.searchUser("newfish") + " added to db.");
 
-            // Customer //
+		// Delete User
 
-            // Search Customer
+		System.out.println("\n\nDelete User");
+		Database.deleteUser("newfish");
+		System.out.println("User 'newfish' deleted from db.");
 
-            System.out.println("\n\nSearch Customer");
+		// Customer //
 
-            System.out.println("Existent Customer");
-            System.out.println(Database.searchCustomer(1234123423L));
+		// Search Customer
 
-            System.out.println("Unexistent Customer");
-            System.out.println(Database.searchCustomer(1111111111L));
+		System.out.println("\n\nSearch Customer");
 
-            // Add Customer
+		System.out.println("Existent Customer");
+		System.out.println(Database.searchCustomer(1234123423L));
 
-            Customer customer = new Customer("George", "Clooney", (new Date(new java.util.Date().getTime()).toString()),
-                    'M', "Divorced", "Route 66", 1234123412L, 1000000000L, "pcode", 1234123412L);
+		System.out.println("Unexistent Customer");
+		System.out.println(Database.searchCustomer(1111111111L));
 
-            System.out.println("\n\nAdd Customer");
-            Database.addCustomer(customer);
-            System.out.println(Database.searchCustomer(1234123412L) + " added to db.");
+		// Add Customer
 
-            // Delete Customer
+		Customer customer = new Customer("George", "Clooney", (new Date(new java.util.Date().getTime()).toString()),
+				'M', "Divorced", "Route 66", 1234123412L, 1000000000L, "pcode", 1234123412L);
 
-            System.out.println("\n\nDelete User");
-            Database.deleteCustomer(1234123412L);
-            System.out.println("Customer with tax ID: '1234123412' deleted from db.");
+		System.out.println("\n\nAdd Customer");
+		Database.addCustomer(customer);
+		System.out.println(Database.searchCustomer(1234123412L) + " added to db.");
 
-            // Account //
+		// Delete Customer
 
-            // Search Account
+		System.out.println("\n\nDelete User");
+		Database.deleteCustomer(1234123412L);
+		System.out.println("Customer with tax ID: '1234123412' deleted from db.");
 
-            System.out.println("\n\nSearch Account");
+		// Account //
 
-            System.out.println("Existent Account");
-            System.out.println(Database.searchAccount(6969696969L));
+		// Search Account
 
-            System.out.println("Unexistent Account");
-            System.out.println(Database.searchAccount(1111111111L));
+		System.out.println("\n\nSearch Account");
 
-            // Add Account
+		System.out.println("Existent Account");
+		System.out.println(Database.searchAccount(6969696969L));
 
-            System.out.println("\n\nAdd Account");
-            Database.addAccount(new Account(6901647264L, 1234123423, 20));
-            System.out.println(Database.searchAccount(6901647264L) + " added to db.");
+		System.out.println("Unexistent Account");
+		System.out.println(Database.searchAccount(1111111111L));
 
-            // Delete Account
+		// Add Account
 
-            System.out.println("\n\nDelete Account");
-            Database.deleteAccount(6901647264L);
-            System.out.println("Account '6901647264' deleted from db.");
+		System.out.println("\n\nAdd Account");
+		Database.addAccount(new Account(6901647264L, 1234123423, 20));
+		System.out.println(Database.searchAccount(6901647264L) + " added to db.");
 
-            // Log //
+		// Delete Account
 
-            // Search Log
+		System.out.println("\n\nDelete Account");
+		Database.deleteAccount(6901647264L);
+		System.out.println("Account '6901647264' deleted from db.");
 
-            System.out.println("\n\nSearch Log");
+		// Log //
 
-            System.out.println("Existent Log");
-            System.out.println(Database.searchLog(2));
+		// Search Log
 
-            System.out.println("Unexistent Log");
-            System.out.println(Database.searchLog(100000));
+		System.out.println("\n\nSearch Log");
 
-            // Add Log
+		System.out.println("Existent Log");
+		System.out.println(Database.searchLog(2));
 
-            System.out.println("\n\nAdd Log");
-            Database.addLog(new Log("admin", "ksinw ta aftia mou"));
-            System.out.println(Database.searchLog(12) + " added to db.");
+		System.out.println("Unexistent Log");
+		System.out.println(Database.searchLog(100000));
 
-            // ManagerRequest //
+		// Add Log
 
-            // Search ManagerRequest
+		System.out.println("\n\nAdd Log");
+		Database.addLog(new Log("admin", "ksinw ta aftia mou"));
+		System.out.println(Database.searchLog(12) + " added to db.");
 
-            System.out.println("\n\nSearch ManagerRequest");
+		// ManagerRequest //
 
-            System.out.println("Existent ManagerRequest");
-            System.out.println(Database.searchManagerRequest(2));
+		// Search ManagerRequest
 
-            System.out.println("Unexistent ManagerRequest");
-            System.out.println(Database.searchManagerRequest(111111));
+		System.out.println("\n\nSearch ManagerRequest");
 
-            // Add ManagerRequest
+		System.out.println("Existent ManagerRequest");
+		System.out.println(Database.searchManagerRequest(2));
 
-            System.out.println("\n\nAdd ManagerRequest");
-            Database.addManagerRequest(new ManagerRequest("nikosS", "manag", "rejected", "I want a promotion"));
-            System.out.println(Database.searchManagerRequest(3) + " added to db.");
+		System.out.println("Unexistent ManagerRequest");
+		System.out.println(Database.searchManagerRequest(111111));
 
-            // Delete ManagerRequest
+		// Add ManagerRequest
 
-            System.out.println("\n\nDelete ManagerRequest");
-            Database.deleteManagerRequest(7);
-            System.out.println("ManagerRequest '3' deleted from db.");
+		System.out.println("\n\nAdd ManagerRequest");
+		Database.addManagerRequest(new ManagerRequest("nikosS", "manag", "rejected", "I want a promotion"));
+		System.out.println(Database.searchManagerRequest(3) + " added to db.");
 
-            // Transaction //
+		// Delete ManagerRequest
 
-            // Search Transaction
+		System.out.println("\n\nDelete ManagerRequest");
+		Database.deleteManagerRequest(7);
+		System.out.println("ManagerRequest '3' deleted from db.");
 
-            System.out.println("\n\nSearch Transaction");
+		// Transaction //
 
-            System.out.println("Existent Transaction");
-            System.out.println(Database.searchTransaction(2));
+		// Search Transaction
 
-            System.out.println("Unexistent Transaction");
-            System.out.println(Database.searchTransaction(111111));
+		System.out.println("\n\nSearch Transaction");
 
-            // Add Transaction
+		System.out.println("Existent Transaction");
+		System.out.println(Database.searchTransaction(2));
 
-            System.out.println("\n\nAdd Transaction");
-            Database.addTransaction(new Transaction(6911112222L, 50));
-            System.out.println(Database.searchTransaction(4) + " added to db.");
+		System.out.println("Unexistent Transaction");
+		System.out.println(Database.searchTransaction(111111));
 
-            // Delete Transaction
+		// Add Transaction
 
-            System.out.println("\n\nDelete Transaction");
-            Database.deleteTransaction(4);
-            System.out.println("Transaction '3' deleted from db.");
-        }
-        
-        private static void testAdvancedCustomerSearch() {
-            ArrayList<Customer> customers = 
-                    Database.searchCustomer("Anna", null, null, 
-                            null, null, null, null, null, null, true);
-            
-            if (customers.isEmpty()) {
-                System.out.println("No customers inside");
-            }
-            
-            
-            printList(customers);
-        }
+		System.out.println("\n\nAdd Transaction");
+		Database.addTransaction(new Transaction(6911112222L, 50));
+		System.out.println(Database.searchTransaction(4) + " added to db.");
+
+		// Delete Transaction
+
+		System.out.println("\n\nDelete Transaction");
+		Database.deleteTransaction(4);
+		System.out.println("Transaction '3' deleted from db.");
+	}
+
+	private static void testAdvancedCustomersSearch() {
+		ArrayList<Customer> customers = 
+				Database.searchCustomers("Anna", null, null, 
+						null, null, null, null, null, null, true);
+
+		if (customers.isEmpty()) {
+			System.out.println("No customers inside");
+		}
+
+
+		printList(customers);
+	}
+	
+	private static void testAdvancedManagerRequestsSearch() {
+		ArrayList<ManagerRequest> managerRequests = 
+				Database.searchManagerRequests(null, null, "rejected", null, true);
+
+		if (managerRequests.isEmpty()) {
+			System.out.println("No customers inside");
+		}
+
+
+		printList(managerRequests);
+	}
 	
 	private static void printList(List list) {
 		for (Object item : list) {
