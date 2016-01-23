@@ -205,7 +205,7 @@ function onSubmitNewUser() {
     var report = newUserIsValid();
 
     if ( report == "Η αίτηση εγκρίθηκε." ) 
-        ajaxAddUser();
+        addUser();
 
     document.getElementById("new-user-info").innerHTML = report;
 }
@@ -227,7 +227,7 @@ function newUserIsValid() {
     return "Η αίτηση εγκρίθηκε.";
 }
 
-function ajaxAddUser() {
+function addUser() {
 
     var firstname = document.getElementById("new-user-firstname").value;
     var lastname = document.getElementById("new-user-lastname").value;
@@ -264,6 +264,16 @@ function ajaxAddUser() {
 
     xmlhttp.open("POST", uri, true);
     xmlhttp.send(); 
+    
+}
+
+function onUpdateUser( username ) {
+    
+    
+}
+
+function updateUser() {
+    
     
 }
 
