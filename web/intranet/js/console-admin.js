@@ -12,11 +12,6 @@ String.prototype.isEmpty = function() {
     return (this.length === 0 || !this.trim());
 };
 
-XMLHttpRequest.prototype.isReady = function() {
-  
-    return ( xmlhttp.readyState == 4 && xmlhttp.status == 200 );
-};
-
 function getUsers() {
 
     var xmlhttp = new XMLHttpRequest();
@@ -25,7 +20,7 @@ function getUsers() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.isReady) {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
             document.getElementById("users").innerHTML += response ;
 
@@ -46,10 +41,10 @@ function getCustomers() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.isReady) {
-
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
             document.getElementById("customers").innerHTML += response ;
-
+            
         }
     };
 
@@ -67,7 +62,7 @@ function getSalesmen() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.isReady) {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
             document.getElementById("salesmen").innerHTML += response += "</table>";
 
@@ -88,7 +83,7 @@ function getManagers() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.isReady) {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
             document.getElementById("managers").innerHTML += response += "</table>";
 
@@ -110,7 +105,6 @@ window.onload = function onLoad() {
 };
 
 /* * * Listeners * * */
-/* Every function with on as prefix correspond to onClick listerners of gui. */
 
 function onDeleteUser( username ) {
     
@@ -136,9 +130,11 @@ function deleteUser( username ) {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.isReady) {
-
-            if ( response == username ) {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
+            console.log(response);
+            
+            if ( response == 'success' ) {
                 alert("Η διαγραφή του χρήστη " + username + " πραγματοποιήθηκε με επιτυχία.");
                 window.location = "./console-admin.html";
             } else {
@@ -250,7 +246,7 @@ function ajaxAddUser() {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.isReady) {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
             if ( response == "added" ) 
                 window.location = "./console-admin.html";
@@ -291,7 +287,7 @@ function deleteCustomer( firstname, lastname, taxID ) {
 
         var response = xmlhttp.responseText;
 
-        if (xmlhttp.isReady) {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
             if ( response == "deleted" ) {
                 alert("Η διαγραφή του χρήστη " + firstname + ' ' + lastname + ' ['+taxID+']' + " πραγματοποιήθηκε με επιτυχία.");

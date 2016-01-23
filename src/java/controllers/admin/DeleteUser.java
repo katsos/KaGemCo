@@ -25,9 +25,9 @@ public class DeleteUser extends HttpServlet {
         String username = request.getParameter("username");
         
         if ( Database.deleteUser( username ) )
-            response.getWriter().write(username);
+            response.getWriter().write("success");
         else 
-            response.getWriter().write("error");
+            response.getWriter().write("failure");
 
     }
 

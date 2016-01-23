@@ -24,7 +24,9 @@ public class Database {
     private static final String password = "changeit";
     private static Connection connection = null;
 
-    /** Create connection between web server and database server */
+    /**
+     * Create connection between web server and database server
+     */
     public static Connection connect() {
 
         // If already connected, return connection
@@ -34,7 +36,7 @@ public class Database {
 
         // Create db driver instance and connection
         try {
-            
+
             Class.forName(driver).newInstance();
             Database.connection = DriverManager.getConnection(url + name, username, password);
 
@@ -138,8 +140,10 @@ public class Database {
      */
     public static boolean deleteUser(String username) {
 
+        boolean success = false;
+
         if (!checkConnection()) {
-            return false;
+            return success;
         }
 
         PreparedStatement prepStatement = null;
@@ -148,22 +152,25 @@ public class Database {
         try {
 
             if (!userExists(username)) {
-                return false;
+                return success;
             }
 
             prepStatement = connection.prepareStatement("DELETE FROM users WHERE username=?");
             prepStatement.setString(1, username);
             prepStatement.execute();
 
-            return true;
+            success = true;
 
         } catch (SQLException e) {
             System.err.println(e);
         } finally {
             release(results);
             release(prepStatement);
+        
+            System.err.println( success );
+            return success;
         }
-        return false;
+
     }
 
     // Checks if there is a user with the given username
