@@ -64,6 +64,12 @@ public class HandleManagerRequest extends HttpServlet {
 		
 		String status = request.getParameter("status");
 		
+		if ( status!=null && !status.equals("rejected") && !status.equals("accepted")) {
+			errorMessage += "Request status must either be 'rejected' or "
+				+ "'accepted'" + JsonUtils.ERR_DLM;
+				status = "dummie";	// dummie value to flag invalid relateTaxID
+		}
+		
 		// Undefined Parameters initialization
 		String undefinedParameters = "";
 		if (requestID == null) {
