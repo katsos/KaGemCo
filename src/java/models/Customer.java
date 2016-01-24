@@ -2,128 +2,128 @@ package models;
 
 public class Customer {
 
-    private String Firstname;
-    private String Lastname;
-    private String BirthDate;
-    private char Gender;
-    private String FamilyStatus;
-    private String HomeAddress;
-    private long TaxID;
-    private long BankAccountNo;
-    private String PersonalCode;
+    private String firstname;
+    private String lastname;
+    private String birthDate;
+    private char gender;
+    private String familyStatus;
+    private String homeAddress;
+    private long taxID;
+    private long bankAccountNo;
+    private String personalCode;
 	private long relateTaxID;
 
     public Customer() {
-        this.Firstname = null;
-        this.Lastname = null;
-        this.BirthDate = null;
-        this.Gender = '\0';
-        this.FamilyStatus = null;
-        this.HomeAddress = null;
-        this.TaxID = -1;
-        this.BankAccountNo = -1;
-        this.PersonalCode = null;
+        this.firstname = null;
+        this.lastname = null;
+        this.birthDate = null;
+        this.gender = '\0';
+        this.familyStatus = null;
+        this.homeAddress = null;
+        this.taxID = -1;
+        this.bankAccountNo = -1;
+        this.personalCode = null;
     }
 
-    public Customer(String Name, String Surname, String BirthDate, char Gender, 
-		String FamilyStatus, String HomeAddress, long TaxID, long BankAccountNo,
-		String PersonalCode, long relateTaxID)
+    public Customer(String Name, String Surname, String birthDate, char gender, 
+		String familyStatus, String homeAddress, long taxID, long bankAccountNo,
+		String personalCode, long relatetaxID)
 	{    
-		this.Firstname = Name;
-        this.Lastname = Surname;
-        this.BirthDate = BirthDate;
-        this.Gender = Gender;
-        this.FamilyStatus = FamilyStatus;
-        this.HomeAddress = HomeAddress;
-        this.TaxID = TaxID;
-        this.BankAccountNo = BankAccountNo;
-        this.PersonalCode = PersonalCode;
-		this.relateTaxID = relateTaxID;
+		this.firstname = Name;
+        this.lastname = Surname;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.familyStatus = familyStatus;
+        this.homeAddress = homeAddress;
+        this.taxID = taxID;
+        this.bankAccountNo = bankAccountNo;
+        this.personalCode = personalCode;
+		this.relateTaxID = relatetaxID;
     }
 
     public String getFirstname() {
-        return Firstname;
+        return firstname;
     }
 
-    public void setFirstname(String Firstname) {
-        this.Firstname = Firstname;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getLastname() {
-        return Lastname;
+        return lastname;
     }
 
-    public void setLastname(String Lastname) {
-        this.Lastname = Lastname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getBirthDate() {
-        return BirthDate;
+        return birthDate;
     }
 
-    public void setBirthDate(String BirthDate) {
-        this.BirthDate = BirthDate;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public char getGender() {
-        return Gender;
+        return gender;
     }
 
-    public void setGender(char Gender) {
-        this.Gender = Gender;
+    public void setGender(char gender) {
+        this.gender = gender;
     }
 
     public String getFamilyStatus() {
-        return FamilyStatus;
+        return familyStatus;
     }
 
-    public void setFamilyStatus(String FamilyStatus) {
-        this.FamilyStatus = FamilyStatus;
+    public void setFamilyStatus(String familyStatus) {
+        this.familyStatus = familyStatus;
     }
 
     public String getHomeAddress() {
-        return HomeAddress;
+        return homeAddress;
     }
 
-    public void setHomeAddress(String HomeAddress) {
-        this.HomeAddress = HomeAddress;
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
     }
 
     public long getTaxID() {
-        return TaxID;
+        return taxID;
     }
 
-    public void setTaxID(long TaxID) {
-        this.TaxID = TaxID;
+    public void setTaxID(long taxID) {
+        this.taxID = taxID;
     }
 
     public long getBankAccountNo() {
-        return BankAccountNo;
+        return bankAccountNo;
     }
 
-    public void setBankAccountNo(long BankAccountNo) {
-        this.BankAccountNo = BankAccountNo;
+    public void setBankAccountNo(long bankAccountNo) {
+        this.bankAccountNo = bankAccountNo;
     }
 
     public String getPersonalCode() {
-        return PersonalCode;
+        return personalCode;
     }
 
-    public void setPersonalCode(String PersonalCode) {
-        this.PersonalCode = PersonalCode;
+    public void setPersonalCode(String personalCode) {
+        this.personalCode = personalCode;
     }
 
 	public long getRelateTaxID() {
 		return relateTaxID;
 	}
 
-	public void setRelateTaxID(long relateTaxID) {
-		this.relateTaxID = relateTaxID;
+	public void setRelateTaxID(long relatetaxID) {
+		this.relateTaxID = relatetaxID;
 	}
 
 	@Override
 	public String toString() {
-		return "Customer{" + "Firstname=" + Firstname + ", Lastname=" + Lastname + ", BirthDate=" + BirthDate + ", Gender=" + Gender + ", FamilyStatus=" + FamilyStatus + ", HomeAddress=" + HomeAddress + ", TaxID=" + TaxID + ", BankAccountNo=" + BankAccountNo + ", PersonalCode=" + PersonalCode + ", relateTaxID=" + relateTaxID + '}';
+		return "Customer{" + "firstname=" + firstname + ", lastname=" + lastname + ", birthDate=" + birthDate + ", gender=" + gender + ", familyStatus=" + familyStatus + ", homeAddress=" + homeAddress + ", taxID=" + taxID + ", bankAccountNo=" + bankAccountNo + ", personalCode=" + personalCode + ", relatetaxID=" + relateTaxID + '}';
 	}
 	
 	
