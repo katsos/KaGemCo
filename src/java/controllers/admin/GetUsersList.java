@@ -46,9 +46,7 @@ public class GetUsersList extends HttpServlet {
             out.write("<td>" + user.getUsername() + "</td>\n");
             out.write("<td>" + user.getRole() + "</td>\n");
             out.write("<td>" + user.getDate() + "</td>\n");
-            out.write("<td>" + 
-                        "<a href='#' onClick=\"onEditUser(\""+ user.getUsername() +"\"); return false;\"" + '>' +
-                                "Επεξεργασία </a> </td>");
+            out.write("<td> <a href='./console-admin-update-user.html' > Επεξεργασία </a> </td>");
             out.write("<td>" + "<a href='#' onClick='onDeleteUser(\""+ user.getUsername() +"\"); return false;' > Διαγραφή </a> </td>");
         out.write("</tr>");
     }
