@@ -10,29 +10,26 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.json.Json;
-import javax.json.JsonObject;
 import javax.json.JsonWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Customer;
+import models.Account;
 import utils.JsonUtils;
 
 /**
  *
  * @author pgmank
  */
-@WebServlet(name = "RegisterCustomer", urlPatterns = {"/RegisterCustomer"})
-public class RegisterCustomer extends HttpServlet {
+@WebServlet(name = "AddPhoneNumber", urlPatterns = {"/AddPhoneNumber"})
+public class AddPhoneNumber extends HttpServlet {
 
 	/**
-	 * Adds a customer to the database given the information taken from the URL
-	 * parameters. In order for a customer to be registered, all fields must be
-	 * passed as URL parameter fields. Otherwise, an error is returned which 
-	 * message describes the undefined parameters.
-	 * 
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
+	 *
 	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -48,84 +45,53 @@ public class RegisterCustomer extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		JsonWriter jsonWriter = Json.createWriter(out);
 		
-		// Parameter Initalization //
-		
-		String taxIDParam = request.getParameter("taxID");
-		Long taxID = null;
-		if (taxIDParam != null) {
+		String ownerTaxIDParam = request.getParameter("ownerTaxID");
+		Long ownerTaxID = null;
+		if (ownerTaxIDParam != null) {
 			try {
-				taxID = Long.valueOf(taxIDParam);
+				ownerTaxID = Long.valueOf(ownerTaxIDParam);
 			} catch (NumberFormatException e) {
-				errorMessage += "Tax ID must be an integer number" + 
+				errorMessage += "Tax ID must be an integer number" +
 					JsonUtils.ERR_DLM;
-				taxID = -1L;	// dummie value to flag invalid taxID
+				ownerTaxID = -1L;	// dummie value to flag invalid ownerTaxID
 			}
 		}
 		
-		String firstname = request.getParameter("firstname");
-		String lastname = request.getParameter("lastname");
-		String birthDate = request.getParameter("birthDate");
-		Character gender = null;
-			String genderParam = request.getParameter("gender");
-			if(genderParam != null) {
-				gender = genderParam.charAt(0);
-			}
-		String familyStatus = request.getParameter("familyStatus");
-		String homeAddress = request.getParameter("homeAddress");
-		String bankAccountNoParam = request.getParameter("bankAccountNo");
-		Long bankAccountNo = null;
-		if(bankAccountNoParam != null) {
+		String phoneNumberParam = request.getParameter("phoneNumber");
+		Long phoneNumber = null;
+		if (phoneNumberParam != null) {
 			try {
-				bankAccountNo = Long.valueOf(bankAccountNoParam);
+				phoneNumber = Long.valueOf(phoneNumberParam);
 			} catch (NumberFormatException e) {
-				errorMessage += "Bank Account number must be made of numbers" +
-					JsonUtils.ERR_DLM ;
-				bankAccountNo = -1L;	// dummie value to flag invalid bankAccountNo
-			}
-		}
-		String personalCode = request.getParameter("personalCode");
-		Long relateTaxID = null;
-		String relateTaxIDParam = request.getParameter("relateTaxID");
-		if (relateTaxIDParam != null) {
-			try {
-				relateTaxID = Long.valueOf(relateTaxIDParam);
-			} catch (NumberFormatException e) {
-				errorMessage += "Relative Tax ID must be an integer number" +
+				errorMessage += "Phone number must be an integer number" +
 					JsonUtils.ERR_DLM;
-				relateTaxID = -1L;	// dummie value to flag invalid relateTaxID
+				phoneNumber = -1L;	// dummie value to flag invalid phoneNumber
 			}
-			
 		}
+		
+		String balanceParam = request.getParameter("balance");
+		Double balance = null;
+		if (balanceParam != null) {
+			try {
+				balance = Double.valueOf(balanceParam);
+			} catch (NumberFormatException e) {
+				errorMessage += "Balance must be a decimal number" +
+					JsonUtils.ERR_DLM;
+				balance = -1D ;	// dummie value to flag invalid balance
+			}
+		}
+		
+		// Construct error message describing the undefined parameters
 		
 		String undefinedParameters = "";
-		
-		// Construct error message so that it includes the undefined parameters
-		if (taxID == null) {
-			undefinedParameters += "taxID, ";
+		if (ownerTaxID == null) {
+			undefinedParameters += "ownerTaxID, ";
 		}
-		if (firstname == null) {
-			undefinedParameters += "firstname, ";
+		if (phoneNumber == null) {
+			undefinedParameters += "phoneNumber, ";
 		}
-		if (lastname == null) {
-			undefinedParameters += "lastname, ";
-		}
-		if (birthDate == null) {
-			undefinedParameters += "birthDate, ";
-		}
-		if (gender == null) {
-			undefinedParameters += "gender, ";
-		}
-		if (familyStatus == null) {
-			undefinedParameters += "familyStatus, ";
-		}
-		if (homeAddress == null) {
-			undefinedParameters += "homeAddress, ";
-		}
-		if (bankAccountNo == null) {
-			undefinedParameters += "bankAccountNo, ";
-		}
-		if (personalCode == null) {
-			undefinedParameters += "personalCode, ";
+		if (balance == null) {
+			undefinedParameters += "balance, ";
 		}
 		
 		// Check for undefined Parameters
@@ -142,26 +108,57 @@ public class RegisterCustomer extends HttpServlet {
 			return;
 		}
 		
-		boolean success;
-		
-		try {
-			success = Database.addCustomer(new Customer(firstname, lastname, birthDate, gender, familyStatus, homeAddress, taxID, bankAccountNo, personalCode, relateTaxID));
-		} catch (SQLException e) {
-			JsonUtils.outputJsonError(e.getMessage(), jsonWriter);
+		if (balance < 10) {
+			JsonUtils.outputJsonError("Initial pre-paid amount must be 10 euros or more", jsonWriter);
 			return;
-		} 
-		
-		
-		JsonObject successObj;
-		
-		if (success) {
-			successObj = Json.createObjectBuilder().add("success", "success").build();
-		} else {
-			successObj = Json.createObjectBuilder().
-				add("error", "Customer with tax ID: " + taxID + " already exists").build();
 		}
 		
-		jsonWriter.writeObject(successObj);
+		try {
+			int count = Database.getCustomerAccountCount(ownerTaxID);
+			if (count >= 6) {
+				
+				/** 
+				 * TODO:
+				 * Check if request has been sent for 7th or more phone number
+				 * Must redesign database to add fields applicantsTaxID and
+				 * applicantsPhoneNumber.
+				 */ 
+				
+				JsonUtils.outputJsonError("Customer already has " + count +
+					"accounts. In order to add a 7th phone number, please"
+					+ "send a request to the manager", jsonWriter);
+			}
+		} catch (SQLException ex) {
+			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+		}
+		
+		try {
+			// Check if customer to whom the phone number will be added exists
+			if(!Database.customerExists(ownerTaxID)) {
+				errorMessage = "Customer with tax ID: " + ownerTaxID + " does not exist";
+				JsonUtils.outputJsonError(errorMessage, jsonWriter);
+				return;
+			}
+		} catch (SQLException ex) {
+			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+		}
+		
+		Account account = new Account(phoneNumber, ownerTaxID, balance);
+		
+		boolean success;
+		try {
+			success = Database.addAccount(account);
+		} catch (SQLException ex) {
+			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+			return;
+		}
+		
+		if (success) {
+			jsonWriter.writeObject(Json.createObjectBuilder()
+				.add("success", "success").build());
+		} else {
+			JsonUtils.outputJsonError("Phone number: " + phoneNumber + " already exists", jsonWriter);
+		}
 		
 	}
 

@@ -439,11 +439,11 @@ public class Database {
 	 * @return	{@code true} if customer exists, {@code false}, if 
 	 *			customer does not exists or error occurs.
 	 */
-	public static boolean customerExists(long taxID) {
+	public static boolean customerExists(long taxID) throws SQLException {
             
         if (!checkConnection()) {
-            return false;
-	}
+            throw new SQLException("Database connection error");
+		}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -475,11 +475,11 @@ public class Database {
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
             release(results);
 			release(prepStatement);
         }
-        return false;
 	}
 	
 	/**
@@ -1046,17 +1046,19 @@ public class Database {
 	 * 
 	 * @param account Account to be inserted
 	 * 
-	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * @return	{@code true} for successful insertion, {@code false} if account
+	 *			already exists.
+	 * 
+	 * @throws java.sql.SQLException if database error occurs
 	 */
-	public static boolean addAccount(Account account) {
+	public static boolean addAccount(Account account) throws SQLException {
 
         if (!checkConnection()) {
-            return false;
-	}
+            throw new SQLException("Database connection error");
+		}
         
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
-
+        
         try {
             
 			String query =	"INSERT INTO accounts " +
@@ -1082,11 +1084,10 @@ public class Database {
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
-            release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	
@@ -1169,8 +1170,6 @@ public class Database {
             prepStatement.setLong(1, phoneNumber);
 			
             results = prepStatement.executeQuery();
-			
-			int count = 0;
 
 			if (results.next()) {
 				
@@ -1193,19 +1192,122 @@ public class Database {
 	}
 	
 	/**
+	 * Searches the accounts that a particular customer has given his tax ID.
+	 * 
+	 * @param	ownerTaxID tax ID of the accounts' owner
+	 * 
+	 * @return	the list of accounts owned by the customer with the given tax ID.
+	 * 
+	 * @throws	java.sql.SQLException if database error occurs
+	 */	 
+	public static ArrayList<Account> searchAccounts(long ownerTaxID) throws SQLException {
+	
+        if (!checkConnection()) {
+            throw new SQLException("Database connection error");
+		}
+			
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+
+        try {
+            
+			// Query that returns the number of users with the particular username
+			String query =	"SELECT * FROM accounts " +
+							"WHERE ownerTaxID=?";
+
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setLong(1, ownerTaxID);
+			
+            results = prepStatement.executeQuery();
+			
+			ArrayList<Account> accounts = new ArrayList<>();
+			
+			while (results.next()) {
+				
+				Account account = new Account();
+				
+				account.setPhoneNumber(results.getLong("phoneNumber"));
+				account.setOwnerTaxID(results.getLong("ownerTaxID"));
+				account.setBalance(results.getDouble("balance"));
+				
+				accounts.add(account);
+            }
+			
+			return accounts;
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			throw new SQLException("Database error");
+        } finally {
+            release(results);
+			release(prepStatement);
+        }
+	}
+	
+	/**
+	 * Gets the number of accounts that a particular customer has.
+	 * 
+	 * @param	ownerTaxID tax ID of the accounts' owner
+	 * 
+	 * @return	the number of accounts that a customer possesses.
+	 * 
+	 * @throws	java.sql.SQLException if database error occurs
+	 */	 
+	public static int getCustomerAccountCount(long ownerTaxID) throws SQLException {
+	
+        if (!checkConnection()) {
+            throw new SQLException("Database connection error");
+		}
+			
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+
+        try {
+            
+			// Query that returns the number of users with the particular username
+			String query =	"SELECT count(*) as count FROM accounts " +
+							"WHERE ownerTaxID=?";
+
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setLong(1, ownerTaxID);
+			
+            results = prepStatement.executeQuery();
+			
+			int count = 0;
+			
+			if (results.next()) {
+				count = results.getInt("count");
+			} else {
+				throw new SQLException("Customer with tax ID: " + ownerTaxID + 
+					" does not exist" );
+			}
+            
+			return count;
+			
+        } catch (SQLException e) {
+            System.err.println(e);
+			throw new SQLException("Database error");
+        } finally {
+            release(results);
+			release(prepStatement);
+        }
+	}
+	
+	/**
 	 * Deletes a particular account from the database. 
 	 * 
-	 * @return  {@code true} if account deleted successfully, {@code false} if account to be 
-	 *			deleted does not exist or if error occurs.
+	 * @param	phoneNumber	phone number of the account to be deleted
+	 * @return  {@code true} if account deleted successfully, or
+	 *			{@code false} if account to be deleted does not exist 
+	 * @throws java.sql.SQLException
 	 */
-    public static boolean deleteAccount(long phoneNumber) {
+    public static boolean deleteAccount(long phoneNumber) throws SQLException {
 
         if (!checkConnection()) {
-			return false;
+			throw new SQLException("Database connection error");
 		}
 		
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
 
         try {
             
@@ -1221,11 +1323,10 @@ public class Database {
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
-			release(results);
 			release(prepStatement);
         }
-		return false;
     }
 	
 	/**
