@@ -1279,16 +1279,16 @@ public class Database {
 	 * 
 	 * @param managerRequest ManagerRequest to be inserted
 	 * 
-	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * @throws java.sql.SQLException  if a database error occurs
+	 * 
 	 */
-	public static boolean addManagerRequest(ManagerRequest managerRequest) {
+	public static void addManagerRequest(ManagerRequest managerRequest) throws SQLException {
 
         if (!checkConnection()) {
-			return false;
+            throw new SQLException("Database connection error");
 		}
         
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
 
         try {
             
@@ -1308,16 +1308,13 @@ public class Database {
 			prepStatement.setString(3, managerRequest.getStatus());
 			prepStatement.setString(4, managerRequest.getDescription());
             prepStatement.execute();
-
-            return true;
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Error while inserting manager request to database");
         } finally {
-            release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	

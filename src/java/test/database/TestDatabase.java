@@ -28,7 +28,7 @@ public class TestDatabase {
             testUpdateCustomer(1234143423L);
 	}
         
-	private static void basicTest() {
+	private static void basicTest() throws SQLException {
 
 		// Test getters
 
