@@ -21,7 +21,9 @@ import models.Customer;
 import utils.JsonUtils;
 
 /**
- *
+ * Adds a new customer given all the Customer entity fields as URL parameters.
+ * For a successful registration, all fields must be passed. Otherwise an error
+ * report will be output in the JSON describing the undefined parameters.
  * @author pgmank
  */
 @WebServlet(name = "RegisterCustomer", urlPatterns = {"/RegisterCustomer"})

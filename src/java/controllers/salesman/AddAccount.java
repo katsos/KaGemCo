@@ -20,11 +20,14 @@ import models.Account;
 import utils.JsonUtils;
 
 /**
- *
+ * Adds a new account given the phone number, the owner's tax ID and the initial
+ * balance. All those parameters are passed via the URL and are obligatory. If
+ * at least one is missing, an error report is returned as a response.
+ * 
  * @author pgmank
  */
-@WebServlet(name = "AddPhoneNumber", urlPatterns = {"/AddPhoneNumber"})
-public class AddPhoneNumber extends HttpServlet {
+@WebServlet(name = "AddAccount", urlPatterns = {"/AddAccount"})
+public class AddAccount extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

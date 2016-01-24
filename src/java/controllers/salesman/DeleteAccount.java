@@ -16,15 +16,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Account;
 import utils.JsonUtils;
 
 /**
- *
+ * Deletes a particular account given its phone number as a URL parameter.
+ * 
  * @author pgmank
  */
-@WebServlet(name = "RemovePhoneNumber", urlPatterns = {"/RemovePhoneNumber"})
-public class RemovePhoneNumber extends HttpServlet {
+@WebServlet(name = "DeleteAccount", urlPatterns = {"/DeleteAccount"})
+public class DeleteAccount extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

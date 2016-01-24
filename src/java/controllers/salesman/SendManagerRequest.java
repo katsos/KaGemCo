@@ -21,7 +21,11 @@ import models.ManagerRequest;
 import utils.JsonUtils;
 
 /**
- *
+ * Adds a new request to the manager_requests table given the manager and 
+ * salesman username and description. All those parameters are passed via the
+ * URL and are obligatory. If at least one is missing, an error report is 
+ * returned as a response.
+ * 
  * @author pgmank
  */
 @WebServlet(name = "sendManagerRequest", urlPatterns = {"/sendManagerRequest"})

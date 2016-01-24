@@ -20,7 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 import utils.JsonUtils;
 
 /**
- *
+ * Modify's a particular customer given his tax ID and the information to be
+ * updated passed as URL parameters. For the task to succeed, taxID must be
+ * defined and at least one of the other fields of the Customer entity. Otherwise
+ * error is reported as a response.
+ * 
  * @author pgmank
  */
 @WebServlet(name = "modifyCustomer", urlPatterns = {"/modifyCustomer"})
