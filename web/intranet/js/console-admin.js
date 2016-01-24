@@ -151,10 +151,6 @@ function deleteUser( username ) {
     xmlhttp.send(); 
 }
 
-function onEditUser( username ) {
-    
-}
-
 function onCustomers() {
     resetVisibleDivs();
     document.getElementById("customers-table").style.display = "inline";
