@@ -268,16 +268,22 @@ public class Database {
 	/**
 	 * Searches a user with the given username.
 	 * @param	username username of the user to be searched
+	 * 
 	 * @return	the user object initialized from data fetch from the database
-	 *			if the user exists, or {@code null} if the user does not exist
-	 *			or error occurs.
+	 *			if the user exists, or {@code null} if the user does not exist.
+	 * @throws java.sql.SQLException	If database error occurs
 	 */
-	public static User searchUser(String username) {
+	public static User searchUser(String username) throws SQLException,
+		IllegalArgumentException {
 		
 	
         if (!checkConnection()) {
-            return null;
-	}    
+            throw new SQLException("Database connection error");
+		}  
+		
+		if (username == null) {
+			throw new IllegalArgumentException("Username undefined");
+		}
          
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -304,7 +310,8 @@ public class Database {
             }
             
         } catch (SQLException e) {
-            System.err.println(e);
+			System.err.println(e);
+			throw new SQLException("Database Error");
         } finally {
             release(results);
 			release(prepStatement);
