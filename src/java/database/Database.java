@@ -550,7 +550,7 @@ public class Database {
 	 */
 	public static ArrayList<Customer> searchCustomers(String firstname, 
             String lastname, String birthDate, Character gender, String homeAddress,
-            String familyStatus, Long bankAccountNo, Long personalCode, 
+            String familyStatus, Long bankAccountNo, String personalCode, 
             Long relateTaxID, boolean strict) throws IllegalArgumentException {
 		
 	
@@ -601,8 +601,8 @@ public class Database {
                 throw new IllegalArgumentException("No search criteria defined");
             }
             
-            // remove the extra OR and AND that was inserted in the end of the
-            // string concatenations above
+            // remove the extra space and extra OR or AND that was inserted in 
+			// the end of the string concatenations above
             if(strict) {
                 whereList = whereList.substring(0, whereList.length() -1 - 3);
             } else {
@@ -611,8 +611,6 @@ public class Database {
             
             int fieldCount = 0;
             String query = "SELECT * FROM customers WHERE" + whereList;
-            
-            System.err.println(query);
             
             prepStatement = connection.prepareStatement(query);
             
@@ -638,7 +636,7 @@ public class Database {
                 prepStatement.setLong(++fieldCount, bankAccountNo);
             }
             if (personalCode != null) {
-                prepStatement.setLong(++fieldCount, personalCode);
+                prepStatement.setString(++fieldCount, personalCode);
             }
             if (relateTaxID != null) {
                 prepStatement.setLong(++fieldCount, relateTaxID);
@@ -675,6 +673,135 @@ public class Database {
         }
             return null;
 	}
+	
+	
+	/**
+	 * 
+	 * Updates a particular customer from the database. Passing null to the
+	 * parameters apart from the last, ignores the particular search criterion.
+	 * 
+	 * @param taxID		taxID of the customer to be updated.
+	 * @param firstname
+	 * @param lastname
+	 * @param birthDate
+	 * @param gender
+	 * @param familyStatus
+	 * @param homeAddress
+	 * @param bankAccountNo
+	 * @param personalCode
+	 * @param relateTaxID
+	 * 
+	 * @return  {@code true} if customer updated successfully, false if customer
+	 * to be updated does not exist or if error occurs.
+	 */
+    public static boolean updateCustomer(long taxID, String firstname, String lastname,
+		String birthDate, Character gender, String familyStatus, String homeAddress,
+		Long bankAccountNo, String personalCode, Long relateTaxID) {
+			
+		String updateQuery = "UPDATE customers SET ";
+		
+        if (!checkConnection()) {
+			return false;
+		}
+		
+        PreparedStatement prepStatement = null;
+        int updateCount = -1;
+		
+		String whereList = "";
+		
+        try {
+            
+			if(!customerExists(taxID)) {
+				return false;
+			}
+			
+			if (firstname != null) {
+                whereList += "firstname=?, ";
+            }
+            if (lastname != null) {
+                whereList += "lastname=?, ";
+            }
+            if (birthDate != null) {
+                whereList += "birthDate=?, ";
+            }
+            if (gender != null) {
+                whereList += "gender=?, ";
+            }
+            if (homeAddress != null) {
+                whereList += "homeAddress=?, ";
+            }
+            if (familyStatus != null) {
+                whereList += "familyStatus=?, ";
+            }
+            if (bankAccountNo != null) {
+                whereList += "bankAccountNo=?, ";
+            }
+            if (personalCode != null) {
+                whereList += "personalCode=?, ";
+            }
+            if (relateTaxID != null) {
+                whereList += "relateTaxID=?, ";
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No search criteria defined");
+            }
+            
+            // remove the extra comma and space in the end of whereList string
+            whereList = whereList.substring(0, whereList.length() -1 - 1);
+            
+            int fieldCount = 0;
+			
+			updateQuery += whereList + " WHERE taxID=?";
+            
+            prepStatement = connection.prepareStatement(updateQuery);
+            
+            if (firstname != null) {
+                prepStatement.setString(++fieldCount, firstname);
+            }
+            if (lastname != null) {
+                prepStatement.setString(++fieldCount, lastname);
+            }
+            if (birthDate != null) {
+                prepStatement.setDate(++fieldCount, Date.valueOf(birthDate));
+            }
+            if (gender != null) {
+                prepStatement.setString(++fieldCount, gender.toString());
+            }
+            if (homeAddress != null) {
+                prepStatement.setString(++fieldCount, homeAddress);
+            }
+            if (familyStatus != null) {
+                prepStatement.setString(++fieldCount, familyStatus);
+            }
+            if (bankAccountNo != null) {
+                prepStatement.setLong(++fieldCount, bankAccountNo);
+            }
+            if (personalCode != null) {
+                prepStatement.setString(++fieldCount, personalCode);
+            }
+            if (relateTaxID != null) {
+                prepStatement.setLong(++fieldCount, relateTaxID);
+            }
+			
+			prepStatement.setLong(++fieldCount, taxID);
+            
+            updateCount = prepStatement.executeUpdate();
+			
+			// If the updated customer count is 1, then update was successful.
+			if (updateCount == 1) {
+				return true;
+			} else {
+				return false;
+			}
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+			release(prepStatement);
+        }
+        return false;
+    }
 	
 	/**
 	 * Deletes a particular customer from the database. 

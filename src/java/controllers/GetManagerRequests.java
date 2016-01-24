@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.ManagerRequest;
+import utils.JsonUtils;
 
 public class GetManagerRequests extends HttpServlet {
 
@@ -68,14 +69,7 @@ public class GetManagerRequests extends HttpServlet {
 			// return an error object containing the error message.
 			catch (NumberFormatException e) {
 				errorMessage = "request ID must be an integer number";
-
-				// JSON error object creation
-				JsonObjectBuilder errorObjBuilder = Json.createObjectBuilder();
-				JsonObject errorObj = errorObjBuilder.add("error", errorMessage).build();
-
-				// Write json contents to web page
-				jsonWriter.writeObject(errorObj);
-
+				JsonUtils.outputJsonError(errorMessage, jsonWriter);
 				return;
 			}
 		}

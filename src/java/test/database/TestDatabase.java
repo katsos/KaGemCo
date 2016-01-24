@@ -24,7 +24,7 @@ import models.User;
  */
 public class TestDatabase {
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-            testAdvancedManagerRequestsSearch();
+            testUpdateCustomer(1234143423L);
 	}
         
 	private static void basicTest() {
@@ -221,6 +221,27 @@ public class TestDatabase {
 
 		printList(managerRequests);
 	}
+	
+	private static void testUpdateCustomer(long taxID) {
+		
+		boolean success;
+		
+//		success = Database.
+//			updateCustomer(taxID, "Giorgos", "Tsalikis", "1960-1-1", 'M', 
+//				"Single", "Athens City", 3333312342L, "Mazoo", 1234333312L);
+		
+		success = Database.
+			updateCustomer(taxID, "Joseph", "Stalin", "1922-10-21", 'M', 
+				"Married", "Staligrad", 4443312342L, "USSR", 4312123423L);
+
+//		success = Database.
+//			updateCustomer(taxID, "Giorgos", null, "1960-1-1", null, 
+//				null, null, 3333312342L, "Mazoo", 1234333312L);
+		
+		System.out.println("Update " + (success ? "success" : "failed"));
+		
+	}
+	
 	
 	private static void printList(List list) {
 		for (Object item : list) {
