@@ -374,13 +374,16 @@ public class Database {
 	 * 
 	 * @param customer Customer to be inserted
 	 * 
-	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * @return {@code true} for successful insertion, {@code false} if customer 
+	 * to be inserted already exists.
+	 * 
+	 * @throws java.sql.SQLException if database error occurs.
 	 */
-	public static boolean addCustomer(Customer customer) {
+	public static boolean addCustomer(Customer customer) throws SQLException {
 
         if (!checkConnection()) {
-            return false;
-	}
+            throw new SQLException("Database connection error");
+		}
         
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -389,7 +392,7 @@ public class Database {
             
 			String query =	"INSERT INTO customers " +
 				" (firstname, lastname, birthDate, gender, familyStatus,"
-				+ "homeAddress, taxID, bankAccountNo, personalCode, relateTaxID )" +
+				+ "homeAddress, taxID, bankAccountNo, personalCode, relateTaxID)" +
 							" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			if (customerExists(customer.getTaxID())) {
@@ -413,16 +416,16 @@ public class Database {
 			prepStatement.setString(9, customer.getPersonalCode());
 			prepStatement.setLong(10, customer.getRelateTaxID());
             prepStatement.execute();
-
-            return true;
+			
+			return true;
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
             release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	
@@ -711,7 +714,7 @@ public class Database {
 		String updateQuery = "UPDATE customers SET ";
 		
         if (!checkConnection()) {
-			return false;
+			throw new SQLException("Connection error to database");
 		}
 		
         PreparedStatement prepStatement = null;

@@ -17,21 +17,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Customer;
+import models.ManagerRequest;
 import utils.JsonUtils;
 
 /**
  *
  * @author pgmank
  */
-@WebServlet(name = "modifyCustomer", urlPatterns = {"/modifyCustomer"})
-public class ModifyCustomer extends HttpServlet {
+@WebServlet(name = "RegisterCustomer", urlPatterns = {"/RegisterCustomer"})
+public class RegisterCustomer extends HttpServlet {
 
 	/**
-	 * Updates a particular customer given his taxID and the information to be
-	 * updated as URL parameters. Feedback is given to the client as JSON, where
-	 * if error field is defined means that update failed and if success field
-	 * is defined means that update succeeded. The error field stores the error
-	 * message.
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
 	 *
 	 * @param request servlet request
 	 * @param response servlet response
@@ -52,9 +51,7 @@ public class ModifyCustomer extends HttpServlet {
 		
 		String taxIDParam = request.getParameter("taxID");
 		Long taxID = null;
-		if (taxIDParam == null) {
-			errorMessage += "Tax ID of customer to be registered must be defined::";
-		} else {
+		if (taxIDParam != null) {
 			try {
 				taxID = Long.valueOf(taxIDParam);
 			} catch (NumberFormatException e) {
@@ -93,9 +90,40 @@ public class ModifyCustomer extends HttpServlet {
 			
 		}
 		
+		// Construct error message so that it includes the undefined parameters
+		if (taxID == null) {
+			errorMessage += "taxID, ";
+		}
+		if (firstname == null) {
+			errorMessage += "firstname, ";
+		}
+		if (lastname == null) {
+			errorMessage += "lastname, ";
+		}
+		if (birthDate == null) {
+			errorMessage += "birthDate, ";
+		}
+		if (gender == null) {
+			errorMessage += "gender, ";
+		}
+		if (familyStatus == null) {
+			errorMessage += "familyStatus, ";
+		}
+		if (homeAddress == null) {
+			errorMessage += "homeAddress, ";
+		}
+		if (bankAccountNo == null) {
+			errorMessage += "bankAccountNo, ";
+		}
+		if (personalCode == null) {
+			errorMessage += "personalCode, ";
+		}
+		
 		// Output error message as JSON
 		if (!errorMessage.isEmpty()) {
+			// Remove the extra comma and space from the end of the string
 			errorMessage = errorMessage.substring(0, errorMessage.length() -2);
+			errorMessage = "Parameters: " + errorMessage + " are undefined";
 			JsonUtils.outputJsonError(errorMessage, jsonWriter);
 			return;
 		}
@@ -103,8 +131,8 @@ public class ModifyCustomer extends HttpServlet {
 		boolean success;
 		
 		try {
-			success = Database.updateCustomer(taxID, firstname, lastname, birthDate, gender, familyStatus, homeAddress, bankAccountNo, personalCode, relateTaxID);
-		} catch (IllegalArgumentException | SQLException e) {
+			success = Database.addCustomer(new Customer(firstname, lastname, birthDate, gender, familyStatus, homeAddress, taxID, bankAccountNo, personalCode, relateTaxID));
+		} catch (SQLException e) {
 			JsonUtils.outputJsonError(e.getMessage(), jsonWriter);
 			return;
 		} 
@@ -116,7 +144,7 @@ public class ModifyCustomer extends HttpServlet {
 			successObj = Json.createObjectBuilder().add("success", "success").build();
 		} else {
 			successObj = Json.createObjectBuilder().
-				add("error", "Customer with tax ID: " + taxID + " does not exist").build();
+				add("error", "Customer with tax ID: " + taxID + " already exists").build();
 		}
 		
 		jsonWriter.writeObject(successObj);

@@ -25,12 +25,12 @@ public class Customer {
         this.personalCode = null;
     }
 
-    public Customer(String Name, String Surname, String birthDate, char gender, 
+    public Customer(String firstname, String lastname, String birthDate, char gender, 
 		String familyStatus, String homeAddress, long taxID, long bankAccountNo,
 		String personalCode, long relatetaxID)
 	{    
-		this.firstname = Name;
-        this.lastname = Surname;
+		this.firstname = firstname;
+        this.lastname = lastname;
         this.birthDate = birthDate;
         this.gender = gender;
         this.familyStatus = familyStatus;
