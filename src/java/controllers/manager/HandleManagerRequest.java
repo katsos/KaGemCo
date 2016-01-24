@@ -3,31 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.salesman;
+package controllers.manager;
 
 import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.JsonWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Transaction;
 import utils.JsonUtils;
 
 /**
- * Recharges the account given the phone number and the recharge amount as
- * URL parameters. Both parameters are necessary for the task to be completed.
- * An error is reported as a response if insufficient parameters are passed.
+ * Changes the status of the manager request to either accepted or rejected,
+ * given two obligatory URL parameters: requestID and status. If at least one
+ * of those parameters are not passed, then an error report is returned as a
+ * response, describing the undefined parameters.
  * 
  * @author pgmank
  */
-@WebServlet(name = "Recharge", urlPatterns = {"/Recharge"})
-public class Recharge extends HttpServlet {
+@WebServlet(name = "HandleManagerRequest", urlPatterns = {"/HandleManagerRequest"})
+public class HandleManagerRequest extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,39 +48,29 @@ public class Recharge extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		JsonWriter jsonWriter = Json.createWriter(out);
 		
+		// Parameter Initalization //
 		
-		String phoneNumberParam = request.getParameter("phoneNumber");
-		Long phoneNumber = null;
-		if (phoneNumberParam != null) {
+		String requestIDParam = request.getParameter("requestID");
+		Long requestID = null;
+		if (requestIDParam != null) {
 			try {
-				phoneNumber = Long.valueOf(phoneNumberParam);
+				requestID = Long.valueOf(requestIDParam);
 			} catch (NumberFormatException e) {
-				errorMessage += "Phone number must be an integer number" +
+				errorMessage += "Manager request ID must be an integer number" +
 					JsonUtils.ERR_DLM;
-				phoneNumber = -1L;	// dummie value to flag invalid phoneNumber
+				requestID = -1L;	// dummie value to flag invalid relateTaxID
 			}
 		}
 		
-		String rechargeAmountParam = request.getParameter("rechargeAmount");
-		Double rechargeAmount = null;
-		if (rechargeAmountParam != null) {
-			try {
-				rechargeAmount = Double.valueOf(rechargeAmountParam);
-			} catch (NumberFormatException e) {
-				errorMessage += "Balance must be a decimal number" +
-					JsonUtils.ERR_DLM;
-				rechargeAmount = -1D ;	// dummie value to flag invalid rechargeAmount
-			}
-		}
+		String status = request.getParameter("status");
 		
-		// Construct error message describing the undefined parameters
-		
+		// Undefined Parameters initialization
 		String undefinedParameters = "";
-		if (phoneNumber == null) {
-			undefinedParameters += "phoneNumber, ";
+		if (requestID == null) {
+			undefinedParameters += "requestID, ";
 		}
-		if (rechargeAmount == null) {
-			undefinedParameters += "rechargeAmount, ";
+		if (status == null) {
+			undefinedParameters += "status, ";
 		}
 		
 		// Check for undefined Parameters
@@ -96,43 +87,26 @@ public class Recharge extends HttpServlet {
 			return;
 		}
 		
-		if (rechargeAmount < 10) {
-			JsonUtils.outputJsonError("Initial pre-paid amount must be 10 euros or more", jsonWriter);
-			return;
-		}
-		
-		// Check if account to be updated exists
-		if (!Database.accountExists(phoneNumber)) {
-			JsonUtils.outputJsonError("Phone number: " + phoneNumber + 
-				" does not exist", jsonWriter);
-			return;
-		}
-		
 		boolean success;
-		try {
-			success = Database.rechargeAccount(phoneNumber, rechargeAmount);
-		} catch (SQLException ex) {
-			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
-			return;
-		}
 		
-		// TODO:	To perfect the task, make recharge and transaction addition
-		//			one SQL transaction for security purposes.
 		try {
-			Transaction transaction = new Transaction(phoneNumber, rechargeAmount);
-			Database.addTransaction(transaction);
-		} catch (SQLException ex) {
-			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+			success = Database.updateManagerRequest(requestID, status);
+		} catch (IllegalArgumentException | SQLException e) {
+			JsonUtils.outputJsonError(e.getMessage(), jsonWriter);
 			return;
-		}
+		} 
+		
+		
+		JsonObject successObj;
 		
 		if (success) {
-			jsonWriter.writeObject(Json.createObjectBuilder()
-				.add("success", "success").build());
+			successObj = Json.createObjectBuilder().add("success", "success").build();
 		} else {
-			JsonUtils.outputJsonError("Phone number: " + phoneNumber + " does not exist", jsonWriter);
+			successObj = Json.createObjectBuilder().
+				add("error", "Manager request with ID: " + requestID + " does not exist").build();
 		}
 		
+		jsonWriter.writeObject(successObj);
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

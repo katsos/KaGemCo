@@ -1294,6 +1294,132 @@ public class Database {
 	}
 	
 	/**
+	 * Updates a particular account from the database. 
+	 * 
+	 * @param	phoneNumber	phone number of the account to be updated
+	 * @param	balance		account's new balance
+	 * @return  {@code true} if account updated successfully, or
+	 *			{@code false} if account to be updated does not exist 
+	 * @throws java.sql.SQLException if a database error occurs
+	 */
+    public static boolean updateAccount(long phoneNumber, Double balance) 
+		throws SQLException {
+
+        String updateQuery = "UPDATE accounts SET balance=? WHERE phoneNumber=?";
+		
+        if (!checkConnection()) {
+			throw new SQLException("Connection error to database");
+		}
+		
+        PreparedStatement prepStatement = null;
+        int updateCount = -1;
+		
+		String whereList = "";
+		
+        try {
+            
+			if(!accountExists(phoneNumber)) {
+				return false;
+			}
+			
+			if (balance != null) {
+                whereList += "balance=?";
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No update criteria defined");
+            }
+            
+            prepStatement = connection.prepareStatement(updateQuery);
+            
+			prepStatement.setDouble(1, balance);
+			prepStatement.setLong(2, phoneNumber);
+            
+            updateCount = prepStatement.executeUpdate();
+			
+			// If the updated account count is 1, then update was successful.
+			if (updateCount == 1) {
+				return true;
+			} else {
+				throw new SQLException("More than one accounts with the same phone number");
+			}
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			
+			if(updateCount != -1) {
+				throw e;
+			}
+			throw new SQLException("Database error");
+        } finally {
+			release(prepStatement);
+        }
+    }
+	
+	/**
+	 * Recharge a particular account from the database. 
+	 * 
+	 * @param	phoneNumber	phone number of the account to be recharged
+	 * @param	amount		rechargeAccount amount
+	 * @return  {@code true} if account recharged successfully, or
+	 *			{@code false} if account to be recharged does not exist 
+	 * @throws java.sql.SQLException if a database error occurs
+	 */
+    public static boolean rechargeAccount(long phoneNumber, Double amount) 
+		throws SQLException {
+
+        String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE phoneNumber=?";
+		
+        if (!checkConnection()) {
+			throw new SQLException("Connection error to database");
+		}
+		
+        PreparedStatement prepStatement = null;
+        int updateCount = -1;
+		
+		String whereList = "";
+		
+        try {
+            
+			if(!accountExists(phoneNumber)) {
+				return false;
+			}
+			
+			if (amount != null) {
+                whereList += "balance=?";
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No recharge criteria defined");
+            }
+            
+            prepStatement = connection.prepareStatement(updateQuery);
+            
+			prepStatement.setDouble(1, amount);
+			prepStatement.setLong(2, phoneNumber);
+            
+            updateCount = prepStatement.executeUpdate();
+			
+			// If the updated account count is 1, then update was successful.
+			if (updateCount == 1) {
+				return true;
+			} else {
+				throw new SQLException("More than one accounts with the same phone number");
+			}
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			
+			if(updateCount != -1) {
+				throw e;
+			}
+			throw new SQLException("Database error");
+        } finally {
+			release(prepStatement);
+        }
+    }
+	
+	/**
 	 * Deletes a particular account from the database. 
 	 * 
 	 * @param	phoneNumber	phone number of the account to be deleted
@@ -1640,6 +1766,70 @@ public class Database {
 	}
 	
 	/**
+	 * Updates a particular manager request from the database. 
+	 * 
+	 * @param requestID		ID of the manager request to be updated
+	 * @param status		manager request's new status
+	 * 
+	 * @return  {@code true} if manager request updated successfully, or
+	 *			{@code false} if manager request to be updated does not exist 
+	 * @throws java.sql.SQLException if a database error occurs
+	 */
+    public static boolean updateManagerRequest(long requestID, String status) 
+		throws SQLException {
+
+        String updateQuery = "UPDATE manager_requests SET status=? WHERE requestID=?";
+		
+        if (!checkConnection()) {
+			throw new SQLException("Connection error to database");
+		}
+		
+        PreparedStatement prepStatement = null;
+        int updateCount = -1;
+		
+		String whereList = "";
+		
+        try {
+            
+			if(!managerRequestExists(requestID)) {
+				return false;
+			}
+			
+			if (status != null) {
+                whereList += "status=?";
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No update criteria defined");
+            }
+            
+            prepStatement = connection.prepareStatement(updateQuery);
+            
+			prepStatement.setString(1, status);
+			prepStatement.setLong(2, requestID);
+            
+            updateCount = prepStatement.executeUpdate();
+			
+			// If the updated account count is 1, then update was successful.
+			if (updateCount == 1) {
+				return true;
+			} else {
+				throw new SQLException("More than one requestIDs with the same ID");
+			}
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			
+			if(updateCount != -1) {
+				throw e;
+			}
+			throw new SQLException("Database error");
+        } finally {
+			release(prepStatement);
+        }
+    }
+	
+	/**
 	 * Deletes a particular manager request from the database. 
 	 * 
 	 * @param requestID request ID of the manager request to be deleted
@@ -1729,15 +1919,16 @@ public class Database {
 	 * @param transaction {@link models.Transaction} to be inserted
 	 * 
 	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * 
+	 * @throws java.sql.SQLException if database error occurs
 	 */
-	public static boolean addTransaction(Transaction transaction) {
+	public static void addTransaction(Transaction transaction) throws SQLException {
 
         if (!checkConnection()) {
-			return false;
+			throw new SQLException("Database connection error");
 		}
         
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
 
         try {
             
@@ -1754,15 +1945,13 @@ public class Database {
 			prepStatement.setDouble(2, transaction.getMerit());
             prepStatement.execute();
 
-            return true;
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
-            release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	
@@ -2381,8 +2570,8 @@ public class Database {
         return false;
     }
 	
-	public void close() throws SQLException {
-		connection.close();
+	public static void close() throws SQLException {
+		if (connection != null) connection.close();
 	}
 	
 	/**

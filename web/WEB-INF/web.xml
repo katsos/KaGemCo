@@ -30,7 +30,7 @@
     </servlet>
     <servlet>
         <servlet-name>GetManagerRequests</servlet-name>
-        <servlet-class>controllers.GetManagerRequests</servlet-class>
+        <servlet-class>controllers.manager.GetManagerRequests</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddCustomer</servlet-name>

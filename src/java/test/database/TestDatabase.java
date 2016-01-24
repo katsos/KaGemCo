@@ -26,7 +26,7 @@ import models.User;
  */
 public class TestDatabase {
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
-            testGetCustomerAccountCount(1234143423L);
+            testUpdateManagerRequest(10, "accepted");
 	}
         
 	private static void basicTest() throws SQLException {
@@ -260,6 +260,48 @@ public class TestDatabase {
 			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
+	
+	private static void testUpdateAccount(long phoneNumber, double balance) {
+		
+		boolean success = false;
+		
+		try {
+			success = Database.updateAccount(phoneNumber, balance);
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		System.out.println("Update " + (success ? "success" : "failed"));
+		
+	}
+	
+	
+	private static void testRechargeAccount(long phoneNumber, double amount) {
+		
+		boolean success = false;
+		
+		try {
+			success = Database.rechargeAccount(phoneNumber, amount);
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		System.out.println("Update " + (success ? "success" : "failed"));
+		
+	}
+	
+	private static void testUpdateManagerRequest(long requestID, String status) {
+		boolean success = false;
+		
+		try {
+			success = Database.updateManagerRequest(requestID, status);
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		System.out.println("Update " + (success ? "success" : "failed"));
+	}
+	
 	
 	
 	private static void printList(List list) {
