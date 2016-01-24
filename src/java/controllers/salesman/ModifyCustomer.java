@@ -8,6 +8,7 @@ package controllers.salesman;
 import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
@@ -42,7 +43,7 @@ public class ModifyCustomer extends HttpServlet {
 		
 		String errorMessage = null;
 		
-		
+		response.setContentType("application/json;charset=UTF-8");
 		
 		PrintWriter out = response.getWriter();
 		JsonWriter jsonWriter = Json.createWriter(out);
@@ -98,11 +99,26 @@ public class ModifyCustomer extends HttpServlet {
 			
 		}
 		
-		boolean success = Database.updateCustomer(taxID, firstname, lastname, birthDate, gender, familyStatus, homeAddress, bankAccountNo, personalCode, relateTaxID);
+		boolean success;
 		
-		JsonObject succesObj = Json.createObjectBuilder().add("success", "success").build();
+		try {
+			success = Database.updateCustomer(taxID, firstname, lastname, birthDate, gender, familyStatus, homeAddress, bankAccountNo, personalCode, relateTaxID);
+		} catch (IllegalArgumentException | SQLException e) {
+			JsonUtils.outputJsonError(e.getMessage(), jsonWriter);
+			return;
+		} 
 		
-		jsonWriter.writeObject(succesObj);
+		
+		JsonObject successObj;
+		
+		if (success) {
+			successObj = Json.createObjectBuilder().add("success", "success").build();
+		} else {
+			successObj = Json.createObjectBuilder().
+				add("error", "Customer with tax ID: " + taxID + " does not exist").build();
+		}
+		
+		jsonWriter.writeObject(successObj);
 		
 	}
 

@@ -27,9 +27,8 @@ public class JsonUtils {
 	 */
 	public static void outputJsonError(String errorMessage, JsonWriter jsonWriter) {
 
-		// JSON error object creation
-		JsonObjectBuilder errorObjBuilder = Json.createObjectBuilder();
-		JsonObject errorObj = errorObjBuilder.add("error", errorMessage).build();
+		JsonObject errorObj = Json.createObjectBuilder().
+			add("error", errorMessage).build();
 
 		// Write json contents to web page
 		jsonWriter.writeObject(errorObj);

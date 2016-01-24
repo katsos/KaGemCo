@@ -8,6 +8,7 @@ package test.database;
 import database.Database;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import models.User;
  * @author pgmank
  */
 public class TestDatabase {
-	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
             testUpdateCustomer(1234143423L);
 	}
         
@@ -222,7 +223,7 @@ public class TestDatabase {
 		printList(managerRequests);
 	}
 	
-	private static void testUpdateCustomer(long taxID) {
+	private static void testUpdateCustomer(long taxID) throws SQLException {
 		
 		boolean success;
 		

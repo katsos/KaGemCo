@@ -680,23 +680,26 @@ public class Database {
 	 * Updates a particular customer from the database. Passing null to the
 	 * parameters apart from the last, ignores the particular search criterion.
 	 * 
-	 * @param taxID		taxID of the customer to be updated.
-	 * @param firstname
-	 * @param lastname
-	 * @param birthDate
-	 * @param gender
-	 * @param familyStatus
-	 * @param homeAddress
-	 * @param bankAccountNo
-	 * @param personalCode
-	 * @param relateTaxID
+	 * @param taxID			taxID of the customer to be updated.
+	 * @param firstname		firstname of the customer to be updated.
+	 * @param lastname		lastname of the customer to be updated.
+	 * @param birthDate		birthDate of the customer to be updated.
+	 * @param gender		gender of the customer to be updated.
+	 * @param familyStatus	familyStatus of the customer to be updated.
+	 * @param homeAddress	homeAddress of the customer to be updated.
+	 * @param bankAccountNo	bankAccountNo of the customer to be updated.
+	 * @param personalCode	personalCode of the customer to be updated.
+	 * @param relateTaxID	relateTaxID of the customer to be updated.
 	 * 
 	 * @return  {@code true} if customer updated successfully, false if customer
-	 * to be updated does not exist or if error occurs.
+	 * to be updated does not exist.
+	 * 
+	 * @throws java.sql.SQLException If an SQL error occurs.
 	 */
     public static boolean updateCustomer(long taxID, String firstname, String lastname,
 		String birthDate, Character gender, String familyStatus, String homeAddress,
-		Long bankAccountNo, String personalCode, Long relateTaxID) {
+		Long bankAccountNo, String personalCode, Long relateTaxID) throws 
+		SQLException, IllegalArgumentException {
 			
 		String updateQuery = "UPDATE customers SET ";
 		
@@ -744,7 +747,7 @@ public class Database {
             }
             
             if(whereList.isEmpty()) {
-                throw new IllegalArgumentException("No search criteria defined");
+                throw new IllegalArgumentException("No update criteria defined");
             }
             
             // remove the extra comma and space in the end of whereList string
@@ -792,15 +795,19 @@ public class Database {
 			if (updateCount == 1) {
 				return true;
 			} else {
-				return false;
+				throw new SQLException("More than one customers with the same tax ID");
 			}
             
         } catch (SQLException e) {
             System.err.println(e);
+			
+			if(updateCount != -1) {
+				throw e;
+			}
+			throw new SQLException("Database error");
         } finally {
 			release(prepStatement);
         }
-        return false;
     }
 	
 	/**
