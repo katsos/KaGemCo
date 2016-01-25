@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.salesman;
+package controllers.manager;
 
 import database.Database;
 import java.io.IOException;
@@ -20,22 +20,19 @@ import javax.servlet.http.HttpServletResponse;
 import utils.JsonUtils;
 
 /**
- * Modify's a particular customer given his tax ID and the information to be
- * updated passed as URL parameters. For the task to succeed, taxID must be
- * defined and at least one of the other fields of the Customer entity. Otherwise
- * error is reported as a response.
+ * Changes the status of the manager request to either accepted or rejected,
+ * given two obligatory URL parameters: requestID and status. If at least one
+ * of those parameters are not passed, then an error report is returned as a
+ * response, describing the undefined parameters.
  * 
  * @author pgmank
  */
-@WebServlet(name = "modifyCustomer", urlPatterns = {"/modifyCustomer"})
-public class ModifyCustomer extends HttpServlet {
+@WebServlet(name = "HandleManagerRequest", urlPatterns = {"/HandleManagerRequest"})
+public class HandleManagerRequest extends HttpServlet {
 
 	/**
-	 * Updates a particular customer given his taxID and the information to be
-	 * updated as URL parameters. Feedback is given to the client as JSON, where
-	 * if error field is defined means that update failed and if success field
-	 * is defined means that update succeeded. The error field stores the error
-	 * message.
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
 	 *
 	 * @param request servlet request
 	 * @param response servlet response
@@ -44,7 +41,6 @@ public class ModifyCustomer extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-		
 		String errorMessage = "";
 		
 		// JSON Output Initialization
@@ -54,51 +50,44 @@ public class ModifyCustomer extends HttpServlet {
 		
 		// Parameter Initalization //
 		
-		String taxIDParam = request.getParameter("taxID");
-		Long taxID = null;
-		if (taxIDParam == null) {
-			errorMessage += "Tax ID of customer to be registered must be defined::";
-		} else {
+		String requestIDParam = request.getParameter("requestID");
+		Long requestID = null;
+		if (requestIDParam != null) {
 			try {
-				taxID = Long.valueOf(taxIDParam);
+				requestID = Long.valueOf(requestIDParam);
 			} catch (NumberFormatException e) {
-				errorMessage += "Tax ID must be an integer number::";
+				errorMessage += "Manager request ID must be an integer number" +
+					JsonUtils.ERR_DLM;
+				requestID = -1L;	// dummie value to flag invalid relateTaxID
 			}
 		}
 		
-		String firstname = request.getParameter("firstname");
-		String lastname = request.getParameter("lastname");
-		String birthDate = request.getParameter("birthDate");
-		Character gender = null;
-			String genderParam = request.getParameter("gender");
-			if(genderParam != null) {
-				gender = genderParam.charAt(0);
-			}
-		String familyStatus = request.getParameter("familyStatus");
-		String homeAddress = request.getParameter("homeAddress");
-		String bankAccountNoParam = request.getParameter("bankAccountNo");
-		Long bankAccountNo = null;
-		if(bankAccountNoParam != null) {
-			try {
-				bankAccountNo = Long.valueOf(bankAccountNoParam);
-			} catch (NumberFormatException e) {
-				errorMessage += "Bank Account number must be made of numbers::";
-			}
-		}
-		String personalCode = request.getParameter("personalCode");
-		Long relateTaxID = null;
-		String relateTaxIDParam = request.getParameter("relateTaxID");
-		if (relateTaxIDParam != null) {
-			try {
-				relateTaxID = Long.valueOf(relateTaxIDParam);
-			} catch (NumberFormatException e) {
-				errorMessage += "Relative Tax ID must be an integer number::";
-			}
-			
+		String status = request.getParameter("status");
+		
+		if ( status!=null && !status.equals("rejected") && !status.equals("accepted")) {
+			errorMessage += "Request status must either be 'rejected' or "
+				+ "'accepted'" + JsonUtils.ERR_DLM;
+				status = "dummie";	// dummie value to flag invalid relateTaxID
 		}
 		
-		// Output error message as JSON
-		if (!errorMessage.isEmpty()) {
+		// Undefined Parameters initialization
+		String undefinedParameters = "";
+		if (requestID == null) {
+			undefinedParameters += "requestID, ";
+		}
+		if (status == null) {
+			undefinedParameters += "status, ";
+		}
+		
+		// Check for undefined Parameters
+		if (!undefinedParameters.isEmpty()) {
+			// Remove extra space and comma from the end of the string
+			undefinedParameters = undefinedParameters.substring(0, undefinedParameters.length() -2);
+			errorMessage += "Parameters: " + undefinedParameters + " are undefined";
+			JsonUtils.outputJsonError(errorMessage, jsonWriter);
+			return;
+		} else if (!errorMessage.isEmpty()) {
+			// remove the extra delimeter from the end of the string
 			errorMessage = errorMessage.substring(0, errorMessage.length() -2);
 			JsonUtils.outputJsonError(errorMessage, jsonWriter);
 			return;
@@ -107,7 +96,7 @@ public class ModifyCustomer extends HttpServlet {
 		boolean success;
 		
 		try {
-			success = Database.updateCustomer(taxID, firstname, lastname, birthDate, gender, familyStatus, homeAddress, bankAccountNo, personalCode, relateTaxID);
+			success = Database.updateManagerRequest(requestID, status);
 		} catch (IllegalArgumentException | SQLException e) {
 			JsonUtils.outputJsonError(e.getMessage(), jsonWriter);
 			return;
@@ -120,11 +109,10 @@ public class ModifyCustomer extends HttpServlet {
 			successObj = Json.createObjectBuilder().add("success", "success").build();
 		} else {
 			successObj = Json.createObjectBuilder().
-				add("error", "Customer with tax ID: " + taxID + " does not exist").build();
+				add("error", "Manager request with ID: " + requestID + " does not exist").build();
 		}
 		
 		jsonWriter.writeObject(successObj);
-		
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -16,6 +16,8 @@ import javax.json.JsonWriter;
  */
 public class JsonUtils {
 	
+	public static final String ERR_DLM = "::";
+	
 	/**
 	 * Outputs an error JSON object with the given message to the given writer.
 	 * The assumption is that the error object has only one field: "error", that

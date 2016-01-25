@@ -9,9 +9,10 @@ import database.Database;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Account;
 import models.Customer;
 import models.Log;
@@ -25,10 +26,10 @@ import models.User;
  */
 public class TestDatabase {
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
-            testUpdateCustomer(1234143423L);
+            testUpdateManagerRequest(10, "accepted");
 	}
         
-	private static void basicTest() {
+	private static void basicTest() throws SQLException {
 
 		// Test getters
 
@@ -242,6 +243,65 @@ public class TestDatabase {
 		System.out.println("Update " + (success ? "success" : "failed"));
 		
 	}
+	
+	private static void testAdvancedAccountsSearch(long ownerTaxID) {
+		try {
+			printList(Database.searchAccounts(ownerTaxID));
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+	
+	private static void testGetCustomerAccountCount(long ownerTaxID) {
+		try {
+			System.out.printf("%d has %d accounts%n",
+				ownerTaxID, Database.getCustomerAccountCount(ownerTaxID));
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+	
+	private static void testUpdateAccount(long phoneNumber, double balance) {
+		
+		boolean success = false;
+		
+		try {
+			success = Database.updateAccount(phoneNumber, balance);
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		System.out.println("Update " + (success ? "success" : "failed"));
+		
+	}
+	
+	
+	private static void testRechargeAccount(long phoneNumber, double amount) {
+		
+		boolean success = false;
+		
+		try {
+			success = Database.rechargeAccount(phoneNumber, amount);
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		System.out.println("Update " + (success ? "success" : "failed"));
+		
+	}
+	
+	private static void testUpdateManagerRequest(long requestID, String status) {
+		boolean success = false;
+		
+		try {
+			success = Database.updateManagerRequest(requestID, status);
+		} catch (SQLException ex) {
+			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		System.out.println("Update " + (success ? "success" : "failed"));
+	}
+	
 	
 	
 	private static void printList(List list) {

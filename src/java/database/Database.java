@@ -374,13 +374,16 @@ public class Database {
 	 * 
 	 * @param customer Customer to be inserted
 	 * 
-	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * @return {@code true} for successful insertion, {@code false} if customer 
+	 * to be inserted already exists.
+	 * 
+	 * @throws java.sql.SQLException if database error occurs.
 	 */
-	public static boolean addCustomer(Customer customer) {
+	public static boolean addCustomer(Customer customer) throws SQLException {
 
         if (!checkConnection()) {
-            return false;
-	}
+            throw new SQLException("Database connection error");
+		}
         
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -389,7 +392,7 @@ public class Database {
             
 			String query =	"INSERT INTO customers " +
 				" (firstname, lastname, birthDate, gender, familyStatus,"
-				+ "homeAddress, taxID, bankAccountNo, personalCode, relateTaxID )" +
+				+ "homeAddress, taxID, bankAccountNo, personalCode, relateTaxID)" +
 							" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			if (customerExists(customer.getTaxID())) {
@@ -413,16 +416,16 @@ public class Database {
 			prepStatement.setString(9, customer.getPersonalCode());
 			prepStatement.setLong(10, customer.getRelateTaxID());
             prepStatement.execute();
-
-            return true;
+			
+			return true;
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
             release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	
@@ -436,11 +439,11 @@ public class Database {
 	 * @return	{@code true} if customer exists, {@code false}, if 
 	 *			customer does not exists or error occurs.
 	 */
-	public static boolean customerExists(long taxID) {
+	public static boolean customerExists(long taxID) throws SQLException {
             
         if (!checkConnection()) {
-            return false;
-	}
+            throw new SQLException("Database connection error");
+		}
 			
         PreparedStatement prepStatement = null;
         ResultSet results = null;
@@ -472,11 +475,11 @@ public class Database {
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
             release(results);
 			release(prepStatement);
         }
-        return false;
 	}
 	
 	/**
@@ -711,7 +714,7 @@ public class Database {
 		String updateQuery = "UPDATE customers SET ";
 		
         if (!checkConnection()) {
-			return false;
+			throw new SQLException("Connection error to database");
 		}
 		
         PreparedStatement prepStatement = null;
@@ -1043,17 +1046,19 @@ public class Database {
 	 * 
 	 * @param account Account to be inserted
 	 * 
-	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * @return	{@code true} for successful insertion, {@code false} if account
+	 *			already exists.
+	 * 
+	 * @throws java.sql.SQLException if database error occurs
 	 */
-	public static boolean addAccount(Account account) {
+	public static boolean addAccount(Account account) throws SQLException {
 
         if (!checkConnection()) {
-            return false;
-	}
+            throw new SQLException("Database connection error");
+		}
         
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
-
+        
         try {
             
 			String query =	"INSERT INTO accounts " +
@@ -1079,11 +1084,10 @@ public class Database {
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
-            release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	
@@ -1166,8 +1170,6 @@ public class Database {
             prepStatement.setLong(1, phoneNumber);
 			
             results = prepStatement.executeQuery();
-			
-			int count = 0;
 
 			if (results.next()) {
 				
@@ -1190,19 +1192,248 @@ public class Database {
 	}
 	
 	/**
-	 * Deletes a particular account from the database. 
+	 * Searches the accounts that a particular customer has given his tax ID.
 	 * 
-	 * @return  {@code true} if account deleted successfully, {@code false} if account to be 
-	 *			deleted does not exist or if error occurs.
-	 */
-    public static boolean deleteAccount(long phoneNumber) {
-
+	 * @param	ownerTaxID tax ID of the accounts' owner
+	 * 
+	 * @return	the list of accounts owned by the customer with the given tax ID.
+	 * 
+	 * @throws	java.sql.SQLException if database error occurs
+	 */	 
+	public static ArrayList<Account> searchAccounts(long ownerTaxID) throws SQLException {
+	
         if (!checkConnection()) {
-			return false;
+            throw new SQLException("Database connection error");
+		}
+			
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+
+        try {
+            
+			// Query that returns the number of users with the particular username
+			String query =	"SELECT * FROM accounts " +
+							"WHERE ownerTaxID=?";
+
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setLong(1, ownerTaxID);
+			
+            results = prepStatement.executeQuery();
+			
+			ArrayList<Account> accounts = new ArrayList<>();
+			
+			while (results.next()) {
+				
+				Account account = new Account();
+				
+				account.setPhoneNumber(results.getLong("phoneNumber"));
+				account.setOwnerTaxID(results.getLong("ownerTaxID"));
+				account.setBalance(results.getDouble("balance"));
+				
+				accounts.add(account);
+            }
+			
+			return accounts;
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			throw new SQLException("Database error");
+        } finally {
+            release(results);
+			release(prepStatement);
+        }
+	}
+	
+	/**
+	 * Gets the number of accounts that a particular customer has.
+	 * 
+	 * @param	ownerTaxID tax ID of the accounts' owner
+	 * 
+	 * @return	the number of accounts that a customer possesses.
+	 * 
+	 * @throws	java.sql.SQLException if database error occurs
+	 */	 
+	public static int getCustomerAccountCount(long ownerTaxID) throws SQLException {
+	
+        if (!checkConnection()) {
+            throw new SQLException("Database connection error");
+		}
+			
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+
+        try {
+            
+			// Query that returns the number of users with the particular username
+			String query =	"SELECT count(*) as count FROM accounts " +
+							"WHERE ownerTaxID=?";
+
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setLong(1, ownerTaxID);
+			
+            results = prepStatement.executeQuery();
+			
+			int count = 0;
+			
+			if (results.next()) {
+				count = results.getInt("count");
+			} else {
+				throw new SQLException("Customer with tax ID: " + ownerTaxID + 
+					" does not exist" );
+			}
+            
+			return count;
+			
+        } catch (SQLException e) {
+            System.err.println(e);
+			throw new SQLException("Database error");
+        } finally {
+            release(results);
+			release(prepStatement);
+        }
+	}
+	
+	/**
+	 * Updates a particular account from the database. 
+	 * 
+	 * @param	phoneNumber	phone number of the account to be updated
+	 * @param	balance		account's new balance
+	 * @return  {@code true} if account updated successfully, or
+	 *			{@code false} if account to be updated does not exist 
+	 * @throws java.sql.SQLException if a database error occurs
+	 */
+    public static boolean updateAccount(long phoneNumber, Double balance) 
+		throws SQLException {
+
+        String updateQuery = "UPDATE accounts SET balance=? WHERE phoneNumber=?";
+		
+        if (!checkConnection()) {
+			throw new SQLException("Connection error to database");
 		}
 		
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
+        int updateCount = -1;
+		
+		String whereList = "";
+		
+        try {
+            
+			if(!accountExists(phoneNumber)) {
+				return false;
+			}
+			
+			if (balance != null) {
+                whereList += "balance=?";
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No update criteria defined");
+            }
+            
+            prepStatement = connection.prepareStatement(updateQuery);
+            
+			prepStatement.setDouble(1, balance);
+			prepStatement.setLong(2, phoneNumber);
+            
+            updateCount = prepStatement.executeUpdate();
+			
+			// If the updated account count is 1, then update was successful.
+			if (updateCount == 1) {
+				return true;
+			} else {
+				throw new SQLException("More than one accounts with the same phone number");
+			}
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			
+			if(updateCount != -1) {
+				throw e;
+			}
+			throw new SQLException("Database error");
+        } finally {
+			release(prepStatement);
+        }
+    }
+	
+	/**
+	 * Recharge a particular account from the database. 
+	 * 
+	 * @param	phoneNumber	phone number of the account to be recharged
+	 * @param	amount		rechargeAccount amount
+	 * @return  {@code true} if account recharged successfully, or
+	 *			{@code false} if account to be recharged does not exist 
+	 * @throws java.sql.SQLException if a database error occurs
+	 */
+    public static boolean rechargeAccount(long phoneNumber, Double amount) 
+		throws SQLException {
+
+        String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE phoneNumber=?";
+		
+        if (!checkConnection()) {
+			throw new SQLException("Connection error to database");
+		}
+		
+        PreparedStatement prepStatement = null;
+        int updateCount = -1;
+		
+		String whereList = "";
+		
+        try {
+            
+			if(!accountExists(phoneNumber)) {
+				return false;
+			}
+			
+			if (amount != null) {
+                whereList += "balance=?";
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No recharge criteria defined");
+            }
+            
+            prepStatement = connection.prepareStatement(updateQuery);
+            
+			prepStatement.setDouble(1, amount);
+			prepStatement.setLong(2, phoneNumber);
+            
+            updateCount = prepStatement.executeUpdate();
+			
+			// If the updated account count is 1, then update was successful.
+			if (updateCount == 1) {
+				return true;
+			} else {
+				throw new SQLException("More than one accounts with the same phone number");
+			}
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			
+			if(updateCount != -1) {
+				throw e;
+			}
+			throw new SQLException("Database error");
+        } finally {
+			release(prepStatement);
+        }
+    }
+	
+	/**
+	 * Deletes a particular account from the database. 
+	 * 
+	 * @param	phoneNumber	phone number of the account to be deleted
+	 * @return  {@code true} if account deleted successfully, or
+	 *			{@code false} if account to be deleted does not exist 
+	 * @throws java.sql.SQLException
+	 */
+    public static boolean deleteAccount(long phoneNumber) throws SQLException {
+
+        if (!checkConnection()) {
+			throw new SQLException("Database connection error");
+		}
+		
+        PreparedStatement prepStatement = null;
 
         try {
             
@@ -1218,11 +1449,10 @@ public class Database {
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
-			release(results);
 			release(prepStatement);
         }
-		return false;
     }
 	
 	/**
@@ -1279,16 +1509,16 @@ public class Database {
 	 * 
 	 * @param managerRequest ManagerRequest to be inserted
 	 * 
-	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * @throws java.sql.SQLException  if a database error occurs
+	 * 
 	 */
-	public static boolean addManagerRequest(ManagerRequest managerRequest) {
+	public static void addManagerRequest(ManagerRequest managerRequest) throws SQLException {
 
         if (!checkConnection()) {
-			return false;
+            throw new SQLException("Database connection error");
 		}
         
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
 
         try {
             
@@ -1308,16 +1538,13 @@ public class Database {
 			prepStatement.setString(3, managerRequest.getStatus());
 			prepStatement.setString(4, managerRequest.getDescription());
             prepStatement.execute();
-
-            return true;
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Error while inserting manager request to database");
         } finally {
-            release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	
@@ -1539,6 +1766,70 @@ public class Database {
 	}
 	
 	/**
+	 * Updates a particular manager request from the database. 
+	 * 
+	 * @param requestID		ID of the manager request to be updated
+	 * @param status		manager request's new status
+	 * 
+	 * @return  {@code true} if manager request updated successfully, or
+	 *			{@code false} if manager request to be updated does not exist 
+	 * @throws java.sql.SQLException if a database error occurs
+	 */
+    public static boolean updateManagerRequest(long requestID, String status) 
+		throws SQLException {
+
+        String updateQuery = "UPDATE manager_requests SET status=? WHERE requestID=?";
+		
+        if (!checkConnection()) {
+			throw new SQLException("Connection error to database");
+		}
+		
+        PreparedStatement prepStatement = null;
+        int updateCount = -1;
+		
+		String whereList = "";
+		
+        try {
+            
+			if(!managerRequestExists(requestID)) {
+				return false;
+			}
+			
+			if (status != null) {
+                whereList += "status=?";
+            }
+            
+            if(whereList.isEmpty()) {
+                throw new IllegalArgumentException("No update criteria defined");
+            }
+            
+            prepStatement = connection.prepareStatement(updateQuery);
+            
+			prepStatement.setString(1, status);
+			prepStatement.setLong(2, requestID);
+            
+            updateCount = prepStatement.executeUpdate();
+			
+			// If the updated account count is 1, then update was successful.
+			if (updateCount == 1) {
+				return true;
+			} else {
+				throw new SQLException("More than one requestIDs with the same ID");
+			}
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+			
+			if(updateCount != -1) {
+				throw e;
+			}
+			throw new SQLException("Database error");
+        } finally {
+			release(prepStatement);
+        }
+    }
+	
+	/**
 	 * Deletes a particular manager request from the database. 
 	 * 
 	 * @param requestID request ID of the manager request to be deleted
@@ -1628,15 +1919,16 @@ public class Database {
 	 * @param transaction {@link models.Transaction} to be inserted
 	 * 
 	 * @return {@code true} for successful insertion, {@code false} if error occurred.
+	 * 
+	 * @throws java.sql.SQLException if database error occurs
 	 */
-	public static boolean addTransaction(Transaction transaction) {
+	public static void addTransaction(Transaction transaction) throws SQLException {
 
         if (!checkConnection()) {
-			return false;
+			throw new SQLException("Database connection error");
 		}
         
         PreparedStatement prepStatement = null;
-        ResultSet results = null;
 
         try {
             
@@ -1653,15 +1945,13 @@ public class Database {
 			prepStatement.setDouble(2, transaction.getMerit());
             prepStatement.execute();
 
-            return true;
             
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
-            release(results);
 			release(prepStatement);
         }
-        return false;
     }
 	
 	
@@ -2280,8 +2570,8 @@ public class Database {
         return false;
     }
 	
-	public void close() throws SQLException {
-		connection.close();
+	public static void close() throws SQLException {
+		if (connection != null) connection.close();
 	}
 	
 	/**
