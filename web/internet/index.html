@@ -1,143 +1,168 @@
 <!DOCTYPE html>
 <html lang="el, en">
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KaGemCo Telecommunications">
-    <meta name="author" content="Nikos Katsos">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="KaGemCo Telecommunications">
+        <meta name="author" content="Nikos Katsos">
 
-    <title>KaGemCo</title>
+        <title>KaGemCo</title>
 
-    <!-- redirect user if javascript is not enabled -->
-    <noscript>
-      <meta http-equiv="refresh" content="0; url=./enable-js.html">
-    </noscript>
+        <!-- redirect user if javascript is not enabled -->
+        <noscript>
+        <meta http-equiv="refresh" content="0; url=./enable-js.html">
+        </noscript>
 
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
-    <script src="js/user.js" async></script>
+        <script src="js/user.js" async></script>
 
-</head>
+    </head>
 
-<!-- #page-top ID for the scrolling feature
-     the data-spy and data-target for the Bootstrap scrollspy function -->
+    <!-- #page-top ID for the scrolling feature
+         the data-spy and data-target for the Bootstrap scrollspy function -->
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
-    <nav class="navbar navbar-default navbar-static-top top-nav-collapse" role="navigation">
-        <div class="container">
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand page-scroll" href="./index.html">KaGemCo</a>
+        <nav class="navbar navbar-default navbar-static-top top-nav-collapse" role="navigation">
+            <div class="container">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="./index.html">KaGemCo</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                        <li class="hidden">
+                            <a class="page-scroll" href="#intro"></a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#services">Υπηρεσίες</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#donation">Δωρεά</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#newsletter">Newsletter</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#contact">Επικοινωνία</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="login">
+                            <a href="./login.html">Σύνδεση</a>
+                        </li>
+                        <li id="username">
+                            <a href="#">Όνομα Χρήστη</a>
+                        </li>
+                        <li id="logout">
+                            <a href="#" onclick="onLogout();
+                                    return false;">Αποσύνδεση</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
             </div>
+            <!-- /.container -->
+        </nav>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                    <li class="hidden">
-                      <a class="page-scroll" href="#intro"></a>
-                    </li>
-                    <li>
-                      <a class="page-scroll" href="#services">Υπηρεσίες</a>
-                    </li>
-          					<li>
-          					  <a class="page-scroll" href="#donation">Δωρεά</a>
-          					</li>
-                    <li>
-                      <a class="page-scroll" href="#contact">Επικοινωνία</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                  <li id="login">
-                    <a href="./login.html">Σύνδεση</a>
-                  </li>
-                  <li id="username">
-                    <a href="#">Όνομα Χρήστη</a>
-                  </li>
-									<li id="logout">
-										<a href="#" onclick="onLogout(); return false;">Αποσύνδεση</a>
-									</li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-      <section id="intro" class="scroll-section odd">
-          <div class="container jumbotron">
-              <div class="row">
-                  <div class="col-lg-12">
-                    <h1> KG - Όπως λέμε οικονομία και επικοινωνία. </h1>
-  					         <p> mpla mpla mpla kai sou pa mou pes tou eipes kai tis sou eipa.
-  					         </p>
-                  </div>
-              </div>
-          </div>
-          <a class="btn btn-default btn-circle btn-lg page-scroll" href="#services">
-            <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
-          </a>
-      </section>
-
-      <section id="services" class="scroll-section even">
-          <div class="container jumbotron">
-              <div class="row">
-                  <div class="col-lg-12">
-                    <h1> Υπηρεσίες για όλες τις ανάγκες. </h1>
-  					         <p> mpla mpla mpla kai sou pa mou pes tou eipes kai tis sou eipa.
-  					         </p>
-                  </div>
-              </div>
-          </div>
-          <a class="btn btn-default btn-circle btn-lg page-scroll" href="#donation">
-            <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
-          </a>
-      </section>
-
-      <section id="donation" class="scroll-section odd">
-          <div class="container jumbotron">
-              <div class="row">
-                  <div class="col-lg-12">
-                    <h1> Κάνε την καλή για να σου γίνει η καλή. </h1>
-  					         <p> mpla mpla mpla kai sou pa mou pes tou eipes kai tis sou eipa.
-  					         </p>
-                  </div>
-              </div>
-          </div>
-          <a class="btn btn-default btn-circle btn-lg page-scroll" href="#contact">
-            <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
-          </a>
-      </section>
-
-      <section id="contact" class="scroll-section even">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Contact Section</h1>
+        <section id="intro" class="scroll-section odd">
+            <div class="container jumbotron">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1> KG - Όπως λέμε οικονομία και επικοινωνία. </h1>
+                        <p> mpla mpla mpla kai sou pa mou pes tou eipes kai tis sou eipa.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-      </section>
+            <a class="btn btn-default btn-circle btn-lg page-scroll" href="#services">
+                <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
+            </a>
+        </section>
 
-			<a id="to-top" class="btn btn-default page-scroll" href="#page-top">
-  			<span class="glyphicon glyphicon-arrow-up"></span>
-			</a>
+        <section id="services" class="scroll-section even">
+            <div class="container jumbotron">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1> Υπηρεσίες για όλες τις ανάγκες. </h1>
+                        <p> mpla mpla mpla kai sou pa mou pes tou eipes kai tis sou eipa.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-default btn-circle btn-lg page-scroll" href="#donation">
+                <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
+            </a>
+        </section>
+
+        <section id="donation" class="scroll-section odd">
+            <div class="container jumbotron">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1> Κάνε την καλή για να σου γίνει η καλή. </h1>
+                        <p> mpla mpla mpla kai sou pa mou pes tou eipes kai tis sou eipa.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-default btn-circle btn-lg page-scroll" href="#contact">
+                <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
+            </a>
+        </section>
+
+        <section id="newsletter" class="scroll-section odd">
+            <div class="container jumbotron">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h1> Ενημερωθείτε πρώτη για όλες τις νέες προσφορές. </h1>
+                        <p> Ενημερωθείτε πρώτοι για όλες τις νέες προσφορές. </p>
+                    </div>
+                    <div class="col-lg-3 jumbotron">
+                        <form onsubmit="onSignupNewsletter(); return false;">
+                            <input type="email" id="email-newsletter" placeholder="E-mail">
+                            <input type="submit" value="Εγγραφφή">
+                        </form>
+                        <p id="info-newsletter"> </p>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-default btn-circle btn-lg page-scroll" href="#contact">
+                <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
+            </a>
+        </section>
+        
+        <section id="contact" class="scroll-section even">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Contact Section</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <a id="to-top" class="btn btn-default page-scroll" href="#page-top">
+            <span class="glyphicon glyphicon-arrow-up"></span>
+        </a>
 
 <scripts>
     <script src="js/jquery.js"></script>
