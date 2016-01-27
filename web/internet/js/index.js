@@ -1,16 +1,13 @@
 window.onload = function () {
 
-    var username = searchForKey("username");
-    var login = document.getElementById('login');
-    var logout = document.getElementById('logout');
-    var username_li = document.getElementById('username');
+    var username = searchForKey('username');
 
     /* Check username */
     if (username == '') {
-        username_li.style.display = 'none';
-        logout.style.display = 'none';
+        $('#username').hide();
+        $('#logout').hide();
     } else {
-        login.style.display = 'none';
+        $('#login').hide();
         updateMyAccountAnchor(username, username_li);
     }
 
@@ -85,3 +82,28 @@ function onSignupNewsletter() {
     xmlhttp.send();
     
 }
+
+/* Scrolling-nav effect */ // requires jQuery Easing plugin
+var heightOfToTop = 720;
+var fadeDuration = 800;
+
+$(function() {
+    $('a.page-scroll').bind('click', function (event) {
+        var $anchor = $(this);
+        $('html, body').stop().animate({
+            scrollTop: $($anchor.attr('href')).offset().top
+        }, 1500, 'easeInOutExpo');
+        event.preventDefault();
+    });
+});
+
+/* */
+$(window).scroll(function () {
+    var scrolledPixels = $(window).scrollTop();
+
+    if (scrolledPixels > heightOfToTop) {
+        $('#to-top').fadeIn(fadeDuration);
+    } else {
+        $('#to-top').fadeOut(fadeDuration);
+    }
+});

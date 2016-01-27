@@ -52,6 +52,10 @@
         <servlet-name>AddEmailToNewsletter</servlet-name>
         <servlet-class>controllers.internet.AddEmailToNewsletter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckInternetLoginCredentials</servlet-name>
+        <servlet-class>controllers.internet.CheckInternetLoginCredentials</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CheckLoginCredentials</servlet-name>
         <url-pattern>/CheckLoginCredentials</url-pattern>
@@ -103,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>AddEmailToNewsletter</servlet-name>
         <url-pattern>/AddEmailToNewsletter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckInternetLoginCredentials</servlet-name>
+        <url-pattern>/CheckInternetLoginCredentials</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

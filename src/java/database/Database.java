@@ -29,7 +29,7 @@ import models.User;
  */
 public class Database {
 
-	// Fields //
+    // Fields //
     private static final String ip = "62.217.125.30";
     private static final String port = "3306";
     private static final String url = "jdbc:mysql://" + ip + ":" + port + "/";
@@ -40,7 +40,7 @@ public class Database {
     private static final String password = "changeit";
     private static Connection connection = null;
 
-	// Methods //
+    // Methods //
     /**
      * Initializes a connection to the Database. This methods is called in the
      * beggining of every other method that executes transactions with the
@@ -2588,10 +2588,8 @@ public class Database {
 
             String query = "INSERT INTO newsletter (email) VALUES (?)";
 
-            /*
-             * if ( emailExists(email) ) return false;
-             */
-            
+            /* Doesn't needed because email is primary key in newsletter table */
+            /* if ( emailExists(email) ) return false; */
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, email);
             prepStatement.execute();
@@ -2606,4 +2604,40 @@ public class Database {
             release(prepStatement);
         }
     }
+
+    public static boolean authenticateCustomer(String username, String password) {
+
+        if (!checkConnection()) {
+            return false;
+        }
+
+        PreparedStatement prepStatement = null;
+        ResultSet results = null;
+        
+        try {
+
+            prepStatement = connection.prepareStatement("SELECT username FROM customers_online WHERE username=? AND password=?");
+            prepStatement.setString(1, username);
+            prepStatement.setString(2, password);
+            
+            results = prepStatement.executeQuery();
+            
+            while (results.next()) {
+                /* requested username is the same with the username of result */
+                if ( results.getString("username").equals(username) )
+                    return true;  
+            }
+            
+            return false;
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+            release(results);
+            release(prepStatement);
+        }
+
+        return false;
+    }
+
 }
