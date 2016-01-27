@@ -72,8 +72,10 @@ function onSignupNewsletter() {
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-            alert('Η εγγραφή σας στο newsletter της KaGemCo πραγματοποιήθηκες με επιτυχία.');
-
+            if ( response == 'success' )
+                alert('Η εγγραφή σας στο newsletter της KaGemCo πραγματοποιήθηκες με επιτυχία.');
+            else
+                alert('Η εγγραφή σας είναι αδύνατη αυτή τη στιγμή. Παρακαλώ δοκιμάστε αργότερα.');
         }
     };
 
