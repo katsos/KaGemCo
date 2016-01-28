@@ -30,6 +30,19 @@
     </head>
     <body id="my-account">
 
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="./index.html">KaGemCo</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="logout">
+                        <a href="#" onclick="onLogout(); return false;">Αποσύνδεση</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
         <main class="container jumbotron">
             <div class="row">
 
@@ -77,7 +90,8 @@
 
                     <h4> Ανανέωση χρόνου ομιλίας </h4>
 
-                    <form onsubmit="onRecharge(); return false;">
+                    <form onsubmit="onRecharge();
+                            return false;">
                         <table>
                             <tr>
                                 <td>Αριθμός τηλεφώνου:</td>

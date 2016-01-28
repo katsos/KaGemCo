@@ -19,11 +19,6 @@ body#my-account main {
 
 body#my-account main table {
     background: rgb( 240, 240, 240);
-    border-radius: 5px;
-}
-
-body#my-account main>*>* {
-    padding: 20px;
 }
 
 .glyphicon {

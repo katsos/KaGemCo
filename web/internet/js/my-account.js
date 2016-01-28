@@ -99,3 +99,9 @@ function onRecharge() {
     });
 
 }
+
+function onLogout() {
+    
+    document.cookie += '; Expires = Thu, 01-Jan-1970 00:00:01 GMT;';
+    window.location = './login.html'
+}
