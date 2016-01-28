@@ -1,24 +1,24 @@
+var username;
+
 window.onload = function () {
 
-    var username = searchForKey('username');
-
+    username = searchForKey('username');
+    
     /* Check username */
-    if (username == '') {
+    if (username.length < 1) {
         $('#username').hide();
         $('#logout').hide();
     } else {
         $('#login').hide();
-        updateMyAccountAnchor(username, username_li);
+        updateMyAccountAnchor();
     }
 
-}
+};
 
-function updateMyAccountAnchor(username, username_li) {
+function updateMyAccountAnchor() {
 
-    anchors = username_li.getElementsByTagName('a');
-    username_a = anchors[0];
-    username_a.href = "./my-account.html?username=" + username;
-    username_a.innerHTML = username;
+    $('#username a').attr( 'href', './my-account.html?username='+username );
+    $('#username a').text(username);
 
 }
 
@@ -27,7 +27,7 @@ function clearCookie() {
 }
 
 function addCookie(key, value) {
-    document.cookie += key + '=' + value + ';';
+    document.cookie += ';' + key + '=' + value + ';';
 }
 function expireAfterClosure() {
     addCookie('Expires', 'Thu, 01-Jan-1970 00:00:01 GMT');
@@ -50,6 +50,11 @@ function searchForKey(givenKey) {
     }
 
     return '';
+}
+
+function onLogout() {
+    expireAfterClosure();
+    window.location = './index.html';
 }
 
 function onSignupNewsletter() {
