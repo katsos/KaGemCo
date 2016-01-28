@@ -13,7 +13,7 @@ function onLogin() {
             
             if ( response == 'success' ){
                 document.cookie = 'username='+username+';';
-                window.location = './index.html';
+                window.location = './my-account.html';
             } else
                 alert('Μη αποδεκτά στοιχεία σύνδεσης.');
         }

@@ -10,21 +10,10 @@ window.onload = function () {
         $('#logout').hide();
     } else {
         $('#login').hide();
-        updateMyAccountAnchor();
+        $('#username a').text(username);
     }
 
 };
-
-function updateMyAccountAnchor() {
-
-    $('#username a').attr( 'href', './my-account.html?username='+username );
-    $('#username a').text(username);
-
-}
-
-function clearCookie() {
-    document.cookie = '';
-}
 
 function addCookie(key, value) {
     document.cookie += ';' + key + '=' + value + ';';
