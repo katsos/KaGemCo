@@ -1,79 +1,101 @@
 <!DOCTYPE html>
 <html lang="el, en">
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KaGemCo Telecommunications">
-    <meta name="author" content="Nikos Katsos">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="KaGemCo Telecommunications">
+        <meta name="author" content="Nikos Katsos">
 
-    <title>KaGemCo</title>
+        <title>KaGemCo</title>
 
-    <!-- redirect user if javascript is not enabled -->
-    <noscript>
-      <meta http-equiv="refresh" content="0; url=./enable-js.html" />;
-    </noscript>
+        <!-- redirect user if javascript is not enabled -->
+        <noscript>
+        <meta http-equiv="refresh" content="0; url=./enable-js.html" />;
+        </noscript>
 
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="js/my-account.js"></script>
-</head>
-<body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="js/my-account.js"></script>
+    </head>
+    <body id="my-account">
 
-  <main class="container">
-    <table class="table-bordered row">
-      <tr>
-        <th> Ψευδώνυμο </th>
-        <td id="username"> </td>
-      </tr>
-      <tr>
-        <th> Ε-mail </th>
-        <td id="email"> </td>
-      </tr>
-      <tr>
-        <th> Υπόλοιπο </th>
-        <td id="credits"> </td>
-      </tr>
-      <tr>
-        <th> Όνομα </th>
-        <td id="name"> </td>
-      </tr>
-      <tr>
-        <th> Επίθετο </th>
-        <td id="surname"> </td>
-      </tr>
-      <tr>
-        <th> ΑΦΜ </th>
-        <td id="taxID"> </td>
-      </tr>
-      <tr>
-        <th> Αρ. Λογαρ. Τραπέζης </th>
-        <td id="bankAccount"> </td>
-      </tr>
-      <tr>
-    </table>
-      
-      <form class="row" onsubmit="onRecharge(); return false;">
-          <h4> Ανανέωση λογιαριασμού </h4>
-          <span> Αριθμός τηλεφώνου: </span>
-          <input type="number" id="phone-number" required>
-          <br>
-          <span> Ποσό πίστωσης: </span>
-          <input type="number" id="amount" required>
-          <br>
-          <input type="submit" value="Ανανέωση">
-      </form>
-  </main>
+        <main class="container jumbotron">
+            <div class="row">
 
-</body>
+                <div class="col-lg-offset-4 col-lg-4">
+
+                    <h4> Στοιχεία Λογαριασμού </h4>
+
+                    <table class="table-bordered">
+                        <tr>
+                            <th> Ψευδώνυμο </th>
+                            <td id="username"> </td>
+                        </tr>
+                        <tr>
+                            <th> Ε-mail </th>
+                            <td id="email"> </td>
+                        </tr>
+                        <tr>
+                            <th> Υπόλοιπο </th>
+                            <td id="credits"> </td>
+                        </tr>
+                        <tr>
+                            <th> Όνομα </th>
+                            <td id="name"> </td>
+                        </tr>
+                        <tr>
+                            <th> Επίθετο </th>
+                            <td id="surname"> </td>
+                        </tr>
+                        <tr>
+                            <th> ΑΦΜ </th>
+                            <td id="taxID"> </td>
+                        </tr>
+                        <tr>
+                            <th> Αρ. Λογαρ. Τραπέζης </th>
+                            <td id="bankAccount"> </td>
+                        </tr>
+                        <tr>
+                    </table>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-offset-4 col-lg-4">
+
+                    <h4> Ανανέωση χρόνου ομιλίας </h4>
+
+                    <form onsubmit="onRecharge(); return false;">
+                        <table>
+                            <tr>
+                                <td>Αριθμός τηλεφώνου:</td>
+                                <td><input type="number" id="phone-number" required></td>
+                            </tr>
+                            <tr>
+                                <td>Ποσό πίστωσης: </td>
+                                <td><input type="number" id="amount" required></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Ανανέωση"></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+    </body>
 </html>
