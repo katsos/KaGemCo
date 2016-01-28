@@ -8,8 +8,12 @@ package controllers.internet;
 import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -18,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Account;
 import models.Customer;
 import models.CustomerOnline;
 
@@ -40,27 +45,32 @@ public class GetCustomer extends HttpServlet {
             throws ServletException, IOException {
 
         String username = request.getParameter("username");
-
-        //CustomerOnline customer = Database.getCustomer(username);
         JsonObject json = null;
+        CustomerOnline customer = null;
+        ArrayList<Account> accounts = null;
 
-        if ( false ) {
+        try {
+            
+            customer = Database.searchCustomerOnline(username);
+            accounts = Database.searchAccounts(customer.getTaxID());
+
+            // fill json
+            
+        } catch (SQLException ex) {
+
+            System.err.println(ex);
 
             json = Json.createObjectBuilder()
-                    .add("error", "failure")
+                    .add("error", ex.toString())
                 .build();
 
-        } else {
+        } finally {
+            
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().print(json);
 
-            json = Json.createObjectBuilder()
-                    .add("error", "")
-                    .add("username", username)
-                    .add("email", "nikoskeyz@gmail.com")
-                .build();
         }
 
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print(json);
 
     }
 

@@ -10,6 +10,7 @@ package models;
  * @author pgmank
  */
 public class Account {
+    
 	private long phoneNumber;
 	private long ownerTaxID;
 	private double balance;

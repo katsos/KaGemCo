@@ -58,8 +58,6 @@ function displayData() {
 
         $('#username')
                 .text(customer.username);
-        $('#email')
-                .text(customer.email);
         $('#credits')
                 .text(customer.credits + ' €');
         $('#name')
