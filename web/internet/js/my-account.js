@@ -1,14 +1,5 @@
 var cUsername; // username from cookie
-
-/* Customer data */
-var username;
-var email;
-var credits;
-var name;
-var surname;
-var taxID;
-var bankAccount;
-/* /Customer data */
+var customer;
 
 window.onload = function() {
 
@@ -21,23 +12,10 @@ window.onload = function() {
     
     /* Pull data for cookie's username */
     pullData();
-
-    /* Display pulled data into table */
+    
     displayData();
 
 };
-
-function displayData() {
-    
-    $('#username').text(username);
-    $('#email').text(email);
-    $('#credits').text(credits + '$');
-    $('#name').text(name);
-    $('#surname').text(surname);
-    $('#taxID').text(taxID);
-    $('#bankAccount').text(bankAccount);
-    
-}
 
 function searchForKey(givenKey) {
     // remove all spaces
@@ -61,22 +39,38 @@ function searchForKey(givenKey) {
 
 function pullData() {
     
-    var xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.onreadystatechange = function () {
-
-        var response = xmlhttp.responseText;
-
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-            // my code here
-
+    $.ajax({
+      type: "POST",
+      url: "../GetCustomer?username="+cUsername,
+      async: false, 
+      dataType: "json",
+      success : 
+        function(data) {
+             customer = data;
         }
-    };
+    });
+    
+}
 
-    var uri = "../GetCustomer?username="+cUsername;
-
-    xmlhttp.open("POST", uri, true);
-    xmlhttp.send();
+function displayData() {
+    alert(customer.error.length);
+    if ( customer.error.length < 1 ) {
+    
+        $('#username')
+                .text(customer.username);
+        $('#email')
+                .text(customer.email);
+        $('#credits')
+                .text(customer.credits + '$');
+        $('#name')
+                .text(customer.name);
+        $('#surname')
+                .text(customer.surname);
+        $('#taxID')
+                .text(customer.taxID);
+        $('#bankAccount')
+                .text(customer.bankAccount);
+        
+    }
     
 }

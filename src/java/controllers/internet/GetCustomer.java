@@ -3,30 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.admin;
+package controllers.internet;
 
 import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Customer;
 import models.CustomerOnline;
 
 /**
  *
- * @author it21309
+ * @author dsupport
  */
-@WebServlet(name = "getCustomersOnline", urlPatterns = {"/getCustomersOnline"})
-public class GetCustomersOnline extends HttpServlet {
+public class GetCustomer extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,38 +38,29 @@ public class GetCustomersOnline extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<CustomerOnline> customersOnline;
-        customersOnline = Database.getCustomersOnline();
 
-        response.setContentType("application/json;charset=UTF-8");
+        String username = request.getParameter("username");
 
-        PrintWriter out = response.getWriter();
+        //CustomerOnline customer = Database.getCustomer(username);
+        JsonObject json = null;
 
-        JsonArrayBuilder rootArray = Json.createArrayBuilder();
+        if ( false ) {
 
-        for (CustomerOnline customerOnline : customersOnline) {
+            json = Json.createObjectBuilder()
+                    .add("error", "failure")
+                .build();
 
-            // Object that holds one manager request's information
-            JsonObjectBuilder mrequestObj = Json.createObjectBuilder();
+        } else {
 
-            // Fill object with manager request data
-            mrequestObj
-                    .add("username", customerOnline.getUsername())
-                    .add("taxID", customerOnline.getTaxID())
-                    .add("role", customerOnline.getRole())
-                    .add("regDate", customerOnline.getRegDate());
-
-            // Add manager request json object to root array
-            rootArray.add(mrequestObj);
+            json = Json.createObjectBuilder()
+                    .add("error", "")
+                    .add("username", username)
+                    .add("email", "nikoskeyz@gmail.com")
+                .build();
         }
 
-        JsonArray jsonArray = rootArray.build();
-
-        // Attach jsonWriter to out PrintWriter
-        JsonWriter jsonWriter = Json.createWriter(out);
-
-        // Write json contents to web page
-        jsonWriter.writeArray(jsonArray);
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().print(json);
 
     }
 

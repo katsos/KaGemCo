@@ -2640,4 +2640,8 @@ public class Database {
         return false;
     }
 
+    public static CustomerOnline getCustomer(String username) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

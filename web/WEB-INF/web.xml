@@ -56,6 +56,10 @@
         <servlet-name>CheckInternetLoginCredentials</servlet-name>
         <servlet-class>controllers.internet.CheckInternetLoginCredentials</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetCustomer</servlet-name>
+        <servlet-class>controllers.internet.GetCustomer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CheckLoginCredentials</servlet-name>
         <url-pattern>/CheckLoginCredentials</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>CheckInternetLoginCredentials</servlet-name>
         <url-pattern>/CheckInternetLoginCredentials</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCustomer</servlet-name>
+        <url-pattern>/GetCustomer</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
