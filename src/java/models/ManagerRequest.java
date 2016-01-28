@@ -16,6 +16,12 @@ public class ManagerRequest {
 	private String salesmanUsername;
 	
 	private String managerUsername;
+	
+	private long customerTaxID;
+	
+	private long requestedPhoneNumber;
+	
+	private int phoneNumberCount;
 
 	private String status;
 	
@@ -39,7 +45,28 @@ public class ManagerRequest {
 		this.status = status;
 		this.description = description;
 	}
+
+	public ManagerRequest(long requestID, String salesmanUsername, String managerUsername, long customerTaxID, long requestedPhoneNumber, int phoneNumberCount, String status, String description) {
+		this.requestID = requestID;
+		this.salesmanUsername = salesmanUsername;
+		this.managerUsername = managerUsername;
+		this.customerTaxID = customerTaxID;
+		this.requestedPhoneNumber = requestedPhoneNumber;
+		this.phoneNumberCount = phoneNumberCount;
+		this.status = status;
+		this.description = description;
+	}
 	
+	public ManagerRequest(String salesmanUsername, String managerUsername, long customerTaxID, long requestedPhoneNumber, int phoneNumberCount, String status, String description) {
+		this.requestID = -1;
+		this.salesmanUsername = salesmanUsername;
+		this.managerUsername = managerUsername;
+		this.customerTaxID = customerTaxID;
+		this.requestedPhoneNumber = requestedPhoneNumber;
+		this.phoneNumberCount = phoneNumberCount;
+		this.status = status;
+		this.description = description;
+	}
 	
 	
 	
@@ -76,7 +103,11 @@ public class ManagerRequest {
 	 * @param managerUsername new value of managerUsername
 	 */
 	public void setManagerUsername(String managerUsername) {
-		this.managerUsername = managerUsername;
+		if (managerUsername != null) {
+			this.managerUsername = managerUsername;
+		} else {
+			this.managerUsername = "null";
+		}
 	}
 	
 	/**
@@ -146,16 +177,40 @@ public class ManagerRequest {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		if (description != null) {
+			this.description = description;
+		} else {
+			this.description = "null";
+		}
+		
 	}
-	
-	
+
+	public long getCustomerTaxID() {
+		return customerTaxID;
+	}
+
+	public void setCustomerTaxID(long customerTaxID) {
+		this.customerTaxID = customerTaxID;
+	}
+
+	public long getRequestedPhoneNumber() {
+		return requestedPhoneNumber;
+	}
+
+	public void setRequestedPhoneNumber(long requestedPhoneNumber) {
+		this.requestedPhoneNumber = requestedPhoneNumber;
+	}
+
+	public int getPhoneNumberCount() {
+		return phoneNumberCount;
+	}
+
+	public void setPhoneNumberCount(int phoneNumberCount) {
+		this.phoneNumberCount = phoneNumberCount;
+	}
 
 	@Override
 	public String toString() {
-		return "ManagerRequest{" + "requestID=" + requestID + "salesmanUsername=" + salesmanUsername + ", managerUsername=" + managerUsername + ", status=" + status + ", description=" + description + '}';
+		return "ManagerRequest{" + "requestID=" + requestID + ", salesmanUsername=" + salesmanUsername + ", managerUsername=" + managerUsername + ", customerTaxID=" + customerTaxID + ", requestedPhoneNumber=" + requestedPhoneNumber + ", phoneNumberCount=" + phoneNumberCount + ", status=" + status + ", description=" + description + '}';
 	}
-	
-	
-
 }

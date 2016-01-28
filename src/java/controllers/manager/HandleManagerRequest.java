@@ -6,6 +6,7 @@
 package controllers.manager;
 
 import database.Database;
+import enums.Access;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import utils.JsonUtils;
+import utils.Report;
+import utils.WebUtils;
 
 /**
  * Changes the status of the manager request to either accepted or rejected,
@@ -47,6 +50,10 @@ public class HandleManagerRequest extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		JsonWriter jsonWriter = Json.createWriter(out);
+		Report report = new Report(jsonWriter, request);
+		
+		// Check Role Permissions and report if access denied
+		if (report.jsonAccess("manager")) return;
 		
 		// Parameter Initalization //
 		
@@ -96,11 +103,14 @@ public class HandleManagerRequest extends HttpServlet {
 		boolean success;
 		
 		try {
-			success = Database.updateManagerRequest(requestID, status);
+			
+			String managerUsername = WebUtils.getCookie("username", request).getValue();
+			success = Database.updateManagerRequest(
+				requestID, null, managerUsername, null, null, null, status, null);
 		} catch (IllegalArgumentException | SQLException e) {
 			JsonUtils.outputJsonError(e.getMessage(), jsonWriter);
 			return;
-		} 
+		}
 		
 		
 		JsonObject successObj;

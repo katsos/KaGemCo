@@ -11,7 +11,7 @@ public class Customer {
     private long taxID;
     private long bankAccountNo;
     private String personalCode;
-    private long relateTaxID;
+	private long relateTaxID;
 
     public Customer() {
         this.firstname = null;
@@ -25,11 +25,11 @@ public class Customer {
         this.personalCode = null;
     }
 
-    public Customer(String firstname, String lastname, String birthDate, char gender,
-            String familyStatus, String homeAddress, long taxID, long bankAccountNo,
-            String personalCode, long relatetaxID) {
-        
-        this.firstname = firstname;
+    public Customer(String firstname, String lastname, String birthDate, char gender, 
+		String familyStatus, String homeAddress, long taxID, long bankAccountNo,
+		String personalCode, long relatetaxID)
+	{    
+		this.firstname = firstname;
         this.lastname = lastname;
         this.birthDate = birthDate;
         this.gender = gender;
@@ -38,7 +38,7 @@ public class Customer {
         this.taxID = taxID;
         this.bankAccountNo = bankAccountNo;
         this.personalCode = personalCode;
-        this.relateTaxID = relatetaxID;
+		this.relateTaxID = relatetaxID;
     }
 
     public String getFirstname() {
@@ -113,17 +113,19 @@ public class Customer {
         this.personalCode = personalCode;
     }
 
-    public long getRelateTaxID() {
-        return relateTaxID;
-    }
+	public long getRelateTaxID() {
+		return relateTaxID;
+	}
 
-    public void setRelateTaxID(long relatetaxID) {
-        this.relateTaxID = relatetaxID;
-    }
+	public void setRelateTaxID(long relatetaxID) {
+		this.relateTaxID = relatetaxID;
+	}
 
-    @Override
-    public String toString() {
-        return "Customer{" + "firstname=" + firstname + ", lastname=" + lastname + ", birthDate=" + birthDate + ", gender=" + gender + ", familyStatus=" + familyStatus + ", homeAddress=" + homeAddress + ", taxID=" + taxID + ", bankAccountNo=" + bankAccountNo + ", personalCode=" + personalCode + ", relatetaxID=" + relateTaxID + '}';
-    }
-
+	@Override
+	public String toString() {
+		return "Customer{" + "firstname=" + firstname + ", lastname=" + lastname + ", birthDate=" + birthDate + ", gender=" + gender + ", familyStatus=" + familyStatus + ", homeAddress=" + homeAddress + ", taxID=" + taxID + ", bankAccountNo=" + bankAccountNo + ", personalCode=" + personalCode + ", relatetaxID=" + relateTaxID + '}';
+	}
+	
+	
+	
 }

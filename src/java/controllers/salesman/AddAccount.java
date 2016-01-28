@@ -9,6 +9,7 @@ import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonWriter;
 import javax.servlet.ServletException;
@@ -17,7 +18,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Account;
+import models.ManagerRequest;
 import utils.JsonUtils;
+import utils.Report;
+import utils.WebUtils;
 
 /**
  * Adds a new account given the phone number, the owner's tax ID and the initial
@@ -47,6 +51,10 @@ public class AddAccount extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		JsonWriter jsonWriter = Json.createWriter(out);
+		Report report = new Report(jsonWriter, request);
+		
+		if (report.jsonAccess("salesman")) return;
+		
 		
 		String ownerTaxIDParam = request.getParameter("ownerTaxID");
 		Long ownerTaxID = null;
@@ -116,20 +124,33 @@ public class AddAccount extends HttpServlet {
 			return;
 		}
 		
+		// Adding a 6th or greater phone number
 		try {
 			int count = Database.getCustomerAccountCount(ownerTaxID);
 			if (count >= 6) {
+				ManagerRequest managerRequest;
 				
-				/** 
-				 * TODO:
-				 * Check if request has been sent for 7th or more phone number
-				 * Must redesign database to add fields applicantsTaxID and
-				 * applicantsPhoneNumber.
-				 */ 
+				if (isDuplicateRequest(ownerTaxID, phoneNumber)) {
+					JsonUtils.outputJsonInfo("Request to manager for number: " +
+						phoneNumber + " has already been sent", jsonWriter);
+					return;
+				}
 				
-				JsonUtils.outputJsonError("Customer already has " + count +
-					"accounts. In order to add a 7th phone number, please"
-					+ "send a request to the manager", jsonWriter);
+				// If there is not an accepted request, proceed sending a new one
+				if (!isAcceptedRequest(ownerTaxID, phoneNumber)) {
+					String salesmanUsername = WebUtils.getCookie("username", request).getValue();
+					managerRequest = new ManagerRequest(
+					salesmanUsername, null, ownerTaxID, phoneNumber, count, "pending", null);
+
+					Database.addManagerRequest(managerRequest);
+					JsonUtils.outputJsonInfo("Request sent to manager", jsonWriter);
+					return;
+	//				JsonUtils.outputJsonError("Customer already has " + count +
+	//					"accounts. In order to add a 7th phone number, please" +
+	//					"send a request to the manager", jsonWriter);
+				}
+				
+				
 			}
 		} catch (SQLException ex) {
 			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
@@ -163,6 +184,32 @@ public class AddAccount extends HttpServlet {
 			JsonUtils.outputJsonError("Phone number: " + phoneNumber + " already exists", jsonWriter);
 		}
 		
+	}
+	
+	/**
+	 * Checks if there is a pending request for the particular phone number
+	 * 
+	 * @param ownerTaxID	tax ID of the owner of the requested phone number
+	 * @param phoneNumber	phone number to be checked
+	 * @return				returns {@code true} if there is another request pending
+	 *						{@code false} if there is not.
+	 */
+	private boolean isDuplicateRequest(long ownerTaxID, long phoneNumber) throws SQLException {
+		// if the returned list is empty, then there is no duplicate request
+		return !Database.searchManagerRequests(null, null, ownerTaxID, phoneNumber, 
+			null, "pending", null, true).isEmpty(); 
+	}
+	
+	/**
+	 * Checks whether a particular phone number request was accepted or not.
+	 * @param ownerTaxID	tax id of the requested phone number
+	 * @param phoneNumber	requested phone number
+	 * @return				{@code true} if phone number request was accepted
+	 *						{@code false} if phone number request was rejected
+	 * @throws SQLException 
+	 */
+	private boolean isAcceptedRequest(long ownerTaxID, long phoneNumber) throws SQLException {
+		return !Database.searchManagerRequests(null, null, ownerTaxID, phoneNumber, null, "accepted", null, true).isEmpty();
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
