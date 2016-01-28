@@ -8,12 +8,13 @@ package controllers.manager;
 import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 import javax.servlet.ServletException;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.ManagerRequest;
 import utils.JsonUtils;
+import utils.Report;
 
 public class GetManagerRequests extends HttpServlet {
 
@@ -55,6 +57,11 @@ public class GetManagerRequests extends HttpServlet {
 		
 		// Attach jsonWriter to out PrintWriter
 		JsonWriter jsonWriter = Json.createWriter(out);
+		Report report = new Report(jsonWriter, request);
+		
+		// Check Role Permissions and report if access denied
+		if (report.jsonAccess("manager")) return;
+		
 		
 		// Get search criteria as parameters from the URL //
 		
@@ -75,9 +82,45 @@ public class GetManagerRequests extends HttpServlet {
 		}
 		
 		
-		
 		String salesmanUsername = request.getParameter("salesmanUsername");
 		String managerUsername = request.getParameter("managerUsername");
+		
+		Long customerTaxID = null;
+		Long requestedPhoneNumber = null;
+		Integer phoneNumberCount = null;
+		String customerTaxIDParam = request.getParameter("customerTaxID");
+		String requestedPhoneNumberParam = request.getParameter("requestedPhoneNumber");
+		String phoneNumberCountParam = request.getParameter("phoneNumberCount");
+		if (customerTaxIDParam != null) {
+			try {
+				customerTaxID = Long.valueOf(customerTaxIDParam);
+			} catch (NumberFormatException ex) {
+				JsonUtils.outputJsonError(
+					"customer's tax id must be an integer number", jsonWriter);
+				return;
+			}
+		}
+		
+		if (requestedPhoneNumberParam != null) {
+			try {
+				requestedPhoneNumber = Long.valueOf(requestedPhoneNumberParam);
+			} catch (NumberFormatException ex) {
+				JsonUtils.outputJsonError(
+					"requested phone number must be an integer number", jsonWriter);
+				return;
+			}
+		}
+		
+		if (phoneNumberCountParam != null) {
+			try {
+				phoneNumberCount = Integer.valueOf(phoneNumberCountParam);
+			} catch (NumberFormatException ex) {
+				JsonUtils.outputJsonError(
+					"phone number count must be an integer number", jsonWriter);
+				return;
+			}
+		}
+		
 		String status = request.getParameter("status");
 		String description = request.getParameter("description");
 		String strictParam = request.getParameter("strict");
@@ -90,9 +133,20 @@ public class GetManagerRequests extends HttpServlet {
 		
 		// If no parameters are passed, then get all manager requests
 		try {
-			managerRequests = Database.searchManagerRequests(salesmanUsername, managerUsername, status, description, strict);
+			managerRequests = Database.searchManagerRequests(
+				salesmanUsername, managerUsername, customerTaxID, 
+				requestedPhoneNumber, phoneNumberCount, status, 
+				description, strict);
 		} catch (IllegalArgumentException e) {
-			managerRequests = Database.getManagerRequests();
+			try {
+				managerRequests = Database.getManagerRequests();
+			} catch (SQLException ex) {
+				JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+				return;
+			}
+		} catch (SQLException ex) {
+			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+			return;
 		}
         
        

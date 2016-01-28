@@ -9,7 +9,7 @@ package models;
  *
  * @author pgmank
  */
-public class CustomerOnline {
+public class CustomerOnline extends Customer {
 	private String username;
 	private String password;
 	private long taxID;
@@ -19,6 +19,16 @@ public class CustomerOnline {
 	
 	// Empty constructor
 	public CustomerOnline() {
+		super();
+	}
+
+	public CustomerOnline(String username, String password, long taxID, String role, String regDate, String firstname, String lastname, String birthDate, char gender, String familyStatus, String homeAddress, long bankAccountNo, String personalCode, long relatetaxID) {
+		super(firstname, lastname, birthDate, gender, familyStatus, homeAddress, taxID, bankAccountNo, personalCode, relatetaxID);
+		this.username = username;
+		this.password = password;
+		this.taxID = taxID;
+		this.role = role;
+		this.regDate = regDate;
 	}
 	
 	
@@ -71,6 +81,12 @@ public class CustomerOnline {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
+
+	@Override
+	public String toString() {
+		return "CustomerOnline{" + "username=" + username + ", password=" + password + ", taxID=" + taxID + ", role=" + role + ", regDate=" + regDate + '}' + super.toString();
+	}
+	
 	
 	
 }

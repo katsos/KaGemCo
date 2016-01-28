@@ -28,89 +28,89 @@ import models.CustomerOnline;
 @WebServlet(name = "getCustomersOnline", urlPatterns = {"/getCustomersOnline"})
 public class GetCustomersOnline extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+	/**
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<CustomerOnline> customersOnline;
+		ArrayList<CustomerOnline> customersOnline;
         customersOnline = Database.getCustomersOnline();
-
+        
         response.setContentType("application/json;charset=UTF-8");
+        
+		PrintWriter out = response.getWriter();
+			
+		JsonArrayBuilder rootArray = Json.createArrayBuilder();
 
-        PrintWriter out = response.getWriter();
+		for (CustomerOnline customerOnline : customersOnline) {
 
-        JsonArrayBuilder rootArray = Json.createArrayBuilder();
+			// Object that holds one manager request's information
+			JsonObjectBuilder mrequestObj = Json.createObjectBuilder();
 
-        for (CustomerOnline customerOnline : customersOnline) {
+			// Fill object with manager request data
+			mrequestObj
+				.add("username", customerOnline.getUsername())
+				.add("taxID", customerOnline.getTaxID())
+				.add("role", customerOnline.getRole())
+				.add("regDate", customerOnline.getRegDate());
 
-            // Object that holds one manager request's information
-            JsonObjectBuilder mrequestObj = Json.createObjectBuilder();
+			// Add manager request json object to root array
+			rootArray.add(mrequestObj);
+		}
 
-            // Fill object with manager request data
-            mrequestObj
-                    .add("username", customerOnline.getUsername())
-                    .add("taxID", customerOnline.getTaxID())
-                    .add("role", customerOnline.getRole())
-                    .add("regDate", customerOnline.getRegDate());
+		JsonArray jsonArray = rootArray.build();
 
-            // Add manager request json object to root array
-            rootArray.add(mrequestObj);
-        }
-
-        JsonArray jsonArray = rootArray.build();
-
-        // Attach jsonWriter to out PrintWriter
-        JsonWriter jsonWriter = Json.createWriter(out);
-
-        // Write json contents to web page
-        jsonWriter.writeArray(jsonArray);
-
+		// Attach jsonWriter to out PrintWriter
+		JsonWriter jsonWriter = Json.createWriter(out);
+		
+		// Write json contents to web page
+		jsonWriter.writeArray(jsonArray);
+        
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+	/**
+	 * Handles the HTTP <code>GET</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		processRequest(request, response);
+	}
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+	/**
+	 * Handles the HTTP <code>POST</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		processRequest(request, response);
+	}
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+	/**
+	 * Returns a short description of the servlet.
+	 *
+	 * @return a String containing servlet description
+	 */
+	@Override
+	public String getServletInfo() {
+		return "Short description";
+	}// </editor-fold>
 
 }

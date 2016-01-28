@@ -26,7 +26,9 @@ import models.User;
  */
 public class TestDatabase {
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
-            testUpdateManagerRequest(10, "accepted");
+        testSearchCustomerOnline("kastomer");  
+		//testSearchCustomerByUsername("kastomer");  
+		//testUpdateManagerRequest(10, "accepted");
 	}
         
 	private static void basicTest() throws SQLException {
@@ -212,9 +214,9 @@ public class TestDatabase {
 		printList(customers);
 	}
 	
-	private static void testAdvancedManagerRequestsSearch() {
+	private static void testAdvancedManagerRequestsSearch() throws SQLException {
 		ArrayList<ManagerRequest> managerRequests = 
-				Database.searchManagerRequests(null, null, "rejected", null, true);
+				Database.searchManagerRequests(null, null, null, null, null, null, null, true);
 
 		if (managerRequests.isEmpty()) {
 			System.out.println("No customers inside");
@@ -294,7 +296,7 @@ public class TestDatabase {
 		boolean success = false;
 		
 		try {
-			success = Database.updateManagerRequest(requestID, status);
+			success = Database.updateManagerRequest(requestID, null, null, null, null, null, null, null);
 		} catch (SQLException ex) {
 			Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -302,6 +304,13 @@ public class TestDatabase {
 		System.out.println("Update " + (success ? "success" : "failed"));
 	}
 	
+	private static void testSearchCustomerByUsername(String username) throws SQLException {
+		System.out.println(Database.searchCustomer(username));
+	}
+	
+	private static void testSearchCustomerOnline(String username) throws SQLException {
+		System.out.println(Database.searchCustomerOnline(username));
+	}
 	
 	
 	private static void printList(List list) {
