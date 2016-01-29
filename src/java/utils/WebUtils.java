@@ -83,28 +83,28 @@ public class WebUtils {
 	 * @return			the descriptive message of the access enum or null if
 	 *					given enum value does have a correspondence or is null
 	 */
-	public static String getAccessDescription(Access access, String role) {
-		
-		String message;
-		
-		switch (access) {
-			case NOT_A_MEMBER:
-				message = "Only authenticated users can access this service";
-				break;
-			
-			case DENIED:
-				message = "Only a " + role + " can access this service";
-				break;
-				
-			case GRANTED:
-				message = "Access Granted !";
-				break;
-			default:
-				message = null;
-				break;
-		}
-		
-		return message;
-		
-	}
+//	public static String getAccessDescription(Access access, String role) {
+//		
+//		String message;
+//		
+//		switch (access) {
+//			case NOT_A_MEMBER:
+//				message = "Only authenticated users can access this service";
+//				break;
+//			
+//			case DENIED:
+//				message = "Only a " + role + " can access this service";
+//				break;
+//				
+//			case GRANTED:
+//				message = "Access Granted !";
+//				break;
+//			default:
+//				message = null;
+//				break;
+//		}
+//		
+//		return message;
+//		
+//	}
 }

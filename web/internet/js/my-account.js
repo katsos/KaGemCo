@@ -74,7 +74,6 @@ function displayUserData() {
     if ( numOfAccounts > 6 )
         $('#new-number').hide();
     
-    
 }
 
 function onRecharge() {
@@ -115,8 +114,23 @@ function onDonation() {
 }
 
 function onNewNumber() {
-    
-    alert('Το αίτημα σας είναι υπό επεξεργασία και θα λάβετε απάντηση σύντομα.');
+
+    var taxID = 1234123423; // taxID = customer.taxID;
+
+    $.ajax({
+        type: 'POST',
+        url: '../AddAccount?' + 'taxID='+taxID + '&balance=10',
+        dataType: 'json',
+        success:
+                function (response) {
+                    
+                    if ( response.error.length < 1 )
+                        alert('Είστε πλέον κάτοχος του αριθμού ' + response.phoneNumber 
+                            + ' με πιστωμένα ' + response.balance + ' € χρόνου ομιλίας.' 
+                            + 'Μπορείτε να περάσετε από οποιοδήποτε κατάστημά μας, να παραλάβετε την καινούργια κάρτα sim σας');
+                    
+                }
+    });
     
 }
 

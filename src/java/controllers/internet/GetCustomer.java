@@ -8,23 +8,16 @@ package controllers.internet;
 import database.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonWriter;
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Account;
-import models.Customer;
 import models.CustomerOnline;
+import utils.JsonUtils;
 
 /**
  *
@@ -43,35 +36,84 @@ public class GetCustomer extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("username");
-        JsonObject json = null;
-        CustomerOnline customer = null;
-        ArrayList<Account> accounts = null;
-
-        try {
-            
-            customer = Database.searchCustomerOnline(username);
-            accounts = Database.searchAccounts(customer.getTaxID());
-
-            // fill json
-            
-        } catch (SQLException ex) {
-
-            System.err.println(ex);
-
-            json = Json.createObjectBuilder()
-                    .add("error", ex.toString())
-                .build();
-
-        } finally {
-            
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().print(json);
-
-        }
-
-
+			String errorMessage = null;
+		
+		// JSON Output Initialization
+		response.setContentType("application/json;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		JsonWriter jsonWriter = Json.createWriter(out);
+		
+		// Parameter Initalization //
+		
+		String username = request.getParameter("username");
+		if (username == null) {
+			errorMessage = "Customer username undefined";
+			JsonUtils.outputJsonError(errorMessage, jsonWriter);
+			return;
+		}
+		
+		
+		CustomerOnline customerOnline;
+		
+		try {
+			customerOnline = Database.searchCustomerOnline(username);
+		} catch (SQLException ex) {
+			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+			return;
+		} 
+		
+		// Check if customer online exists
+		if (customerOnline == null) {
+			JsonUtils.outputJsonError("Customer with username: " +
+				username + " does not exist", jsonWriter);
+			return;
+		}
+		
+		ArrayList<Account> accounts;
+		try {
+			accounts = Database.searchAccounts(customerOnline.getTaxID());
+		} catch (SQLException ex) {
+			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+			return;
+		}
+		
+		// JSON Build //
+		
+		JsonObject customerObj = Json.createObjectBuilder()
+			.add("username", customerOnline.getUsername())
+			.add("role", customerOnline.getRole())
+			.add("regDate", customerOnline.getRegDate())
+			.add("taxID", customerOnline.getTaxID())
+			.add("firstname", customerOnline.getFirstname())
+			.add("lastname", customerOnline.getLastname())
+			.add("birthDate", customerOnline.getBirthDate())
+			.add("gender", customerOnline.getGender())
+			.add("familyStatus", customerOnline.getFamilyStatus())
+			.add("homeAddress", customerOnline.getHomeAddress())
+			.add("bankAccountNo", customerOnline.getBankAccountNo())
+			.add("personalCode", customerOnline.getPersonalCode())
+			.add("relateTaxID", customerOnline.getRelateTaxID())
+			.build();
+		
+		JsonArrayBuilder accountsBuilder = Json.createArrayBuilder();
+		
+		for (Account account : accounts) {
+			accountsBuilder.add( Json.createObjectBuilder()
+                                                .add("phoneNumber", account.getPhoneNumber())
+                                                .add("balance", account.getBalance())
+			);
+		}
+		
+		JsonArray accountsArray = accountsBuilder.build();
+		
+		
+		JsonObject jsonObj = Json.createObjectBuilder()
+			.add("customer", customerObj)
+			.add("accounts", accountsArray)
+			.build();
+		
+		
+		jsonWriter.writeObject(jsonObj);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -60,7 +60,7 @@ public class GetManagerRequests extends HttpServlet {
 		Report report = new Report(jsonWriter, request);
 		
 		// Check Role Permissions and report if access denied
-		if (report.jsonAccess("manager")) return;
+		//if (report.jsonAccess("manager")) return;
 		
 		
 		// Get search criteria as parameters from the URL //

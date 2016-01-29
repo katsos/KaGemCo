@@ -42,14 +42,14 @@ public class Report {
 	 * @param role role to be tested
 	 * @return 
 	 */
-	public boolean jsonAccess(String role) {
-		Access access = WebUtils.checkAccess(role, request);
-		if (access != Access.GRANTED) {
-			jsonError(WebUtils.getAccessDescription(access, role));
-			return true;
-		}
-		return false;
-	}
+//	public boolean jsonAccess(String role) {
+//		Access access = WebUtils.checkAccess(role, request);
+//		if (access != Access.GRANTED) {
+//			jsonError(WebUtils.getAccessDescription(access, role));
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	/**
 	 * Reports the given error message as JSON.

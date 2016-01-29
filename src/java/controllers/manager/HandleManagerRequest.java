@@ -53,7 +53,7 @@ public class HandleManagerRequest extends HttpServlet {
 		Report report = new Report(jsonWriter, request);
 		
 		// Check Role Permissions and report if access denied
-		if (report.jsonAccess("manager")) return;
+		//if (report.jsonAccess("manager")) return;
 		
 		// Parameter Initalization //
 		
