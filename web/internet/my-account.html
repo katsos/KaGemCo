@@ -37,7 +37,8 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li id="logout">
-                        <a href="#" onclick="onLogout(); return false;">Αποσύνδεση</a>
+                        <a href="#" onclick="onLogout();
+                                return false;">Αποσύνδεση</a>
                     </li>
                 </ul>
             </div>
@@ -100,6 +101,24 @@
                             <tr>
                                 <td></td>
                                 <td><input type="submit" value="Ανανέωση"></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-offset-4 col-lg-4">
+                    <h4> Δωρεά </h4>
+                    <form onsubmit="onDonation(); return false;">
+                        <table>
+                            <tr>
+                                <td>Ποσό δωρεάς: </td>
+                                <td><input type="number" id="donation-amount" required></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Δώρησε"></td>
                             </tr>
                         </table>
                     </form>

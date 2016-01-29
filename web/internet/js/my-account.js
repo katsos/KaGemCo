@@ -98,6 +98,16 @@ function onRecharge() {
 
 }
 
+function onDonation() {
+    
+    /* Get donation amount */
+    var amount = $('#donation-amount').val();
+    /* Print informational alert */
+    alert('Tο ποσό των ' + amount +' € αφαιρέθηκε από τον τραπέζικό σας λογαριασμό και χάρισε χαμόγελα σε παιδιά που το έχουν ανάγκη.');
+    /* Reset donation amount */
+    $('#donation-amount').val('');
+}
+
 function onLogout() {
     
     document.cookie += '; Expires = Thu, 01-Jan-1970 00:00:01 GMT;';
