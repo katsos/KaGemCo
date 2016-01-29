@@ -10,10 +10,8 @@ window.onload = function () {
     if (cUsername.length < 1 || cUsername == 'undefined' || cUsername == 'null')
         window.location = './login.html';
 
-    /* Pull data for cookie's username */
-    pullData();
-
-    displayData();
+    //pullUserData();
+    displayUserData();
 
 };
 
@@ -37,7 +35,7 @@ function searchForKey(givenKey) {
     return '';
 }
 
-function pullData() {
+function pullUserData() {
 
     $.ajax({
         type: 'POST',
@@ -52,24 +50,31 @@ function pullData() {
 
 }
 
-function displayData() {
+function displayUserData() {
 
-    if (customer.error.length < 1) {
-
-        $('#username')
-                .text(customer.username);
-        $('#credits')
-                .text(customer.credits + ' €');
-        $('#name')
-                .text(customer.name);
-        $('#surname')
-                .text(customer.surname);
-        $('#taxID')
-                .text(customer.taxID);
-        $('#bankAccount')
-                .text(customer.bankAccount);
-
-    }
+//    if (customer.error.length < 1) {
+//
+//        $('#username')
+//                .text(customer.username);
+//        $('#credits')
+//                .text(customer.credits + ' €');
+//        $('#name')
+//                .text(customer.name);
+//        $('#surname')
+//                .text(customer.surname);
+//        $('#taxID')
+//                .text(customer.taxID);
+//        $('#bankAccount')
+//                .text(customer.bankAccount);
+//
+//    }
+    
+    var numOfAccounts = 5;
+    
+    if ( numOfAccounts > 6 )
+        $('#new-number').hide();
+    
+    
 }
 
 function onRecharge() {
@@ -106,10 +111,18 @@ function onDonation() {
     alert('Tο ποσό των ' + amount +' € αφαιρέθηκε από τον τραπέζικό σας λογαριασμό και χάρισε χαμόγελα σε παιδιά που το έχουν ανάγκη.');
     /* Reset donation amount */
     $('#donation-amount').val('');
+    
+}
+
+function onNewNumber() {
+    
+    alert('Το αίτημα σας είναι υπό επεξεργασία και θα λάβετε απάντηση σύντομα.');
+    
 }
 
 function onLogout() {
     
     document.cookie += '; Expires = Thu, 01-Jan-1970 00:00:01 GMT;';
     window.location = './login.html'
+    
 }
