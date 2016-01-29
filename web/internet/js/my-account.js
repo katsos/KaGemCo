@@ -1,5 +1,5 @@
 var cUsername; // username from cookie
-var customer;
+var customerJson;
 
 window.onload = function () {
 
@@ -10,7 +10,8 @@ window.onload = function () {
     if (cUsername.length < 1 || cUsername == 'undefined' || cUsername == 'null')
         window.location = './login.html';
 
-    //pullUserData();
+    pullUserData();
+    
     displayUserData();
 
 };
@@ -44,36 +45,49 @@ function pullUserData() {
         dataType: 'json',
         success:
                 function (response) {
-                    customer = response;
+                    customerJson = response;
                 }
     });
 
 }
 
 function displayUserData() {
-
-//    if (customer.error.length < 1) {
-//
-//        $('#username')
-//                .text(customer.username);
-//        $('#credits')
-//                .text(customer.credits + ' €');
-//        $('#name')
-//                .text(customer.name);
-//        $('#surname')
-//                .text(customer.surname);
-//        $('#taxID')
-//                .text(customer.taxID);
-//        $('#bankAccount')
-//                .text(customer.bankAccount);
-//
-//    }
     
-    var numOfAccounts = 5;
+    if (customerJson.error.length < 1) {
+
+        var c = customerJson.customer;
+
+        $('#username')
+                .text(c.username);
+        $('#firstname')
+                .text(c.firstname);
+        $('#lastname')
+                .text(c.lastname);
+        $('#taxID')
+                .text(c.taxID);
+        $('#bankAccount')
+                .text(c.bankAccountNo);
+
+        var a = customerJson.accounts;
+        var aTable = $('#accounts').append('<tbody>');
+        
+        for( var i=0; i<a.length; i++ ) {
+
+            var account = '<tr>';
+                account +=  '<th>' + a[i].phoneNumber + '</th>';
+                account +=  '<td>' + a[i].balance + '€</td>';
+                account +='</tr>';
+
+            aTable.append(account);
+
+        }
+
+    }
+    
+    var numOfAccounts = a.length;
     
     if ( numOfAccounts > 6 )
         $('#new-number').hide();
-    
 }
 
 function onRecharge() {
@@ -115,7 +129,7 @@ function onDonation() {
 
 function onNewNumber() {
 
-    var taxID = 1234123423; // taxID = customer.taxID;
+    var taxID = customerJson.customer.taxID;
 
     $.ajax({
         type: 'POST',
@@ -128,7 +142,8 @@ function onNewNumber() {
                         alert('Είστε πλέον κάτοχος του αριθμού ' + response.phoneNumber 
                             + ' με πιστωμένα ' + response.balance + ' € χρόνου ομιλίας.' 
                             + 'Μπορείτε να περάσετε από οποιοδήποτε κατάστημά μας, να παραλάβετε την καινούργια κάρτα sim σας');
-                    
+                 
+                    window.location = './my-account.html';
                 }
     });
     
@@ -137,6 +152,6 @@ function onNewNumber() {
 function onLogout() {
     
     document.cookie += '; Expires = Thu, 01-Jan-1970 00:00:01 GMT;';
-    window.location = './login.html'
+    window.location = './login.html';
     
 }

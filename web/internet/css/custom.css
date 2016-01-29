@@ -21,6 +21,11 @@ body#my-account main table {
     background: rgb( 240, 240, 240);
 }
 
+body#my-account main table td {
+    text-align: center;
+    padding-left: 3px; 
+}
+
 .glyphicon {
     top: 5px;
     -webkit-text-stroke-width: 1px;

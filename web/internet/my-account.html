@@ -47,7 +47,7 @@
         <main class="container jumbotron">
             <div class="row">
 
-                <div class="col-lg-offset-4 col-lg-4">
+                <div class="col-xs-offset-3 col-xs-4">
 
                     <h4> Στοιχεία Λογαριασμού </h4>
 
@@ -58,15 +58,11 @@
                         </tr>
                         <tr>
                             <th> Όνομα </th>
-                            <td id="name"> </td>
+                            <td id="firstname"> </td>
                         </tr>
                         <tr>
                             <th> Επίθετο </th>
-                            <td id="surname"> </td>
-                        </tr>
-                        <tr>
-                            <th> Υπόλοιπο </th>
-                            <td id="credits"> </td>
+                            <td id="lastname"> </td>
                         </tr>
                         <tr>
                             <th> ΑΦΜ </th>
@@ -76,13 +72,23 @@
                             <th> Αρ. Λογαρ. Τραπέζης </th>
                             <td id="bankAccount"> </td>
                         </tr>
-                        <tr>
                     </table>
                 </div>
-            </div>
+                
+                <div class="col-xs-4">
+                    
+                    <h4> Αριθμοί </h4>
+                    
+                    <table id="accounts" class="table-bordered">
+                        
+                    </table>
+                    
+                </div>
+
+            </div> <!-- row -->
 
             <div class="row">
-                <div class="col-lg-offset-4 col-lg-4">
+                <div class="col-xs-offset-4 col-xs-4">
 
                     <h4> Ανανέωση χρόνου ομιλίας </h4>
 
@@ -107,7 +113,7 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-offset-4 col-lg-4">
+                <div class="col-xs-offset-4 col-xs-4">
                     <h4> Δωρεά </h4>
                     <form onsubmit="onDonation(); return false;">
                         <table>
@@ -125,7 +131,7 @@
             </div>
             <br>
             <div class="row" id="new-number">
-                <div class="col-lg-offset-4 col-lg-4">
+                <div class="col-xs-offset-4 col-xs-4">
                     <a class="btn btn-primary btn-sm" href="#" onclick="onNewNumber(); return false;" > Αίτηση νέου αριθμού </a>
                 </div>
             </div>
