@@ -6,5 +6,5 @@ function onLogout() {
 }
 
 function deleteCookie() {
-    document.cookie = '';
+    document.cookie = ';Expires=Thu, 01-Jan-1970 00:00:01 GMT;';
 }

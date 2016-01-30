@@ -10,11 +10,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 import javax.servlet.ServletException;
@@ -26,17 +25,20 @@ import utils.JsonUtils;
 import utils.Report;
 
 public class GetManagerRequests extends HttpServlet {
-
+ 
+    private ArrayList<ManagerRequest> managerRequests;
+    private JsonObject json;
+    
     /**
      * Returns a JSON file containing an array of manager requests. If no
-	 * parameters are set, all manager requests are returned. Otherwise,
-	 * parameters named after the ManagerRequest object fields can be passed
-	 * as search criteria.
-	 * 
-	 * If an error occurs, an object containing a field named "error" is
-	 * returned instead of an array in JSON format, that contains the error
-	 * description.
-	 * 
+     * parameters are set, all manager requests are returned. Otherwise,
+     * parameters named after the ManagerRequest object fields can be passed as
+     * search criteria.
+     *
+     * If an error occurs, an object containing a field named "error" is
+     * returned instead of an array in JSON format, that contains the error
+     * description.
+     *
      *
      * @param request servlet request
      * @param response servlet response
@@ -45,135 +47,133 @@ public class GetManagerRequests extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-		ArrayList<ManagerRequest> managerRequests;
-		
-		// Error message to be sent as JSON to the client
-		String errorMessage = null;
-		
-		
-		response.setContentType("application/json;charset=UTF-8");
         
-		PrintWriter out = response.getWriter();
-		
-		// Attach jsonWriter to out PrintWriter
-		JsonWriter jsonWriter = Json.createWriter(out);
-		Report report = new Report(jsonWriter, request);
-		
+
+        // Error message to be sent as JSON to the client
+        String errorMessage = null;
+
+        response.setContentType("application/json;charset=UTF-8");
+
+        PrintWriter out = response.getWriter();
+
+        // Attach jsonWriter to out PrintWriter
+        JsonWriter jsonWriter = Json.createWriter(out);
+        Report report = new Report(jsonWriter, request);
+
 		// Check Role Permissions and report if access denied
-		//if (report.jsonAccess("manager")) return;
-		
-		
+        //if (report.jsonAccess("manager")) return;
 		// Get search criteria as parameters from the URL //
-		
-		long requestID = -1;
-		String requestIDParam = request.getParameter("requestID");
-		
-		if (requestIDParam != null) {
-			try {
-				requestID = Long.valueOf(requestIDParam);
-			}
-			// If a non number value was passed as a parameter to requestID,
-			// return an error object containing the error message.
-			catch (NumberFormatException e) {
-				errorMessage = "request ID must be an integer number";
-				JsonUtils.outputJsonError(errorMessage, jsonWriter);
-				return;
-			}
-		}
-		
-		
-		String salesmanUsername = request.getParameter("salesmanUsername");
-		String managerUsername = request.getParameter("managerUsername");
-		
-		Long customerTaxID = null;
-		Long requestedPhoneNumber = null;
-		Integer phoneNumberCount = null;
-		String customerTaxIDParam = request.getParameter("customerTaxID");
-		String requestedPhoneNumberParam = request.getParameter("requestedPhoneNumber");
-		String phoneNumberCountParam = request.getParameter("phoneNumberCount");
-		if (customerTaxIDParam != null) {
-			try {
-				customerTaxID = Long.valueOf(customerTaxIDParam);
-			} catch (NumberFormatException ex) {
-				JsonUtils.outputJsonError(
-					"customer's tax id must be an integer number", jsonWriter);
-				return;
-			}
-		}
-		
-		if (requestedPhoneNumberParam != null) {
-			try {
-				requestedPhoneNumber = Long.valueOf(requestedPhoneNumberParam);
-			} catch (NumberFormatException ex) {
-				JsonUtils.outputJsonError(
-					"requested phone number must be an integer number", jsonWriter);
-				return;
-			}
-		}
-		
-		if (phoneNumberCountParam != null) {
-			try {
-				phoneNumberCount = Integer.valueOf(phoneNumberCountParam);
-			} catch (NumberFormatException ex) {
-				JsonUtils.outputJsonError(
-					"phone number count must be an integer number", jsonWriter);
-				return;
-			}
-		}
-		
-		String status = request.getParameter("status");
-		String description = request.getParameter("description");
-		String strictParam = request.getParameter("strict");
-		boolean strict =true; // by default the strict mode is true
-		
-		// If strict parameter is defined, then parse it
-		if (strictParam != null) {
-			strict = Boolean.valueOf(request.getParameter("strict"));
-		}
-		
-		// If no parameters are passed, then get all manager requests
-		try {
-			managerRequests = Database.searchManagerRequests(
-				salesmanUsername, managerUsername, customerTaxID, 
-				requestedPhoneNumber, phoneNumberCount, status, 
-				description, strict);
-		} catch (IllegalArgumentException e) {
-			try {
-				managerRequests = Database.getManagerRequests();
-			} catch (SQLException ex) {
-				JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
-				return;
-			}
-		} catch (SQLException ex) {
-			JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
-			return;
-		}
+        long requestID = -1;
+        String requestIDParam = request.getParameter("requestID");
+
+        if (requestIDParam != null) {
+            try {
+                requestID = Long.valueOf(requestIDParam);
+            } // If a non number value was passed as a parameter to requestID,
+            // return an error object containing the error message.
+            catch (NumberFormatException e) {
+                errorMessage = "request ID must be an integer number";
+                JsonUtils.outputJsonError(errorMessage, jsonWriter);
+                return;
+            }
+        }
+
+        String salesmanUsername = request.getParameter("salesmanUsername");
+        String managerUsername = request.getParameter("managerUsername");
+
+        Long customerTaxID = null;
+        Long requestedPhoneNumber = null;
+        Integer phoneNumberCount = null;
+        String customerTaxIDParam = request.getParameter("customerTaxID");
+        String requestedPhoneNumberParam = request.getParameter("requestedPhoneNumber");
+        String phoneNumberCountParam = request.getParameter("phoneNumberCount");
+        if (customerTaxIDParam != null) {
+            try {
+                customerTaxID = Long.valueOf(customerTaxIDParam);
+            } catch (NumberFormatException ex) {
+                JsonUtils.outputJsonError(
+                        "customer's tax id must be an integer number", jsonWriter);
+                return;
+            }
+        }
+
+        if (requestedPhoneNumberParam != null) {
+            try {
+                requestedPhoneNumber = Long.valueOf(requestedPhoneNumberParam);
+            } catch (NumberFormatException ex) {
+                JsonUtils.outputJsonError(
+                        "requested phone number must be an integer number", jsonWriter);
+                return;
+            }
+        }
+
+        if (phoneNumberCountParam != null) {
+            try {
+                phoneNumberCount = Integer.valueOf(phoneNumberCountParam);
+            } catch (NumberFormatException ex) {
+                JsonUtils.outputJsonError(
+                        "phone number count must be an integer number", jsonWriter);
+                return;
+            }
+        }
+
+        String status = request.getParameter("status");
+        String description = request.getParameter("description");
+        String strictParam = request.getParameter("strict");
+        boolean strict = true; // by default the strict mode is true
+
+        // If strict parameter is defined, then parse it
+        if (strictParam != null) {
+            strict = Boolean.valueOf(request.getParameter("strict"));
+        }
+
+        // If no parameters are passed, then get all manager requests
+        try {
+            managerRequests = Database.searchManagerRequests(
+                    salesmanUsername, managerUsername, customerTaxID,
+                    requestedPhoneNumber, phoneNumberCount, status,
+                    description, strict);
+        } catch (IllegalArgumentException e) {
+            try {
+                managerRequests = Database.getManagerRequests();
+            } catch (SQLException ex) {
+                JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+                return;
+            }
+        } catch (SQLException ex) {
+            JsonUtils.outputJsonError(ex.getMessage(), jsonWriter);
+            return;
+        }
+
+        buildJson();
         
-       
-		JsonArrayBuilder rootArray = Json.createArrayBuilder();
-
-		for (ManagerRequest managerRequest : managerRequests) {
-
-			// Object that holds one manager request's information
-			JsonObjectBuilder mrequestObj = Json.createObjectBuilder();
-
-			// Fill object with manager request data
-			mrequestObj
-				.add("requestID", managerRequest.getRequestID())
-				.add("salesmanUsername", managerRequest.getSalesmanUsername())
-				.add("managerUsername", managerRequest.getManagerUsername())
-				.add("status", managerRequest.getStatus())
-				.add("description", managerRequest.getDescription());
-
-			// Add manager request json object to root array
-			rootArray.add(mrequestObj);
-		}
-
-		JsonArray jsonArray = rootArray.build();
-
-		// Write json contents to web page
-		jsonWriter.writeArray(jsonArray);
+        response.getWriter().print(json);
+    }
+    
+    private void buildJson() {
         
+        JsonArrayBuilder requests = Json.createArrayBuilder();
+
+        for (ManagerRequest managerRequest : managerRequests) {
+
+            JsonObjectBuilder request = Json.createObjectBuilder();
+
+            request.add("requestID", managerRequest.getRequestID())
+                   .add("salesmanUsername", managerRequest.getSalesmanUsername())
+                   .add("managerUsername", managerRequest.getManagerUsername())
+                   .add("status", managerRequest.getStatus())
+                   .add("description", managerRequest.getDescription());
+
+            requests.add(request);
+        }
+
+        JsonArray requestsArray = requests.build();
+        
+        json = Json.createObjectBuilder()
+                .add("error","")
+                .add("requests", requestsArray)
+            .build();
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

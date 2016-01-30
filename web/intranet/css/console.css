@@ -2,29 +2,29 @@
 * { box-sizing: border-box; }
 
 span, p, a, h1, h2, h3, h4, h5 {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 ul{ padding: 0; }
 
 /* General */
 body {
-	color: white;
-	font-family: sans-serif;
-	
-	background-color: rgba( 0, 126, 128, 1);
+    color: white;
+    font-family: sans-serif;
 
-	margin-top: 0;
+    background-color: rgba( 0, 126, 128, 1);
+
+    margin-top: 0;
 }
 header { 
-	width: 100%;
-	margin-top: 2px;
-	margin-bottom: 3px;
-    
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 3px;
+
     overflow: hidden;
 }
 header .options *{
-	display: inline-block;
+    display: inline-block;
 }
 
 .stats {
@@ -35,15 +35,15 @@ header .options *{
 }
 
 main {
-	width: 90%;
-	margin: 0 auto;
+    width: 90%;
+    margin: 0 auto;
 
-	border-top: 2px  solid white;
-	padding-top: 12px;
+    border-top: 2px  solid white;
+    padding-top: 12px;
 }
 li{ 
-	list-style: none; 
-	display: inline-block;
+    list-style: none; 
+    display: inline-block;
 }
 
 li.notif-li { 
@@ -52,29 +52,29 @@ li.notif-li {
 }
 li.log-out-li { float: right; }
 a{
-	color: white;
-	text-decoration: none;
-	text-align: center;
+    color: white;
+    text-decoration: none;
+    text-align: center;
 }
 a:hover {
-	text-decoration: underline; 
+    text-decoration: underline; 
 }
 
 /* Buttons */
 .button {
-	font-size: 14pt;
-	
-	width: 100%;
-	padding: 5px;
-	margin-right: 5px;
-	
-	background-color: rgb( 0, 90, 90 );
-	
-	border: 2px solid white;
-	border-radius: 5px;
+    font-size: 14pt;
+
+    width: 100%;
+    padding: 5px;
+    margin-right: 5px;
+
+    background-color: rgb( 0, 90, 90 );
+
+    border: 2px solid white;
+    border-radius: 5px;
 }
 .button:hover {
-	background-color: rgb( 0, 110, 110 );
+    background-color: rgb( 0, 110, 110 );
 }
 
 .button.notif-button {
@@ -82,10 +82,10 @@ a:hover {
 }
 
 .button.log-out {
-	background-color: darkred;
+    background-color: darkred;
 }
 .button.log-out:hover {
-	background-color: rgb( 30, 0, 0 );
+    background-color: rgb( 30, 0, 0 );
 }
 
 /* Forms */
@@ -109,6 +109,7 @@ form {
     border-radius: 10px;
 }
 table { 
+    width: 100%;
     border: 1px solid white;
 }
 table th { vertical-align: middle; }
@@ -128,7 +129,7 @@ table .check {
 }
 table .reject {
     background-color: darkred;
-        border: 0px solid white;
+    border: 0px solid white;
     border-radius: 10px;
 }
 table .edit {
