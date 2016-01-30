@@ -1513,7 +1513,7 @@ public class Database {
 
         try {
 
-            prepStatement = connection.prepareStatement("SELECT * FROM manager_requests");
+            prepStatement = connection.prepareStatement("SELECT * FROM manager_requests WHERE status='pending'");
 
             results = prepStatement.executeQuery();
 
@@ -1850,7 +1850,7 @@ public class Database {
      */
     public static boolean updateManagerRequest(long requestID, String salesmanUsername,
             String managerUsername, Long customerTaxID, Long requestedPhoneNumber,
-            Integer phoneNumberCount, String status, String description) throws SQLException {
+            Integer phoneNumberCount, String status, String description) throws SQLException, Exception {
 
         String updateQuery = "UPDATE manager_requests SET ";
 
@@ -1866,7 +1866,7 @@ public class Database {
         try {
 
             if (!managerRequestExists(requestID)) {
-                return false;
+                throw new Exception("Request with id:" + requestID + " doesn't exists.");
             }
 
             if (salesmanUsername != null) {

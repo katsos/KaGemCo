@@ -7,11 +7,8 @@ package controllers.internet;
 
 import database.Database;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,18 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Account;
 import models.CustomerOnline;
-import utils.JsonUtils;
 
-/**
- *
- * @author dsupport
- */
 public class GetCustomer extends HttpServlet {
 
     private HttpServletRequest request;
-    private HttpServletResponse response;
     private JsonObject finalJson;
-    private JsonWriter jsonWriter;
     private String username;
     private CustomerOnline customerOnline;
     private ArrayList<Account> accounts;
@@ -48,7 +38,6 @@ public class GetCustomer extends HttpServlet {
             throws ServletException, IOException {
         
         this.request = request;
-        this.response = response;
 
         try {
             checkParameters();
