@@ -116,17 +116,6 @@ function onRecharge() {
 
 }
 
-function onDonation() {
-    
-    /* Get donation amount */
-    var amount = $('#donation-amount').val();
-    /* Print informational alert */
-    alert('Tο ποσό των ' + amount +' € αφαιρέθηκε από τον τραπέζικό σας λογαριασμό και χάρισε χαμόγελα σε παιδιά που το έχουν ανάγκη.');
-    /* Reset donation amount */
-    $('#donation-amount').val('');
-    
-}
-
 function onNewNumber() {
 
     var taxID = customerJson.customer.taxID;

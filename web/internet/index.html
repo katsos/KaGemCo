@@ -12,7 +12,7 @@
 
         <!-- redirect user if javascript is not enabled -->
         <noscript>
-        <meta http-equiv="refresh" content="0; url=./enable-js.html">
+            <meta http-equiv="refresh" content="0; url=./enable-js.html">
         </noscript>
 
         <link href="css/bootstrap.css" rel="stylesheet">
@@ -91,6 +91,10 @@
                         </p>
                     </div>
                 </div>
+
+                <div class="row">
+                    <a class="col-lg-offset-10" href="about.html"> περισσότερα... </a>
+                </div>
             </div>
             <a class="btn btn-default btn-circle btn-lg page-scroll" href="#services">
                 <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
@@ -116,11 +120,26 @@
             <div class="container jumbotron">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1> Κάνε την καλή για να σου γίνει η καλή. </h1>
-                        <p> mpla mpla mpla kai sou pa mou pes tou eipes kai tis sou eipa.
+                        <h1> Κάνε δωρεά </h1>
+                        <p> 
+                            Κάνοντας δωρεά, χαρίζεις χαμόγελα σε ανθρώπου που έχουν την ανάγκη σου και χαλάς λιγότερα στα σούπερ μάρκετ καπιτάλα φίλε μου.
                         </p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-xs-offset-2 col-xs-8">
+                        <form onsubmit="onDonation(); return false;">
+                            <p> 
+                                Ποσό δωρεάς: <input type="number" id="donation-amount" required> <input type="submit" value="Δώρησε">
+                            </p>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <a class="col-lg-offset-10" href="donation.html"> περισσότερα... </a>
+                </div>
+                
             </div>
             <a class="btn btn-default btn-circle btn-lg page-scroll" href="#contact">
                 <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
@@ -135,8 +154,7 @@
                         <p>Ενημερωθείτε πρώτοι για όλες τις νέες προσφορές.</p>
                     </div>
                     <div class="col-lg-3 jumbotron">
-                        <form onsubmit="onSignupNewsletter();
-                                return false;">
+                        <form onsubmit="onSignupNewsletter(); return false;">
                             <input class="form-control" type="email" id="email-newsletter" placeholder="E-mail">
                             <br>
                             <input class="btn btn-sm btn-primary btn-block" type="submit" value="Εγγραφφή">
