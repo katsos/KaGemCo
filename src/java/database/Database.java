@@ -170,6 +170,98 @@ public class Database {
         }
         return false;
     }
+	
+	/**
+	 * Updates a user given its username and the values of the fields to be 
+	 * updated. Passing null as an argument to a parameter, indicates that
+	 * this parameter should remain unchanged.
+	 * 
+	 * @param username	username of the user to be updated
+	 * @param password	new password
+	 * @param firstname new firstname
+	 * @param lastname	new lastname
+	 * @param role		new role
+	 * @throws SQLException	if database error occurs
+	 */
+    public static void updateUser(String username, String password, 
+		String firstname, String lastname, String role) throws SQLException {
+
+        String updateQuery = "UPDATE users SET ";
+
+        if (!checkConnection()) {
+            throw new SQLException("Connection error to database");
+        }
+
+        PreparedStatement prepStatement = null;
+        int updateCount = -1;
+
+        String whereList = "";
+			
+		if (!userExists(username)) {
+			throw new SQLException(
+				"User with username: '" + username + "' doesn't exist.");
+		}
+
+		if (password != null) {
+			whereList += "password=?, ";
+		}
+		if (firstname != null) {
+			whereList += "firstname=?, ";
+		}
+		if (lastname != null) {
+			whereList += "lastname=?, ";
+		}
+		if (role != null) {
+			whereList += "role=?, ";
+		}
+
+
+		if (whereList.isEmpty()) {
+			throw new IllegalArgumentException("No update criteria defined");
+		}
+
+		// remove the extra comma and space in the end of whereList string
+		whereList = whereList.substring(0, whereList.length() - 1 - 1);
+
+		int fieldCount = 0;
+
+		updateQuery += whereList + " WHERE username=?";
+		
+		try {
+				 
+            prepStatement = connection.prepareStatement(updateQuery);
+
+            if (password != null) {
+                prepStatement.setString(++fieldCount, password);
+            }
+            if (firstname != null) {
+                prepStatement.setString(++fieldCount, firstname);
+            }
+            if (lastname != null) {
+                prepStatement.setString(++fieldCount, lastname);
+            }
+            if (role != null) {
+                prepStatement.setString(++fieldCount, role);
+            }
+            
+
+            prepStatement.setString(++fieldCount, username);
+
+            updateCount = prepStatement.executeUpdate();
+			
+		} catch (SQLException e) {
+            System.err.println(e);
+			throw new SQLException("Database error");
+			
+        } finally {
+            release(prepStatement);
+        }
+
+		// If the updated customer count is 1, then update was successful.
+		if (updateCount != 1) {
+			throw new SQLException("More than one users with the same username");
+		}
+    }
 
     /**
      * Deletes a particular user from the database.
@@ -215,12 +307,15 @@ public class Database {
      * @param username String representing the user's username to be searched
      *
      * @return	{@code true} if user exists, {@code false}, if user does not
-     * exist or error occurs.
+     * exist.
+	 * 
+	 * @throws java.sql.SQLException if database error occurs
+	 * 
      */
-    public static boolean userExists(String username) {
+    public static boolean userExists(String username) throws SQLException {
 
         if (!checkConnection()) {
-            return false;
+            throw new SQLException("Connection error to database");
         }
 
         PreparedStatement prepStatement = null;
@@ -253,11 +348,11 @@ public class Database {
 
         } catch (SQLException e) {
             System.err.println(e);
+			throw new SQLException("Database error");
         } finally {
             release(results);
             release(prepStatement);
         }
-        return false;
     }
 
     /**
@@ -1866,7 +1961,7 @@ public class Database {
         try {
 
             if (!managerRequestExists(requestID)) {
-                throw new Exception("Request with id:" + requestID + " doesn't exists.");
+                throw new Exception("Request with id:" + requestID + " doesn't exist.");
             }
 
             if (salesmanUsername != null) {
