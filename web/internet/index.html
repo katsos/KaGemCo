@@ -72,7 +72,8 @@
                             <a href="./my-account.html">Όνομα Χρήστη</a>
                         </li>
                         <li id="logout">
-                            <a href="#" onclick="onLogout(); return false;">Αποσύνδεση</a>
+                            <a href="#" onclick="onLogout();
+                                    return false;">Αποσύνδεση</a>
                         </li>
                     </ul>
                 </div>
@@ -134,7 +135,8 @@
                         <p>Ενημερωθείτε πρώτοι για όλες τις νέες προσφορές.</p>
                     </div>
                     <div class="col-lg-3 jumbotron">
-                        <form onsubmit="onSignupNewsletter(); return false;">
+                        <form onsubmit="onSignupNewsletter();
+                                return false;">
                             <input class="form-control" type="email" id="email-newsletter" placeholder="E-mail">
                             <br>
                             <input class="btn btn-sm btn-primary btn-block" type="submit" value="Εγγραφφή">
@@ -146,12 +148,28 @@
                 <span class="glyphicon glyphicon-chevron-down" area-hidden="false"></span>
             </a>
         </section>
-        
+
         <section id="contact" class="scroll-section even">
-            <div class="container">
+            <div class="container jumbotron">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>Contact Section</h1>
+
+                        <h1>Επικοινωνία</h1>
+
+
+
+                        <p> Μπορείτε να έλθετε σε επαφή μαζί μας, με τους εξής τρόπους:
+                            <br> Καλώντας στα παρακάτω τηλέφωνα:
+                        </p>
+
+                        <p> 
+                            <a href="tel:2116666661"> 211-666-666-1 </a>, <a href="tel:2116666662"> 211-666-666-2 </a>, <a href="tel:2116666663"> 211-666-666-3 </a>
+                        </p> 
+                        <p> 
+                            Ή στέλνοντας fax στο : <a href="tel:2116666666"> 210-666-666-6 </a>
+                        </p>
+
+                        <p> Ή με ηλεκτρονικό μήνυμα στην διεύθυνση: <a href="mailto:contact@kagemco.gr">contact@kagemco.gr</p>
                     </div>
                 </div>
             </div>
@@ -161,11 +179,11 @@
             <span class="glyphicon glyphicon-arrow-up"></span>
         </a>
 
-<scripts>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/index.js"></script>
-</scripts>
+    <scripts>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <script src="js/index.js"></script>
+    </scripts>
 </body>
 </html>

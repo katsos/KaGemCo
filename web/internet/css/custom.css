@@ -8,7 +8,7 @@ body {
 }
 
 body#my-account {
-    background-image: url(../img/couple.jpg);
+    background-image: url(../img/home.jpg);
     background-position: center;
 }
 
@@ -76,12 +76,29 @@ of those sections to manage the look and feel of the site. */
 }
 
 #intro {
-    background-image: url(../img/couple.jpg);
+    background-image: url(../img/intro.jpg);
     background-position: center;
 }
 #about {
-    background-image: url(../img/couple.jpg);
+    background-image: url(../img/about.jpg);
     background-position: center;
+}
+#newsletter {
+    background-image: url(../img/newsletter.jpg);
+    background-position: center;
+}
+#services {
+    
+}
+#donation {
+    
+}
+#newsletter {
+    
+}
+#contact {
+    background-image: url(../img/contract.jpg);
+    background-position: right top;
 }
 
 .about-section {
