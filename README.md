@@ -5,6 +5,3 @@ Web Application of a telecommunications corporation. Intranet - Internet
 Internet  
 --Front-end--  
 presentation  
-Intranet  
---Front-end-- 
---Back-end--  
