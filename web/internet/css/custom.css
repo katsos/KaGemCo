@@ -98,28 +98,32 @@ of those sections to manage the look and feel of the site. */
     background: white;
 }
 
-#intro {
+section#intro {
     background-image: url(../img/intro.jpg);
-    background-position: center;
+    background-position: center top;
 }
-#about {
+section#about {
     background-image: url(../img/about.jpg);
     background-position: center;
 }
-#newsletter {
+section#newsletter {
     background-image: url(../img/newsletter.jpg);
     background-position: center;
 }
-#services {
-    
+section#services {
+    background-image: url(../img/services0.jpg);
+    background-position: center;
+
 }
-#donation {
-    
+section#donation {
+    background-image: url(../img/donation0.jpg);
+    background-position: center;
 }
-#newsletter {
-    
+section#newsletter {
+    background-image: url(../img/newsletter.jpg);
+    background-position: left top;
 }
-#contact {
+section#contact {
     background-image: url(../img/contract.jpg);
     background-position: right top;
 }
