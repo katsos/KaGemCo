@@ -4311,7 +4311,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     margin-bottom: 8px;
     background-color: transparent;
     background-image: none;
-    border: 1px solid transparent;
+    border: 1px solid rgb( 0, 128, 130);
     border-radius: 4px;
 }
 .navbar-toggle:focus {
@@ -4321,6 +4321,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     display: block;
     width: 22px;
     height: 2px;
+    border: 1px solid rgb( 0, 128, 130);
     border-radius: 1px;
 }
 .navbar-toggle .icon-bar + .icon-bar {
@@ -4832,7 +4833,7 @@ a.badge:focus {
     padding-top: 15px;
     margin-top: 30px;
     margin-bottom: 30px;
-    
+
     text-align: center;
     color: inherit;
     background-color: rgba( 255, 255, 255, 0.6);
