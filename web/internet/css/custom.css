@@ -7,13 +7,15 @@ body {
     height: 100%;
 }
 
-navbar-brand-center {
+main#about {
     
-    position: absolute;
-    left: 50%;
-    margin-left: -50px !important;
-    display: block;
+    height: 100%;
+    width: 100%;
     
+    background-image: url(../img/about.jpg);
+    background-size: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 main#donation {
@@ -25,6 +27,8 @@ main#donation {
     background-position: top left;
     background-repeat: no-repeat;
 }
+
+
 
 body#my-account {
     background-image: url(../img/home.jpg);
